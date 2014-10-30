@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+
+  <!-- Entradas Menu -->
+  <string id="30001">Destaques</string>
+  <string id="30002">Notícias</string>
+  <string id="30003">Vídeos</string>
+  <string id="30004">Fotos</string>
+  <string id="30005">Estádio</string>
+  <string id="30006">Bilhetes</string>
+  <string id="30007">Calendário</string>
+
+  <!-- Dados Login -->
+  <string id="30100">Dados de Login para http://www.slbenfica.pt</string>
+  <string id="30101">Utilizador:</string>
+  <string id="30102">Palavra-chave:</string>
+
+  <!-- Pagination Settings -->
+  <string id="30200">[COLOR red][UPPERCASE]&lt;&lt; Página Anterior[/UPPERCASE][/COLOR]</string>
+  <string id="30201">[COLOR red][UPPERCASE]Página Seguinte &gt;&gt;[/UPPERCASE][/COLOR]</string>
+
+</strings>

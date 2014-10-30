@@ -1,0 +1,11 @@
+<skin>
+  <defaultresolution>720p</defaultresolution>
+  <defaultresolutionwide>720p</defaultresolutionwide>
+  <version>1.0</version>
+  <effectslowdown>.75</effectslowdown>
+  <credits>
+    <!-- description of skin creator only -->
+    <skinname>Default</skinname>
+    <name>redglory</name>
+  </credits>
+</skin>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.slbenfica.pt" name="SL Benfica" version="0.0.1" provider-name="redglory">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+    <import addon="script.module.beautifulsoup" version="3.0.8"/>
+    <import addon="script.module.xbmcswift2" version="2.4.0"/>
+    <import addon="plugin.video.youtube" version="2.1.2"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <language>pt</language>
+    <platform>all</platform>
+    <summary lang="pt">Acesso a notícias e conteúdos multimédia do site oficial do Sport Lisboa e Benfica (slbenfica.pt)</summary>
+    <description lang="pt">Acesso a notícias e conteúdos multimédia do site oficial do Sport Lisboa e Benfica (slbenfica.pt)</description>
+    <platform>all</platform>
+  </extension>
+</addon>
