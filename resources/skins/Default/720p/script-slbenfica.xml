@@ -63,6 +63,7 @@
   9081    - Sport Info View
   9082    - Sport Content Info View
 9009    - Live Match* Menu
+  # Content
   9090    - Live Match View
   9091    - Live Match List
 =============================================================================================================
@@ -467,7 +468,8 @@
                 </control>              
             </control>
             
-            <!-- Club Menu -->
+            <!-- 9001 - Club Menu -->
+            <!-- 110 - Main Menu - Club Menu Button -->            
             <!-- 111 - Club Menu - Info button
                  112 - Club Menu - Structure button
                  113 - Club Menu - History button
@@ -574,7 +576,8 @@
                 </control>
             </control>
 
-            <!-- News Menu -->
+            <!-- 9002 - News Menu -->
+            <!-- 120 - Main Menu - News Menu Button -->
             <!-- 121 - News Menu - Headlines button
                  122 - News Menu - Sports News button 
             -->
@@ -637,7 +640,8 @@
                 </control>
             </control>
             
-            <!-- Videos Menu -->
+            <!-- 9003 - Videos Menu -->
+            <!-- 130 - Main Menu - Videos Menu Button -->
             <!-- 131 - Videos Menu - Football button
                  132 - Videos Menu - Futsal button
                  133 - Videos Menu - Hockey button
@@ -882,7 +886,8 @@
                 </control>                         
             </control>
 
-            <!-- Videos Football Sub-Menu -->
+            <!-- 9030 - Videos Football Sub-Menu -->
+            <!-- 131 - Videos Football Sub-Menu Button -->
             <!-- 231 - Football Sub-Menu - Youth Team button
                  232 - Football Sub-Menu - B Team button 
             -->
@@ -913,7 +918,7 @@
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
-                    <label>$ADDON[script.slbenfica 32121]</label>
+                    <label>$ADDON[script.slbenfica 32231]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
@@ -934,7 +939,7 @@
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
-                    <label>$ADDON[script.slbenfica 32122]</label>
+                    <label>$ADDON[script.slbenfica 32232]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
@@ -945,7 +950,8 @@
                 </control>                         
             </control>
             
-            <!-- Photos Menu -->
+            <!-- 9004 - Photos Menu -->
+            <!-- 140 - Main Menu - Photos Menu Button -->
             <!-- 141 - Photos Menu - Football button
                  142 - Photos Menu - Futsal button
                  143 - Photos Menu - Hockey button
@@ -1252,7 +1258,8 @@
                 </control>                       
             </control>
 
-            <!-- Photos Football Sub-Menu -->
+            <!-- 9040 - Photos Football Sub-Menu -->
+            <!-- 141 - Photos Football Sub-Menu Button -->
             <!-- 243 - Football Sub-Menu - First Team
                  244 - Football Sub-Menu - Youth Teams
                  245 - Football Sub-Menu - SL Benfica B
@@ -1359,7 +1366,8 @@
                 </control>                    
             </control>
 
-            <!-- Photos Hockey Sub-Menu -->
+            <!-- 9041 - Photos Hockey Sub-Menu -->
+            <!-- 143 - Photos Hockey Sub-Menu Button -->
             <!-- 247 - Hockey Sub-Menu - Female Hockey button -->
             <control type="group" id="9041"> 
                 <posx>0</posx>
@@ -1399,7 +1407,8 @@
                 </control>                  
             </control>
 
-            <!-- Photos Rugby Sub-Menu -->
+            <!-- 9042 - Photos Rugby Sub-Menu -->
+            <!-- 240 - Photos Rugby Sub-Menu Button -->
             <!-- 248 - Rugby Sub-Menu - Female Rugby button -->
             <control type="group" id="9042"> 
                 <posx>0</posx>
@@ -1439,7 +1448,8 @@
                 </control>                  
             </control>
 
-            <!-- Photos Club Sub-Menu -->
+            <!-- 9043 - Photos Club Sub-Menu -->
+            <!-- 241 - Photos Club Sub-Menu Button -->
             <!-- 249 - Club Sub-Menu - Family Stand button -->
             <control type="group" id="9043"> 
                 <posx>0</posx>
@@ -1479,7 +1489,8 @@
                 </control>                  
             </control>           
 
-            <!-- Stadium Menu -->
+            <!-- 9005 - Stadium Menu -->
+            <!-- 150 - Main Menu - Stadium Button -->
             <!-- 151 - Stadium Menu - Estádio da Luz Button
                  152 - Stadium Menu - Info Button
                  153 - Stadium Menu - Tours Button
@@ -1587,6 +1598,7 @@
             </control>
 
             <!-- 9006 - Tickets Menu -->
+            <!-- 160 - Main Menu - Tickets Button -->
             <!-- 161 - Tickets Menu - Matches Button
                  162 - Tickets Menu - Museum Button -->                 
             <control type="group" id="9006"> 
@@ -1649,6 +1661,7 @@
             </control>
 
             <!-- 9007 - Calendar Menu -->
+            <!-- 170 - Main Menu - Calendar Button -->
             <!-- 171 - Calendar Menu - Today Calendar Button
                  172 - Calendar Menu - Weekly Calendar Button
                  173 - Calendar Menu - Monthly Calendar Button-->
