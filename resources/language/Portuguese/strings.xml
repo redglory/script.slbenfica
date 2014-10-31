@@ -1,22 +1,160 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <strings>
 
-  <!-- Entradas Menu -->
-  <string id="30001">Destaques</string>
-  <string id="30002">Notícias</string>
-  <string id="30003">Vídeos</string>
-  <string id="30004">Fotos</string>
-  <string id="30005">Estádio</string>
-  <string id="30006">Bilhetes</string>
-  <string id="30007">Calendário</string>
+    <!-- Entradas Menu -->
+    <string id="30001">Destaques</string>
+    <string id="30002">Notícias</string>
+    <string id="30003">Vídeos</string>
+    <string id="30004">Fotos</string>
+    <string id="30005">Estádio</string>
+    <string id="30006">Bilhetes</string>
+    <string id="30007">Calendário</string>
+  
+    <!-- Dados Login -->
+    <string id="30100">Dados de Login para http://www.slbenfica.pt</string>
+    <string id="30101">Utilizador:</string>
+    <string id="30102">Palavra-chave:</string>
+  
+    <!-- Pagination Settings -->
+    <string id="30200">[COLOR red][UPPERCASE]&lt;&lt; Página Anterior[/UPPERCASE][/COLOR]</string>
+    <string id="30201">[COLOR red][UPPERCASE]Página Seguinte &gt;&gt;[/UPPERCASE][/COLOR]</string>
+  
+    
+    <!--
+        #######################
+          "Button" Controls
+        #######################
+         id     | description
+        #######################
+        110     - Main Menu - Club button
+          111     - Club Menu - Info button
+          112     - Club Menu - Structure button
+          113     - Club Menu - History button
+          114     - Club Menu - Museum button
+        120     - Main Menu - News button ( Headlines | Sports News)
+          121     - News Menu - Headlines button
+          122     - News Menu - Sports News button
+        130     - Main Menu - Videos button
+          131     - Videos Menu - Football button
+            231     - Football Sub-Menu - Youth Team button
+            232     - Football Sub-Menu - B Team button
+          132     - Videos Menu - Futsal button
+          133     - Videos Menu - Hockey button
+          134     - Videos Menu - Basketball button
+          135     - Videos Menu - Handball button
+          136     - Videos Menu - Volleyball button
+          137     - Videos Menu - Athletics button
+          138     - Videos Menu - Club button
+          139     - Videos Menu - Olympic button
+          230     - Videos Menu - Others button
+        140     - Main Menu - Photos button (Football | Futsal | Hockey | Basketball | Handball | Volleyball | Athletics |    Golf   |   Judo 
+                                             Rugby | Club | Olympic Games)
+          141     - Photos Menu - Football button  (First Team | Youth Teams | SL Benfica B | Benfica Generation Schools)
+            243     Football Sub-Menu - First Team
+            244     Football Sub-Menu - Youth Teams
+            245     Football Sub-Menu - SL Benfica B
+            246     Football Sub-Menu - Benfica Generation Schools
+          142     - Photos Menu - Futsal button
+          143     - Photos Menu - Hockey button (Female Hockey)
+            247     - Hockey Sub-Menu - Female Hockey button
+          144     - Photos Menu - Basketball button
+          145     - Photos Menu - Handball button
+          146     - Photos Menu - Volleyball button
+          147     - Photos Menu - Athletics button
+          148     - Photos Menu - Golf button
+          149     - Photos Menu - Judo button
+          240     - Photos Menu - Rugby button (Female Rugby)
+            248     - Rugby Sub-Menu - Female Rugby button
+          241     - Photos Menu - Club button (Family Stand)
+            249     - Club Sub-Menu - Family Stand button
+          242     - Photos Menu - Olympic Games button
+        150     - Main Menu - Stadium Button (Estádio da Luz | Info | Tours | Virtual Stadium)
+          151     - Stadium Menu - Estádio da Luz Button
+          152     - Stadium Menu - Info Button
+          153     - Stadium Menu - Tours Button
+          154     - Stadium Menu - Virtual Stadium Button
+        160     - Main Menu - Tickets Button (Matches | Museum)
+          161     - Tickets Menu - Matches Button
+          162     - Tickets Menu - Museum Button
+        170     - Main Menu - Calendar Button (Today Calendar | Weekly Calendar | Monthly Calendar)
+          171     - Calendar Menu - Today Calendar Button
+          172     - Calendar Menu - Weekly Calendar Button
+          173     - Calendar Menu - Monthly Calendar Button
+        180     - Main Menu - Sports Button  
+        190     - Main Menu - Live Match Button
+        200     - Main Menu - Exit Button
+        -->
+      
+    <!-- Buttons - Main Menu -->
+    <string id="32110">Clube</string>
+    <string id="32120">Notícias</string>
+    <string id="32130">Vídeos</string>
+    <string id="32140">Imagens</string>
+    <string id="32150">Estádio</string>
+    <string id="32160">Bilhetes</string>
+    <string id="32170">Calendário</string>
+    <string id="32180">Modalidades</string>
+    <string id="32190">Live Match</string>
+    <string id="32200">Sair</string>
+    <!-- Buttons - Club Menu -->
+    <string id="32111">Informação</string>
+    <string id="32112">Orgãos Sociais</string>
+    <string id="32113">História</string>
+    <string id="32114">Museu</string>
+    <!-- Buttons - News Menu -->
+    <string id="32121">Destaques</string>
+    <string id="32122">Modalidades</string>
+    <!-- Buttons - Videos Menu -->
+    <string id="32131">Futebol</string>
+    <string id="32132">Futsal</string>
+    <string id="32133">Hóquei</string>
+    <string id="32134">Basquetebol</string>
+    <string id="32135">Andebol</string>
+    <string id="32136">Voleibol</string>
+    <string id="32137">Atletismo</string>
+    <string id="32138">Clube</string>
+    <string id="32139">Olímpico</string>
+    <string id="32230">Outros</string>
+    <!-- Buttons - Videos Football Sub-Menu -->
+    <string id="32231">Formação</string>
+    <string id="32232">Equipa B</string>
+    <!-- Buttons - Photos Menu -->
+    <string id="32141">Futebol</string>
+    <string id="32142">Futsal</string>
+    <string id="32143">Hóquei</string>
+    <string id="32144">Basquetebol</string>
+    <string id="32145">Andebol</string>
+    <string id="32146">Voleibol</string>
+    <string id="32147">Atletismo</string>
+    <string id="32148">Golfe</string>
+    <string id="32149">Judo</string>
+    <string id="32240">Rugby</string>
+    <string id="32241">Clube</string>
+    <string id="32242">Olímpico</string>    
+    <!-- Buttons - Photos Football Sub-Menu -->
+    <string id="32243">Equipa Principal</string>
+    <string id="32244">Formação</string>
+    <string id="32245">Equipa B</string>
+    <string id="32246">Geração Benfica</string>    
+    <!-- Buttons - Photos Hockey Sub-Menu -->
+    <string id="32247">Hóquei Feminino</string>  
+    <!-- Buttons - Photos Rugby Sub-Menu -->
+    <string id="32248">Rugby Feminino</string>  
+    <!-- Buttons - Photos Club Sub-Menu -->
+    <string id="32249">Bancada Família</string>  
+    <!-- Buttons - Stadium Menu -->
+    <string id="32151">Estádio da Luz</string>
+    <string id="32152">Informação</string>
+    <string id="32153">Visitas</string>
+    <string id="32154">Estádio Virtual</string> 
+    <!-- Buttons - Tickets Menu -->
+    <string id="32161">Jogos</string>
+    <string id="32162">Museu</string>      
+    <!-- Buttons - Calendar Menu -->
+    <string id="32171">Hoje</string>
+    <string id="32172">Semanal</string>
+    <string id="32173">Mensal</string>
 
-  <!-- Dados Login -->
-  <string id="30100">Dados de Login para http://www.slbenfica.pt</string>
-  <string id="30101">Utilizador:</string>
-  <string id="30102">Palavra-chave:</string>
-
-  <!-- Pagination Settings -->
-  <string id="30200">[COLOR red][UPPERCASE]&lt;&lt; Página Anterior[/UPPERCASE][/COLOR]</string>
-  <string id="30201">[COLOR red][UPPERCASE]Página Seguinte &gt;&gt;[/UPPERCASE][/COLOR]</string>
+    <!-- Labels -->
 
 </strings>

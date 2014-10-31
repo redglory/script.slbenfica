@@ -20,7 +20,7 @@
 #   LIBRARIES & GLOBALS DECLARATIONS
 #######################################
 # Python libraries
-import sys, re
+import sys, re, os
 from urlparse import urlparse, parse_qs, urljoin
 from itertools import chain
 from datetime import datetime, date
@@ -28,6 +28,7 @@ import time
 import urllib2
 from traceback import print_exc
 
+# json
 try:
     import json
 except:
@@ -40,7 +41,6 @@ from BeautifulSoup import BeautifulSoup as BS
 import xbmcgui
 import xbmc
 import xbmcaddon
-import gui
 
 # DEBUG
 REMOTE_DBG = False
@@ -63,25 +63,38 @@ if REMOTE_DBG:
 #######################
 #   GLOBALS Definition
 #######################
-__addon__            = xbmcaddon.Addon('script.slbenfica')
-__language__         = __addon__.getLocalizedString
-__addon_path__       = __addon__.getAddonInfo('path').decode("utf-8")
-__addon_name__       = __addon__.getAddonInfo('name')
-__addon_id__         = __addon__.getAddonInfo('id')
-__author__           = __addon__.getAddonInfo('author')
-__version__          = __addon__.getAddonInfo('version')
-__resource__         = xbmc.translatePath(os.path.join(__addon_path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
-__addon_icon__       = xbmc.translatePath(os.path.join( __addon_path__, "icon.png")).decode('utf-8')
-__settings_file__    = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
-__temp_folder__      = os.path.join(__resource__, "temp" ).decode( "utf-8" )
-__imagepath__        = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
-__datapath__         = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __addon_id__)
-__profilepath__      = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __addon_id__)
+__addon__         = xbmcaddon.Addon('script.slbenfica')
+__language__      = __addon__.getLocalizedString
+__addon_path__    = __addon__.getAddonInfo('path').decode("utf-8")
+__addon_name__    = __addon__.getAddonInfo('name')
+__addon_id__      = __addon__.getAddonInfo('id')
+__author__        = __addon__.getAddonInfo('author')
+__version__       = __addon__.getAddonInfo('version')
+__resource__      = xbmc.translatePath(os.path.join(__addon_path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
+__addon_icon__    = xbmc.translatePath(os.path.join( __addon_path__, "icon.png")).decode('utf-8')
+__settings_file__ = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
+__temp_folder__   = os.path.join(__resource__, "temp" ).decode( "utf-8" )
+__imagepath__     = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
+__datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __addon_id__)
+__profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __addon_id__)
+__preamble__      = '[SL Benfica]'
+#__logdebug__      = __addon__.getSetting("logging") 
 
-MAX_INFO_LOG_LEVEL = 1
-MAX_DEBUG_LOG_LEVEL = 2
-
+#####################
+#    PATH INCLUDE
+#####################
 sys.path = [__resource__] + sys.path
+
+#####################
+#     GUI CLASS
+#####################
+from gui import GUI
+#####################
+#     LOG CLASS
+#####################
+from xlogger import Logger
+
+lw = Logger(preamble=__preamble__)
 
 try:
     __lang__ = xbmc.getLanguage(xbmc.ISO_639_1, False) # Gotham @UndefinedVariable
@@ -120,17 +133,6 @@ YOUTUBE_URL  = 'plugin://plugin.video.youtube?path=/root/video&action=play_video
 #######################
 #   Base Functions
 #######################
-
-# if level <= 0, sends LOGERROR msg.  For positive values, sends LOGNOTICE
-# if level <= MAX_INFO_LOG_LEVEL, else LOGDEBUG.  If level is omitted, we assume 10.
-def log(txt, level=10):
-    if level > max(MAX_DEBUG_LOG_LEVEL, MAX_INFO_LOG_LEVEL):
-        return
-    if isinstance(txt,str):
-        txt = txt.decode("utf-8")
-    message = u'%s: %s' % (__addon_id__, txt)
-    log_level = (xbmc.LOGERROR if level <= 0 else (xbmc.LOGNOTICE if level <= MAX_INFO_LOG_LEVEL else xbmc.LOGDEBUG))
-    xbmc.log(msg=message.encode("utf-8"), level=log_level)
 
 def _unicode(text, encoding='utf-8'):
     try: text = unicode(text, encoding)
@@ -258,317 +260,6 @@ def start_slideshow(images):
     else:
         clear_slideshow()
 
-########################
-#      News Class
-########################
-class News(object):
-
-    def __init__(self, url=None):
-        self.url    = url
-        self.html   = _html(url)
-    
-    def _title(self):
-        return self.html.find('h1').string.strip(' ').replace(u'\u2013', '-')
-    
-    def _title2(self):
-        return self.html.find('h2').string.strip(' ').replace(u'\u2013', '-')
-    
-    def _thumb(self):
-        div = self.html.find('div', {'class': 'pos_not_img_det'}) 
-        return _full_url(div.img['src']).strip(' ')
-
-    def _text(self):
-        #return self.html.find('div', {'class': 'not_desc'}).string
-        return 'path'
-
-    def _date(self):
-        return self.html.find('p', {'class': 'txt_10 not_date'}).string.strip(' ').replace(u'\u2013', '-')
-
-########################
-#    Category Class
-########################
-class Category(object):
-
-    def __init__(self, name=None, media_type=None, url=None):
-        self.name       = name
-        self.media_type = media_type
-        self.url        = url
-        self.cat_id     = get_cat_id(self.url, 'category')
-
-    def _name(self):
-        return self.name.strip(' ').replace(u'\u2013', '-')
-
-    def _cat_id(self):
-        return self.cat_id.strip(' ')
-
-    def _media_type(self):
-        return self.media_type.strip(' ')
-    
-    def _thumb(self):
-        """
-        // TODO
-        """
-        return ''
-
-    def _albums(self):
-        return plugin.url_for('show_category_albums', 
-                              media_type  = self.media_type, 
-                              category_id = self.cat_id,
-                              page     = 1) 
-
-########################
-#     Album Class
-########################
-class Album(object):
-
-    def __init__(self, name=None, media_type=None, url=None, thumb=None, date=None):
-        self.name       = name
-        self.media_type = media_type
-        self.url        = url
-        self.thumb      = thumb
-        self.date       = date
-        self.album_id   = get_cat_id(self.url, 'album')
-
-    def _name(self):
-        return self.name.strip(' ').replace(u'\u2013', '-')
-
-    def _album_id(self):
-        return self.album_id.strip(' ')
-
-    def _media_type(self):
-        return self.media_type.strip(' ')
-    
-    def _thumb(self):
-        return self.thumb.strip(' ')
-
-    def _date(self):
-        return convert_date(self.date, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')
-
-    def _media(self):
-        if   self.media_type == 'videos': return plugin.url_for('show_album_videos', album_id = self.album_id)
-        elif self.media_type == 'photos': return plugin.url_for('play_slideshow', album_id = self.album_id) 
-
-###########################
-#   Navigation Menus
-###########################
-# |_ HEADLINES
-# |_ NEWS
-# |_ VIDEOS
-# |_ PHOTOS
-# |_ STADIUM
-# |_ TICKETS
-###########################
-
-@plugin.route('/')
-def show_menu():
-    ##########################################################
-    # menu     = { 'headlines'  : plugin.get_string(30001),
-    #              'news'       : plugin.get_string(30002),
-    #              'videos'     : plugin.get_string(30003),
-    #              'photos'     : plugin.get_string(30004),
-    #              'stadium     : plugin.get_string(30005),
-    #              'tickets'    : plugin.get_string(30006),
-    #              'calendar'   : plugin.get_string(30007),
-    #            }
-    ##########################################################
-
-    items = [
-        {'label': plugin.get_string(30001), 'path': plugin.url_for('show_headlines')},
-        {'label': plugin.get_string(30002), 'path': plugin.url_for('show_news')},
-        {'label': plugin.get_string(30003), 'path': plugin.url_for('show_media_categories', media_type = 'videos')},
-        {'label': plugin.get_string(30004), 'path': plugin.url_for('show_media_categories', media_type = 'photos')},
-        {'label': plugin.get_string(30005), 'path': plugin.url_for('show_stadium')},
-        {'label': plugin.get_string(30006), 'path': plugin.url_for('show_tickets')},
-        {'label': plugin.get_string(30007), 'path': plugin.url_for('show_calendar', date=datetime.now().strftime("%d-%m-%Y"))},
-    ]
-
-    return items
-
-#######################
-#   Navigation Routes
-#######################
-
-@plugin.route('/headlines/')
-def show_headlines():
-
-    html = _html(HOME_URL)
-
-    uls = html.findAll('ul', {'class': 'dest_carr_list'})
-    lis = [ul.findAll('li') for ul in uls]
-    
-    headlines = set()
-    
-    for li in chain(*lis):
-        _news = News(li.a['href'])
-        headlines.add((_news._title(),
-                       _news._thumb(),
-                       _news._text(),
-                       _news._title2(),
-                       _news._date()))
-
-    items = [
-        #{'label': str(label) + ' (' + str(date) + ')',
-        {'label': label,
-         'path': '',
-         'thumbnail': thumbnail,
-         'info': {'date': date,
-                  'plot': text,
-                  'plotoutline': text2,
-                 },
-        } for label, thumbnail, text, text2, date in headlines]    
-
-    return sorted(items, key=lambda item: item['info']['date'], reverse=True)
-
-@plugin.route('/news/')
-def show_news():
-    print ""
-
-@plugin.route('/<media_type>/')
-def show_media_categories(media_type):
-    
-    if   media_type == 'videos': html = _html(VIDEOS_URL)
-    elif media_type == 'photos': html = _html(PHOTOS_URL)
-
-    uls = html.findAll('ul', {'class': 'cat_list'})
-    lis = [ul.findAll('li') for ul in uls]
-    
-    categories = set()
-    
-    for li in chain(*lis):
-        _category = Category(name=li.a.string, media_type=media_type, url=li.a['href'])
-        categories.add((_category._name(),
-                        _category._albums()))
-
-    items = [
-        {'label': label,
-         'path': path,
-        } for label, path in categories]
-
-    return sorted(items, key=lambda item: item['label'])
-
-@plugin.route('/<media_type>/category/<category_id>/page/<page>')
-def show_category_albums(media_type, category_id, page=1):
-    
-    page = int(page)
-    
-    if media_type == 'videos':
-        category_url = VIDEOS_CATEGORY_URL.format(cat_id = category_id,
-                                                  page   = page,
-                                                  lang   = LANG) 
-    elif media_type == 'photos':
-        category_url = PHOTOS_CATEGORY_URL.format(cat_id = category_id,
-                                                  page   = page,
-                                                  lang   = LANG) 
-    html = _html(category_url)
-    uls = html.findAll('ul', {'class': 'pos_biglist_list'})
-    lis = [ul.findAll('li') for ul in uls]
-    
-    albums = set()
-
-    # find <previous page> | <next page> entries. add them if present
-    (prev_page, next_page) = find_previous_next_page(page_html=html)
-    
-    for li in chain(*lis):
-        _album = Album(name       = li.find('p', {'class': 'txt_11_dark'}).string, 
-                       media_type = media_type, 
-                       url        = li.a['href'],
-                       thumb      = li.a.img['src'],
-                       date       = li.find('p', {'class': 'txt_10'}).string)
-
-        albums.add((_album._name(),
-                    _album._media(),
-                    _album._thumb(),
-                    _album._date()))
-
-    items = [
-        #{'label': str(label) + ' (' + str(convert_date(date, '%Y-%m-%d', '%d-%m-%Y')) + ')',
-        {'label': label,
-         'path': path,
-         'thumbnail': thumbnail,
-         'info': {'date': date},
-        } for label, path, thumbnail, date in albums]
-    
-    sorted_items = []
-    for d in items:
-        if d['label'] not in (s['label'] for s in sorted_items):
-            sorted_items.append(d)
-
-    sorted_items = sorted(sorted_items, key=lambda item: item['info']['date'], reverse=True) # sort by date descending
-
-    if next_page:
-        sorted_items.insert(int(len(sorted_items) + 1), {'label': plugin.get_string(30201),
-                            'path': plugin.url_for('show_category_albums', media_type=media_type, category_id=category_id, 
-                            page=str(page + 1)),})
-    if page > 1:
-        sorted_items.insert(0, {'label': plugin.get_string(30200),
-                            'path': plugin.url_for('show_category_albums', media_type=media_type, 
-                            category_id=category_id, page=str(page - 1)),})
-
-    return plugin.finish(sorted_items, update_listing=True)
-
-@plugin.route('/videos/album/<album_id>')
-def show_album_videos(album_id):
-    
-    album_url = VIDEOS_ALBUM_URL.format(album_id = album_id, 
-                                        lang     = LANG) 
-    html = _html(album_url)
-    uls  = html.findAll('ul', {'class': 'pos_biglist_vidlist'})
-    lis  = [ul.findAll('li') for ul in uls]
-    
-    videos = set((li.find('p', {'class': 'txt_11'}).string, 
-                  plugin.url_for('play_video', youtube_url=li.a['href']), 
-                  li.a.img['src'])
-             for li in chain(*lis))
-
-    items = [
-        {'label': label,
-         'path': path,
-         'is_playable': True,
-         'thumbnail': thumbnail,
-        } for label, path, thumbnail in videos]
-
-    return sorted(items, key=lambda item: item['path'])
-
-@plugin.route('/play_video/<youtube_url>')
-def play_video(youtube_url):
-
-    plugin_url = resolve_youtube_url(youtube_url)
-
-    if plugin_url:
-        return plugin.set_resolved_url(plugin_url)
-
-@plugin.route('/play_slideshow/<album_id>')
-def play_slideshow(album_id):
-    
-    album_url = PHOTOS_ALBUM_URL.format(album_id = album_id, 
-                                        lang     = LANG)
-    xbmc.log('Album url: ' + album_url)
-    html = _html(album_url)
-    uls  = html.findAll('ul', {'class': 'pos_biglist_imglist'})
-    lis  = [ul.findAll('li') for ul in uls]
-    
-    images = []
-    images = [
-        {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
-        } for li in chain(*lis)]
-    
-    #xbmc.log('Images to load: ' + str(images))
-    start_slideshow(images)
-
-@plugin.route('/stadium/')
-def show_stadium():
-    print ""
-
-@plugin.route('/tickets/')    
-def show_tickets():
-    print ""
-
-@plugin.route('/calendar/<date>/weeks/<weeks>')    
-def show_calendar(date, numWeeks=1):
-    
-    _startdate = date(date[6:10], date[3:5], date[:2])
-    calendar = Calendar(startDate=_startdate, numWeeks=numWeeks).get_calendar()
-
 
 ############################
 #           MAIN
@@ -577,22 +268,25 @@ def show_calendar(date, numWeeks=1):
 #if __name__ == '__main__': 
 #    plugin.run()
 if ( __name__ == "__main__" ):
-    xbmc.executebuiltin('Dialog.Close(all, true)')
-    log( "############################################################", xbmc.LOGNOTICE )
-    log( "#    %-50s    #" % __scriptname__, xbmc.LOGNOTICE )
-    log( "#        default.py module                                 #", xbmc.LOGNOTICE )
-    log( "#    %-50s    #" % __scriptID__, xbmc.LOGNOTICE )
-    log( "#    %-50s    #" % __author__, xbmc.LOGNOTICE )
-    log( "#    %-50s    #" % __version__, xbmc.LOGNOTICE )
-    log( "############################################################", xbmc.LOGNOTICE )
+    
+    if xbmcgui.Window( 10000 ).getProperty( "slbenfica_addon_running" ) == "True":
+        lw.log(["SL Benfica Addon already running, exiting..."], xbmc.LOGNOTICE )
+    else:
+        xbmcgui.Window( 10000 ).setProperty( "slbenfica_addon_running", "True" )
     try:
-        ui = gui.GUI( "script-cdartmanager.xml" , __addon__.getAddonInfo('path'), "Default")
-        xbmc.sleep(2000)
-        ui.doModal()
-        del ui
+        lw.log( ["############################################################"], xbmc.LOGNOTICE )
+        lw.log( ["#    %-50s    #" % __addon_name__], xbmc.LOGNOTICE )
+        lw.log( ["#        default.py module                                 #"], xbmc.LOGNOTICE )
+        lw.log( ["#    %-50s    #" % __addon_id__], xbmc.LOGNOTICE )
+        lw.log( ["#    %-50s    #" % __author__], xbmc.LOGNOTICE )
+        lw.log( ["#    %-50s    #" % __version__], xbmc.LOGNOTICE )
+        lw.log( ["############################################################"], xbmc.LOGNOTICE )
+
+        window = GUI( "script-slbenfica.xml" , __addon_path__, "Default")
+        window.doModal()
+        del window
     except:
-        log( "Error in script occured", xbmc.LOGNOTICE )
-        traceback.print_exc()
-        dialog_msg( "close" )
+        lw.log(['Error in script occured:', print_exc()])
+        
 
 ############################

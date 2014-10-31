@@ -159,6 +159,7 @@
                 <texture>background.jpg</texture>
             </control>
             <!-- FLOOR -->
+            <!--
             <control type="image">
                 <posx>0</posx>
                 <posy>90r</posy>
@@ -167,7 +168,7 @@
                 <texture>floor.png</texture>
                 <animation effect="fade" time="250" condition="Window.Previous(Home)">WindowOpen</animation>
                 <animation effect="fade" time="250" condition="Window.Next(Home)">WindowClose</animation>
-            </control>
+            </control> -->
 
             <!-- LOGO -->
             <control type="image" id="100">
@@ -196,19 +197,19 @@
             -->
             <control type="group" id="9000">
                 <posx>0</posx>
-                <posy>250</posy>
+                <posy>270</posy>
                 <control type="image">
                     <description>Menu Panel</description> <!-- Menu Panel Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>300</width>
-                    <height>550</height>
+                    <width>310</width>
+                    <height>420</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
 
                 <control type="radiobutton" id="110"> <!-- Club -->
                     <description>Club</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
                     <width>270</width>
@@ -236,7 +237,7 @@
                 </control>                
                 <control type="radiobutton" id="120"> <!-- News -->
                     <description>News</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
                     <width>270</width>
@@ -264,7 +265,7 @@
                 </control>
                 <control type="radiobutton" id="130">  <!-- Videos -->
                     <description>Videos</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
                     <width>270</width>
@@ -292,7 +293,7 @@
                 </control>                
                 <control type="radiobutton" id="140">  <!-- Photos -->
                     <description>Photos</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
                     <width>270</width>
@@ -320,7 +321,7 @@
                 </control>
                 <control type="radiobutton" id="150">  <!-- Stadium -->
                     <description>Stadium</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>170</posy>
                     <height>40</height>
                     <width>270</width>
@@ -348,7 +349,7 @@
                 </control>
                 <control type="radiobutton" id="160"> <!-- Tickets -->
                     <description>Tickets</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>210</posy>
                     <height>40</height>
                     <width>270</width>
@@ -376,7 +377,7 @@
                 </control>
                 <control type="radiobutton" id="170"> <!-- Calendar -->
                     <description>Calendar</description>
-                    <posx>0</posx>
+                    <posx>10</posx>
                     <posy>250</posy>
                     <height>40</height>
                     <width>270</width>
@@ -404,8 +405,8 @@
                 </control>          
                 <control type="button" id="180"> <!-- Sports -->
                     <description>Sports</description>
-                    <posx>0</posx>
-                    <posy>250</posy>
+                    <posx>10</posx>
+                    <posy>290</posy>
                     <height>40</height>
                     <width>270</width>
                     <textoffsetx>10</textoffsetx>
@@ -426,8 +427,8 @@
                 </control>
                 <control type="button" id="190"> <!-- Live Matches -->
                     <description>Live Matches</description>
-                    <posx>0</posx>
-                    <posy>290</posy>
+                    <posx>10</posx>
+                    <posy>330</posy>
                     <height>40</height>
                     <width>270</width>
                     <textoffsetx>10</textoffsetx>
@@ -447,8 +448,8 @@
                 </control>
                 <control type="button" id="200"> <!-- Exit -->
                     <description>Exit</description>
-                    <posx>0</posx>
-                    <posy>330</posy>
+                    <posx>10</posx>
+                    <posy>370</posy>
                     <height>40</height>
                     <width>270</width>
                     <textoffsetx>10</textoffsetx>
@@ -1748,28 +1749,29 @@
 
             <!-- CONTENT PANEL -->
             <control type="group" id="9100">
+                <zorder>0</zorder>
                 <posx>310</posx>
                 <posy>20</posy>
                 <control type="image">
                     <description>Content Panel</description>
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>950</width>
-                    <height>650</height>
+                    <width>970</width>
+                    <height>670</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
             </control>
 
             <!-- RSS Feed -->
             <control type="group">
-                <left>0</left>
-                <top>33r</top>
+                <posx>0</posx>
+                <posy>33r</posy>
                 <visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
                 <include>Window_OpenClose_Animation</include>
                 <control type="rss">
                     <description>SL Benfica RSS feed</description>
-                    <left>100</left>
-                    <top>0</top>
+                    <posx>100</posx>
+                    <posy>0</posy>
                     <height>30</height>
                     <width>1145</width>
                     <font>font12</font>
@@ -1780,8 +1782,8 @@
                 </control>
                 <control type="image">
                     <description>SL Benfica RSS background</description>
-                    <left>1250</left>
-                    <top>2</top>
+                    <posx>1250</posx>
+                    <posy>2</posy>
                     <width>24</width>
                     <height>24</height>
                     <texture>icon-rss.png</texture>
