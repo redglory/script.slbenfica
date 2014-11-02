@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+ <rssfeeds>
+ 
+   <set id="1904">
+    <!-- SL Benfica Geral -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4711&tabid=1412&cp=False&uid=154</feed>
+    <!-- SL Benfica Football -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4691&tabid=1404&cp=False&uid=154</feed>
+    <!-- SL Benfica Futsal -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4703&tabid=1405&cp=False&uid=154</feed>
+    <!-- SL Benfica Hockey -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4695&tabid=1406&cp=False&uid=154</feed>
+    <!-- SL Benfica Basketball -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4697&tabid=1407&cp=False&uid=154</feed>
+    <!-- SL Benfica Handball -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4699&tabid=1408&cp=False&uid=154</feed>
+    <!-- SL Benfica Volleyball -->
+    <feed updateinterval="30">http://www.slbenfica.pt/DesktopModules/DNNArticleList/DNNArticleRSS.aspx?portalid=0&moduleid=4701&tabid=1409&cp=False&uid=154</feed>
+  </set>
+ 
+ </rssfeeds>
+ </xml>

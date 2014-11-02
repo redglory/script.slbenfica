@@ -64,8 +64,9 @@
   9082    - Sport Content Info View
 9009    - Live Match* Menu
   # Content
-  9090    - Live Match View
-  9091    - Live Match List
+  9090    - Live Match Container
+  9091    - Live Match View
+  9092    - Live Match List
 =============================================================================================================
 9100    - Content Panel
 
@@ -143,7 +144,7 @@
 <window>
     <allowoverlay>no</allowoverlay>
 
-    <defaultcontrol always="true">9000</defaultcontrol>
+    <defaultcontrol always="true">9100</defaultcontrol>
 
     <controls>
         <control type="group">
@@ -158,29 +159,37 @@
                 <height>720</height>
                 <texture>background.jpg</texture>
             </control>
-            <!-- FLOOR -->
-            <!--
-            <control type="image">
-                <posx>0</posx>
-                <posy>90r</posy>
-                <width>1280</width>
-                <height>90</height>
-                <texture>floor.png</texture>
-                <animation effect="fade" time="250" condition="Window.Previous(Home)">WindowOpen</animation>
-                <animation effect="fade" time="250" condition="Window.Next(Home)">WindowClose</animation>
-            </control> -->
 
             <!-- LOGO -->
             <control type="image" id="100">
                 <description>LOGO</description>
                 <posx>0</posx>
-                <posy>5</posy>
-                <width>300</width>
+                <posy>35</posy>
+                <width>250</width>
                 <height>165</height>
                 <aspectratio aligny="top" align="left">keep</aspectratio>
                 <texture>slb-logo.png</texture>
                 <include>VisibleFadeEffect</include>
                 <include>Window_OpenClose_Animation</include>
+            </control>
+
+            <!-- CONTENT PANEL -->
+            <control type="group" id="9100">
+                <zorder>1</zorder>
+                <posx>255</posx>
+                <posy>35</posy>
+                <onleft>9000</onleft>
+                <onright>9000</onright>
+                <onup>9000</onup>
+                <ondown>9000</ondown>
+                <control type="image">
+                    <description>Content Panel</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
             </control>
 
             <!-- 9000 - Main Menu -->
@@ -196,25 +205,26 @@
                  200 - Main Menu - Exit Button 
             -->
             <control type="group" id="9000">
+                <zorder>10</zorder>
                 <posx>0</posx>
-                <posy>270</posy>
+                <posy>260</posy>
                 <control type="image">
                     <description>Menu Panel</description> <!-- Menu Panel Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>310</width>
-                    <height>420</height>
+                    <width>260</width>
+                    <height>425</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-
+                <!-- 9000 - Main Menu Buttons-->
                 <control type="radiobutton" id="110"> <!-- Club -->
                     <description>Club</description>
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -223,15 +233,21 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>105</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
+                    <onclick>9001</onclick>
                     <onleft>9000</onleft>
-                    <onright>105</onright>
+                    <onright>9001</onright>
                     <onup>200</onup>
                     <ondown>120</ondown>
                 </control>                
@@ -240,9 +256,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -251,15 +267,21 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>150</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
+                    <onclick>9002</onclick>
                     <onleft>9000</onleft>
-                    <onright>150</onright>
+                    <onright>9002</onright>
                     <onup>110</onup>
                     <ondown>130</ondown>
                 </control>
@@ -268,9 +290,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -279,15 +301,21 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>170</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
+                    <onclick>9003</onclick>
                     <onleft>9000</onleft>
-                    <onright>170</onright>
+                    <onright>9003</onright>
                     <onup>120</onup>
                     <ondown>140</ondown>
                 </control>                
@@ -296,9 +324,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -307,15 +335,19 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>168</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9004</onclick>
                     <onleft>9000</onleft>
-                    <onright>168</onright>
+                    <onright>9004</onright>
                     <onup>130</onup>
                     <ondown>150</ondown>
                 </control>
@@ -324,9 +356,9 @@
                     <posx>10</posx>
                     <posy>170</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -335,15 +367,19 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>193</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9005</onclick>
                     <onleft>9000</onleft>
-                    <onright>193</onright>
+                    <onright>9005</onright>
                     <onup>140</onup>
                     <ondown>160</ondown>
                 </control>
@@ -352,9 +388,9 @@
                     <posx>10</posx>
                     <posy>210</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -363,15 +399,19 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>200</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9006</onclick>
                     <onleft>9000</onleft>
-                    <onright>200</onright>
+                    <onright>9006</onright>
                     <onup>150</onup>
                     <ondown>170</ondown>
                 </control>
@@ -380,9 +420,9 @@
                     <posx>10</posx>
                     <posy>250</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -391,15 +431,19 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>275</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
-                    <onclick>130</onclick>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9007</onclick>
                     <onleft>9000</onleft>
-                    <onright>130</onright>
+                    <onright>9007</onright>
                     <onup>160</onup>
                     <ondown>180</ondown>
                 </control>          
@@ -408,9 +452,9 @@
                     <posx>10</posx>
                     <posy>290</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -419,9 +463,9 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <onclick>130</onclick>
+                    <onclick>9080</onclick>
                     <onleft>9000</onleft>
-                    <onright>9000</onright>
+                    <onright>9080</onright>
                     <onup>170</onup>
                     <ondown>190</ondown>
                 </control>
@@ -430,9 +474,9 @@
                     <posx>10</posx>
                     <posy>330</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -441,8 +485,9 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
+                    <onclick>9090</onclick>
                     <onleft>9000</onleft>
-                    <onright>9000</onright>
+                    <onright>9090</onright>
                     <onup>180</onup>
                     <ondown>200</ondown>
                 </control>
@@ -451,9 +496,9 @@
                     <posx>10</posx>
                     <posy>370</posy>
                     <height>40</height>
-                    <width>270</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>250</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -463,7 +508,7 @@
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
-                    <onright>9000</onright>
+                    <onright>200</onright>
                     <onup>190</onup>
                     <ondown>110</ondown>
                 </control>              
@@ -476,18 +521,19 @@
                  113 - Club Menu - History button
                  114 - Club Menu - Museum button 
             -->
-            <control type="group" id="9001"> 
+            <control type="group" id="9001">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>250</posy>
+                <posy>260</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(110)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">conditional</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>180</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -496,9 +542,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <width>210</width>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -517,9 +563,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -538,9 +584,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -559,9 +605,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -582,18 +628,19 @@
             <!-- 121 - News Menu - Headlines button
                  122 - News Menu - Sports News button 
             -->
-            <control type="group" id="9002"> 
+            <control type="group" id="9002">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>290</posy>
+                <posy>300</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9002).HasFocus + !Control.HasFocus(120)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">conditional</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>100</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -602,9 +649,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -623,9 +670,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -654,18 +701,19 @@
                  139 - Videos Menu - Olympic button
                  230 - Videos Menu - Others button 
             -->
-            <control type="group" id="9003"> 
+            <control type="group" id="9003">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>330</posy>
-                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9003).HasFocus + !Control.HasFocus(130)">conditional</animation>
-                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus">conditional</animation>
-                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus">conditional</animation>
+                <posy>250</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9003).HasFocus + !Control.HasFocus(130) + !ControlGroup(9030).HasFocus">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>420</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -674,9 +722,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -685,14 +733,18 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>238</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
-                    <radioheight>18</radioheight>                    
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onleft>9000</onleft>
-                    <onright>9003</onright>
+                    <onright>9030</onright>
                     <onup>138</onup>
                     <ondown>132</ondown>
                 </control>
@@ -701,9 +753,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -722,9 +774,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -743,9 +795,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -764,9 +816,9 @@
                     <posx>10</posx>
                     <posy>170</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -785,9 +837,9 @@
                     <posx>10</posx>
                     <posy>210</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -806,9 +858,9 @@
                     <posx>10</posx>
                     <posy>250</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -827,9 +879,9 @@
                     <posx>10</posx>
                     <posy>290</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -848,9 +900,9 @@
                     <posx>10</posx>
                     <posy>330</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -869,9 +921,9 @@
                     <posx>10</posx>
                     <posy>370</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -892,18 +944,19 @@
             <!-- 231 - Football Sub-Menu - Youth Team button
                  232 - Football Sub-Menu - B Team button 
             -->
-            <control type="group" id="9030"> 
+            <control type="group" id="9030">
+                <zorder>3</zorder>
                 <posx>0</posx>
-                <posy>330</posy>
+                <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9030).HasFocus + !Control.HasFocus(131)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">conditional</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Football Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>100</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -912,9 +965,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -933,9 +986,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -966,18 +1019,19 @@
                  241 - Photos Menu - Club button
                  242 - Photos Menu - Olympic button
             -->
-            <control type="group" id="9004"> 
+            <control type="group" id="9004">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>210</posy>
-                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9004).HasFocus + !Control.HasFocus(140)">conditional</animation>
-                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus">conditional</animation>
-                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus">conditional</animation>
+                <posy>170</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9004).HasFocus + !Control.HasFocus(140) + !ControlGroup(9040).HasFocus + !ControlGroup(9041).HasFocus + !ControlGroup(9042).HasFocus + !ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>500</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -986,9 +1040,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -997,12 +1051,16 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>238</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
-                    <radioheight>18</radioheight>                    
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onleft>9000</onleft>
                     <onright>9004</onright>
                     <onup>242</onup>
@@ -1013,9 +1071,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1034,9 +1092,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1045,12 +1103,16 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>238</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
-                    <radioheight>18</radioheight>                    
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onleft>9000</onleft>
                     <onright>9004</onright>
                     <onup>142</onup>
@@ -1061,9 +1123,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1082,9 +1144,9 @@
                     <posx>10</posx>
                     <posy>170</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1103,9 +1165,9 @@
                     <posx>10</posx>
                     <posy>210</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1124,9 +1186,9 @@
                     <posx>10</posx>
                     <posy>250</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1145,9 +1207,9 @@
                     <posx>10</posx>
                     <posy>290</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1166,9 +1228,9 @@
                     <posx>10</posx>
                     <posy>330</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1187,9 +1249,9 @@
                     <posx>10</posx>
                     <posy>370</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1198,12 +1260,16 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>238</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
-                    <radioheight>18</radioheight>                    
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onleft>9000</onleft>
                     <onright>9004</onright>
                     <onup>149</onup>
@@ -1214,9 +1280,9 @@
                     <posx>10</posx>
                     <posy>410</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1225,12 +1291,16 @@
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>238</radioposx>
+                    <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
                     <radiowidth>18</radiowidth>
-                    <radioheight>18</radioheight>                    
-                    <textureradioon>sub-menu-arrow.png</textureradioon>
-                    <textureradiooff>sub-menu-arrow.png</textureradiooff>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onleft>9000</onleft>
                     <onright>9004</onright>
                     <onup>240</onup>
@@ -1241,9 +1311,9 @@
                     <posx>10</posx>
                     <posy>450</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1266,18 +1336,19 @@
                  245 - Football Sub-Menu - SL Benfica B
                  246 - Football Sub-Menu - Benfica Generation Schools 
             -->
-            <control type="group" id="9040"> 
+            <control type="group" id="9040">
+                <zorder>3</zorder>
                 <posx>0</posx>
-                <posy>210</posy>
+                <posy>170</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9040).HasFocus + !Control.HasFocus(141)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">conditional</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Football Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>180</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1286,9 +1357,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1307,9 +1378,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1328,9 +1399,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1349,9 +1420,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1370,18 +1441,19 @@
             <!-- 9041 - Photos Hockey Sub-Menu -->
             <!-- 143 - Photos Hockey Sub-Menu Button -->
             <!-- 247 - Hockey Sub-Menu - Female Hockey button -->
-            <control type="group" id="9041"> 
+            <control type="group" id="9041">
+                <zorder>3</zorder>
                 <posx>0</posx>
-                <posy>210</posy>
+                <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9041).HasFocus + !Control.HasFocus(143)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">conditional</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Hockey Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>60</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1390,9 +1462,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1411,18 +1483,19 @@
             <!-- 9042 - Photos Rugby Sub-Menu -->
             <!-- 240 - Photos Rugby Sub-Menu Button -->
             <!-- 248 - Rugby Sub-Menu - Female Rugby button -->
-            <control type="group" id="9042"> 
+            <control type="group" id="9042">
+                <zorder>3</zorder>
                 <posx>0</posx>
-                <posy>210</posy>
+                <posy>530</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9042).HasFocus + !Control.HasFocus(240)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">conditional</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Rugby Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>60</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1431,9 +1504,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1452,18 +1525,19 @@
             <!-- 9043 - Photos Club Sub-Menu -->
             <!-- 241 - Photos Club Sub-Menu Button -->
             <!-- 249 - Club Sub-Menu - Family Stand button -->
-            <control type="group" id="9043"> 
+            <control type="group" id="9043">
+                <zorder>3</zorder>
                 <posx>0</posx>
-                <posy>210</posy>
+                <posy>570</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9043).HasFocus + !Control.HasFocus(241)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Club Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>60</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1472,9 +1546,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1497,18 +1571,19 @@
                  153 - Stadium Menu - Tours Button
                  154 - Stadium Menu - Virtual Stadium Button 
             -->
-            <control type="group" id="9005"> 
+            <control type="group" id="9005">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>400</posy>
+                <posy>420</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9005).HasFocus + !Control.HasFocus(150)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">conditional</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>180</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1517,9 +1592,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1538,9 +1613,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1559,9 +1634,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1580,9 +1655,9 @@
                     <posx>10</posx>
                     <posy>130</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1602,18 +1677,19 @@
             <!-- 160 - Main Menu - Tickets Button -->
             <!-- 161 - Tickets Menu - Matches Button
                  162 - Tickets Menu - Museum Button -->                 
-            <control type="group" id="9006"> 
+            <control type="group" id="9006">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>400</posy>
+                <posy>460</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9006).HasFocus + !Control.HasFocus(160)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">conditional</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>100</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1622,9 +1698,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1643,9 +1719,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1666,18 +1742,19 @@
             <!-- 171 - Calendar Menu - Today Calendar Button
                  172 - Calendar Menu - Weekly Calendar Button
                  173 - Calendar Menu - Monthly Calendar Button-->
-            <control type="group" id="9007"> 
+            <control type="group" id="9007">
+                <zorder>2</zorder>
                 <posx>0</posx>
-                <posy>400</posy>
+                <posy>500</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9007).HasFocus + !Control.HasFocus(170)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">conditional</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>250</width>
+                    <width>260</width>
                     <height>140</height>
                     <texture>default-menu.png</texture>
                 </control>
@@ -1686,9 +1763,9 @@
                     <posx>10</posx>
                     <posy>10</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1707,9 +1784,9 @@
                     <posx>10</posx>
                     <posy>50</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1728,9 +1805,9 @@
                     <posx>10</posx>
                     <posy>90</posy>
                     <height>40</height>
-                    <width>230</width>
+                    <width>240</width>
                     <textoffsetx>10</textoffsetx>
-                    <textwidth>220</textwidth>
+                    <textwidth>210</textwidth>
                     <aligny>center</aligny>
                     <font>font13</font>
                     <textcolor>FFFFFFFF</textcolor>
@@ -1746,44 +1823,109 @@
                 </control>
             </control>
 
-
-            <!-- CONTENT PANEL -->
-            <control type="group" id="9100">
-                <zorder>0</zorder>
-                <posx>310</posx>
-                <posy>20</posy>
+            <!-- weather Info -->
+            <control type="group">
+                <description>Weather group</description>
+                <posx>400r</posx>
+                <posy>0</posy>
+                <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+                <animation effect="slide" start="0,0" end="510,0" delay="0" time="300">WindowClose</animation>
+                <animation effect="slide" start="510,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+                <visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
                 <control type="image">
-                    <description>Content Panel</description>
+                    <description>Weather background</description>
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>970</width>
-                    <height>670</height>
-                    <texture border="20">content_panel.png</texture>
+                    <width>180</width>
+                    <height>35</height>
+                    <texture flipx="true" border="32,0,0,0">header.png</texture>
+                </control>
+                <control type="image">
+                    <description>Weather image</description>
+                    <posx>30</posx>
+                    <posy>1</posy>
+                    <width>25</width>
+                    <height>25</height>
+                    <aspectratio>keep</aspectratio>
+                    <texture>$INFO[Weather.Conditions]</texture>
+                </control>
+                <control type="label">
+                    <description>Weather label</description>
+                    <posx>60</posx>
+                    <posy>0</posy>
+                    <width>100</width>
+                    <height>28</height>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <font>calendar12</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <shadowcolor>FF000000</shadowcolor>
+                    <label>[B]$INFO[Weather.Temperature][/B]</label>
+                </control>
+            </control>
+
+            <!-- Date and Time -->
+            <control type="group">
+                <posx>270r</posx>
+                <posy>0</posy>
+                <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+                <animation effect="slide" start="0,0" end="380,0" delay="0" time="300">WindowClose</animation>
+                <animation effect="slide" start="380,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+                <control type="image">
+                    <description>time background</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>300</width>
+                    <height>35</height>
+                    <texture flipx="true" border="32,0,0,0">header.png</texture>
+                </control>
+                <control type="label">
+                    <description>time label</description>
+                    <posx>30</posx>
+                    <posy>0</posy>
+                    <width>300</width>
+                    <height>28</height>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <font>calendar12</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <shadowcolor>FF000000</shadowcolor>
+                    <label>[COLOR=FFb4b4b4]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
                 </control>
             </control>
 
             <!-- RSS Feed -->
             <control type="group">
                 <posx>0</posx>
-                <posy>33r</posy>
+                <posy>35r</posy>
                 <visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
                 <include>Window_OpenClose_Animation</include>
-                <control type="rss">
+                <!-- FLOOR -->
+                <control type="image">
+                    <posx>0</posx>
+                    <posy>35r</posy>
+                    <width>1280</width>
+                    <height>35</height>
+                    <!-- <texture>floor.png</texture> -->
+                    <texture border="10">content_panel.png</texture>
+                    <animation effect="fade" time="250" condition="Window.Previous(Home)">WindowOpen</animation>
+                    <animation effect="fade" time="250" condition="Window.Next(Home)">WindowClose</animation>
+                </control>
+                <control type="rss" id="2">
                     <description>SL Benfica RSS feed</description>
-                    <posx>100</posx>
-                    <posy>0</posy>
-                    <height>30</height>
-                    <width>1145</width>
+                    <posx>15</posx>
+                    <posy>5</posy>
+                    <height>33</height>
+                    <width>1230</width>
                     <font>font12</font>
-                    <urlset>1</urlset>
                     <textcolor>red</textcolor>
                     <titlecolor>blue</titlecolor>
                     <headlinecolor>white</headlinecolor>
                 </control>
                 <control type="image">
-                    <description>SL Benfica RSS background</description>
+                    <description>SL Benfica RSS Icon</description>
                     <posx>1250</posx>
-                    <posy>2</posy>
+                    <posy>5</posy>
                     <width>24</width>
                     <height>24</height>
                     <texture>icon-rss.png</texture>
