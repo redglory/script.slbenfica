@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 # Copyright (C) 2014 redglory | sript.slbenfica
@@ -16,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#######################################
+#----------------------------------------
 #   LIBRARIES & GLOBALS DECLARATIONS
-#######################################
+#----------------------------------------
 # Python libraries
 import sys, re, os
 from urlparse import urlparse, parse_qs, urljoin
@@ -42,6 +41,11 @@ import xbmcgui
 import xbmc
 import xbmcaddon
 
+# Custom includes
+from resources.lib.base import *
+from resources.lib.api import SLB, Calendar
+
+
 # DEBUG
 REMOTE_DBG = False
 
@@ -60,169 +64,28 @@ if REMOTE_DBG:
             "You must add org.python.pydev.debug.pysrc to your PYTHONPATH.")
         sys.exit(1)
 
-#######################
-#   GLOBALS Definition
-#######################
-__addon__         = xbmcaddon.Addon('script.slbenfica')
-__language__      = __addon__.getLocalizedString
-__addon_path__    = __addon__.getAddonInfo('path').decode("utf-8")
-__addon_name__    = __addon__.getAddonInfo('name')
-__addon_id__      = __addon__.getAddonInfo('id')
-__author__        = __addon__.getAddonInfo('author')
-__version__       = __addon__.getAddonInfo('version')
-__resource__      = xbmc.translatePath(os.path.join(__addon_path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
-__addon_icon__    = xbmc.translatePath(os.path.join( __addon_path__, "icon.png")).decode('utf-8')
-__settings_file__ = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
-__temp_folder__   = os.path.join(__resource__, "temp" ).decode( "utf-8" )
-__imagepath__     = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
-__datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __addon_id__)
-__profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __addon_id__)
-__preamble__      = '[SL Benfica]'
-#__logdebug__      = __addon__.getSetting("logging") 
 
-#####################
+
+#----------------------
 #    PATH INCLUDE
-#####################
+#----------------------
 sys.path = [__resource__] + sys.path
 
-#####################
+#----------------------
 #     GUI CLASS
-#####################
+#----------------------
 from gui import GUI
-#####################
+#----------------------
 #     LOG CLASS
-#####################
+#----------------------
 from xlogger import Logger
 
 lw = Logger(preamble=__preamble__)
 
-try:
-    __lang__ = xbmc.getLanguage(xbmc.ISO_639_1, False) # Gotham @UndefinedVariable
-except: 
-    __lang__ = xbmc.getLanguage() # Frodo @UndefinedVariable
-    if   __lang__ == 'Portuguese': __lang__ = 'pt'
-    elif __lang__ == 'Spanish':    __lang__ = 'es'
-    else: __lang__ = 'en'
 
-if __lang__ == "pt": 
-    LANG = "pt-PT"
-elif __lang__ == "es":
-    LANG = "es-ES"
-else:
-    LANG = "en-US"
-
-#######################
-#   Base URLs
-#######################
-#   TYPES:
-###########################################
-#   {media_type} = videos | fotos
-#   {lang}       = pt-pt  | es-es | en-us
-###########################################
-
-BASE_URL     = 'http://www.slbenfica.pt/'
-HOME_URL     = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=LANG)
-VIDEOS_URL   = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=LANG)
-PHOTOS_URL   = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=LANG)
-VIDEOS_CATEGORY_URL = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
-PHOTOS_CATEGORY_URL = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
-VIDEOS_ALBUM_URL    = 'http://www.slbenfica.pt/video/detalhealbum/tabid/2806/cat/{album_id}/language/{lang}/Default.aspx'
-PHOTOS_ALBUM_URL    = 'http://www.slbenfica.pt/fotos/detalhealbum/tabid/2803/cat/{album_id}/language/{lang}/Default.aspx'
-YOUTUBE_URL  = 'plugin://plugin.video.youtube?path=/root/video&action=play_video&videoid={id}'
-
-#######################
-#   Base Functions
-#######################
-
-def _unicode(text, encoding='utf-8'):
-    try: text = unicode(text, encoding)
-    except: pass
-    return text
-
-def normalize(d, key = None, default = ""):
-    if key is None:
-        text = d
-    else:
-        text = d.get(key, default)
-        if not text:
-            return text
-    try:
-        text = unicodedata.normalize('NFKD', _unicode(text)).encode('ascii', 'ignore')
-    except:
-        pass
-    return text
-
-def _full_url(url):
-    ''' Retrieve full url '''
-    return urljoin(BASE_URL, url)
-
-def _html(url):
-    '''Downloads the resource at the given url and parses via BeautifulSoup'''
-    return BS(download_page(url), convertEntities=BS.HTML_ENTITIES)
-
-def resolve_youtube_url(youtube_url):
-    """
-    Examples:
-    - http://youtu.be/SA2iWivDJiE
-    - http://www.youtube.com/watch?v=_oPAwA_Udwc&feature=feedu
-    - http://www.youtube.com/embed/SA2iWivDJiE
-    - http://www.youtube.com/v/SA2iWivDJiE?version=3&amp;hl=en_US
-    """
-
-    query = urlparse(youtube_url)
-    if query.hostname == 'youtu.be':
-        return YOUTUBE_URL.format(id=str(query.path[1:]))
-    if query.hostname in ('www.youtube.com', 'youtube.com'):
-        if query.path == '/watch':
-            p = parse_qs(query.query)
-            return YOUTUBE_URL.format(id=str(p['v'][0]))
-        if query.path[:7] == '/embed/':
-            return YOUTUBE_URL.format(id=str(query.path.split('/')[2]))
-        if query.path[:3] == '/v/':
-            return YOUTUBE_URL.format(id=str(query.path.split('/')[2]))
-    # fail?
-    return None
-
-def convert_date(date_str, input_format, output_format):
-    """
-    Examples:
-    - INPUT: convert_date('2012-07-18 10:03:19', '%Y-%m-%d %H:%M:%S', '%d-%m-%Y')
-    - OUTPUT: 18-07-2013
-    -----------------------
-    - INPUT: convert_date('01-01-2014', '%d-%m-%Y', '%Y-%m-%d')
-    - OUTPUT: 2014-01-01
-    """
-    try:
-        d = datetime.strptime(date_str, input_format)
-    except TypeError:
-        d = datetime(*(time.strptime(date_str, input_format)[0:6]))
-
-    return d.strftime(output_format)
-
-def get_cat_id(url, otype):
-
-    if   otype == 'category': pattern = '/albuns/tabid/.*?/cat/(.*?)/language/'
-    elif otype == 'album': pattern = '/detalhealbum/tabid/.*?/cat/(.*?)/language/'
-
-    match = re.search(pattern, url)
-    
-    return match.group(1)
-
-def find_previous_next_page(page_html):
-
-    prev_page = page_html.find('a', {'class': 'ic_arrow_prev'})
-    next_page = page_html.find('a', {'class': 'ic_arrow_next'})
-    
-    if prev_page: prev_page_url = True
-    else: prev_page_url = False
-    if next_page: next_page_url = True
-    else: next_page_url = False
-
-    return prev_page_url, next_page_url
-
-#########################
+#-----------------------
 #   Slideshow methods
-#########################
+#-----------------------
 def clear_slideshow():
     get_players = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}'))  # @UndefinedVariable
     for _player in get_players['result']:
@@ -261,9 +124,9 @@ def start_slideshow(images):
         clear_slideshow()
 
 
-############################
-#           MAIN
-############################
+#-----------------------
+#         MAIN
+#-----------------------
 
 #if __name__ == '__main__': 
 #    plugin.run()
@@ -288,5 +151,4 @@ if ( __name__ == "__main__" ):
     except:
         lw.log(['Error in script occured:', print_exc()])
         
-
-############################
+#-----------------------

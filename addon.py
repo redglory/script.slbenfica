@@ -175,45 +175,7 @@ def find_previous_next_page(page_html):
 
     return prev_page_url, next_page_url
 
-#########################
-#   Slideshow methods
-#########################
-def clear_slideshow():
-    get_players = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}'))  # @UndefinedVariable
-    for _player in get_players['result']:
-        if _player['type'] == 'picture':
-            stop_slideshow = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.Stop", "params": {"playerid":%i}, "id": 1}' % _player['playerid'])  # @UndefinedVariable
-        else: continue
-    clear_playlist = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Playlist.Clear", "params": {"playlistid":2}, "id": 1}')  # @UndefinedVariable
 
-
-def add_playlist(images):
-    items = []
-    for image in images:
-        item = '{"jsonrpc": "2.0", "method": "Playlist.Add", "params": {"playlistid": 2, "item": {"file" : "%s"}}, "id": 1}' % image['path'] 
-        add_item = items.append(item.encode('ascii'))
-    print 'Adding - %s images' %str(len(items))
-    if len(items) > 0:
-        add_playlist = xbmc.executeJSONRPC(str(items).replace("'",""))  # @UndefinedVariable
-
-def start_slideshow(images):
-
-    print 'Slideshow Images = '+ str(len(images))
-    if len(images) > 0:
-        clear_slideshow()
-        add_playlist(images)
-        get_playlist = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Playlist.GetItems", "params": {"playlistid":2}, "id": 1}'))  # @UndefinedVariable
-        if get_playlist['result']['limits']['total'] > 0:
-            get_players = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}'))  # @UndefinedVariable
-            pic_player = False
-            for _player in get_players['result']:
-                if _player['type'] == 'picture':
-                    pic_player = True
-                else: continue
-            if not pic_player:
-                play = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.Open","params":{"item":{"playlistid":2}} }')  # @UndefinedVariable
-    else:
-        clear_slideshow()
 
 ########################
 #      News Class
