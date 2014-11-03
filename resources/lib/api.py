@@ -45,36 +45,35 @@ def get_sport_id(sport):
     _sport = translate_sport(sport)
 
     return{
-        'futebol' = 12
-        'formacao' = 38
-        'sl benfica b' = 1914
-        'prospecao' = 40
-        'futsal' = 14
-        'hoquei' = 16
-        'basquetebol' = 17
-        'andebol' = 18
-        'voleibol' = 15
-        'xadrez' = 2190
-        'automobilismo' = 2781
-        'atletismo' = 19
-        'artes marciais' = 20
-        'bilhar' = 21
-        'canoagem' = 22
-        'desportos de combate' = 23
-        'ginastica' = 24
-        'golfe' = 25
-        'judo' = 26
-        'pesca desportiva' = 28
-        'rugby' = 29
-        'tenis de mesa' = 31
-        'triatlo' = 33
-        'paintball' = 34
-        'natacao' = 41
-        'clube' = 44
-        'jogos olimpicos' = 46
-        'outras' = 45
-        'geral' = 1614
-
+        'futebol'              : 12,
+        'formacao'             : 38,
+        'sl benfica b'         : 1914,
+        'prospecao'            : 40,
+        'futsal'               : 14,
+        'hoquei'               : 16,
+        'basquetebol'          : 17,
+        'andebol'              : 18,
+        'voleibol'             : 15,
+        'xadrez'               : 2190,
+        'automobilismo'        : 2781,
+        'atletismo'            : 19,
+        'artes marciais'       : 20,
+        'bilhar'               : 21,
+        'canoagem'             : 22,
+        'desportos de combate' : 23,
+        'ginastica'            : 24,
+        'golfe'                : 25,
+        'judo'                 : 26,
+        'pesca desportiva'     : 28,
+        'rugby'                : 29,
+        'tenis de mesa'        : 31,
+        'triatlo'              : 33,
+        'paintball'            : 34,
+        'natacao'              : 41,
+        'clube'                : 44,
+        'jogos olimpicos'      : 46,
+        'outras'               : 45,
+        'geral'                : 1614
     }[_sport]
 
 def translate_sport(sport):
@@ -307,7 +306,7 @@ class SLB(object):
                                 'path': plugin.url_for('show_category_albums', media_type=media_type, 
                                 category_id=category_id, page=str(page - 1)),})
     
-        return plugin.finish(sorted_items, update_listing=True)
+        return sorted_items
 
     def get_album_videos(self, album_id):
         

@@ -21,7 +21,7 @@ import sys
 from traceback import print_exc
 import datetime
 
-class GUI(xbmcgui.WindowXML):
+class SLB(xbmcgui.WindowXML):
 
     def __init__( self, *args, **kwargs ):
         pass

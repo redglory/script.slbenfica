@@ -2,7 +2,7 @@
 <addon id="script.slbenfica" name="SL Benfica" version="0.1.1" provider-name="redglory">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
-    <import addon="script.module.beautifulsoup" version="3.0.8"/>
+    <import addon="script.module.beautifulsoup" version="4.3.2"/>
     <import addon="plugin.video.youtube" version="2.1.2"/>
   </requires>
   <extension point="xbmc.python.script" library="default.py"></extension>

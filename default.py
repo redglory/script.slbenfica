@@ -64,91 +64,64 @@ if REMOTE_DBG:
             "You must add org.python.pydev.debug.pysrc to your PYTHONPATH.")
         sys.exit(1)
 
-
-
 #----------------------
 #    PATH INCLUDE
 #----------------------
-sys.path = [__resource__] + sys.path
-
+sys.path.append(Addon.__resource__)
 #----------------------
 #     GUI CLASS
 #----------------------
-from gui import GUI
-#----------------------
-#     LOG CLASS
-#----------------------
-from xlogger import Logger
-
-lw = Logger(preamble=__preamble__)
-
+from gui import SLB
 
 #-----------------------
-#   Slideshow methods
+#     MAIN CLASS
 #-----------------------
-def clear_slideshow():
-    get_players = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}'))  # @UndefinedVariable
-    for _player in get_players['result']:
-        if _player['type'] == 'picture':
-            stop_slideshow = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.Stop", "params": {"playerid":%i}, "id": 1}' % _player['playerid'])  # @UndefinedVariable
-        else: continue
-    clear_playlist = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Playlist.Clear", "params": {"playlistid":2}, "id": 1}')  # @UndefinedVariable
+class Main:
+    def __init__(self):
 
+        # create reset window properties
+        xbmcgui.Window( 10000 ).setProperty( "slbenfica_addon_running", "False" )
+        self._parse_argv()
+        if xbmcgui.Window( 10000 ).getProperty( "slbenfica_addon_running" ) == "True":
+            lw.log(["SL Benfica Addon already running, exiting..."], xbmc.LOGNOTICE )
+        else:
+            xbmcgui.Window( 10000 ).setProperty( "slbenfica_addon_running", "True" )
+            self._init_window()
 
-def add_playlist(images):
-    items = []
-    for image in images:
-        item = '{"jsonrpc": "2.0", "method": "Playlist.Add", "params": {"playlistid": 2, "item": {"file" : "%s"}}, "id": 1}' % image['path'] 
-        add_item = items.append(item.encode('ascii'))
-    print 'Adding - %s images' %str(len(items))
-    if len(items) > 0:
-        add_playlist = xbmc.executeJSONRPC(str(items).replace("'",""))  # @UndefinedVariable
+    def _parse_argv( self ):
 
-def start_slideshow(images):
+        try:
+            params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
+        except IndexError:
+            params = {}        
+        except Exception, e:
+            lw.log( ['unexpected error while parsing arguments', e] )
+            params = {}
 
-    print 'Slideshow Images = '+ str(len(images))
-    if len(images) > 0:
-        clear_slideshow()
-        add_playlist(images)
-        get_playlist = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Playlist.GetItems", "params": {"playlistid":2}, "id": 1}'))  # @UndefinedVariable
-        if get_playlist['result']['limits']['total'] > 0:
-            get_players = json.loads(xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1}'))  # @UndefinedVariable
-            pic_player = False
-            for _player in get_players['result']:
-                if _player['type'] == 'picture':
-                    pic_player = True
-                else: continue
-            if not pic_player:
-                play = xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.Open","params":{"item":{"playlistid":2}} }')  # @UndefinedVariable
-    else:
-        clear_slideshow()
+    def _init_window(self):
+        try:
+            lw.log( ["############################################################"], xbmc.LOGNOTICE )
+            lw.log( ["#    %-50s    #" % Addon.__name__], xbmc.LOGNOTICE )
+            lw.log( ["#    %-50s    #" % Addon.__id__], xbmc.LOGNOTICE )
+            lw.log( ["#    %-50s    #" % Addon.__author__], xbmc.LOGNOTICE )
+            lw.log( ["#    %-50s    #" % Addon.__version__], xbmc.LOGNOTICE )
+            lw.log( ["############################################################"], xbmc.LOGNOTICE )
+    
+            slbWindow = SLB( "script-slbenfica.xml" , Addon.__path__, "Default")
+            slbWindow.doModal()
+            del slbWindow
+        except:
+            lw.log(['Error in script occured:', print_exc()])
 
+    def _get_settings( self ):
+        #getSetting()
+        pass
 
 #-----------------------
 #         MAIN
 #-----------------------
-
-#if __name__ == '__main__': 
-#    plugin.run()
 if ( __name__ == "__main__" ):
     
-    if xbmcgui.Window( 10000 ).getProperty( "slbenfica_addon_running" ) == "True":
-        lw.log(["SL Benfica Addon already running, exiting..."], xbmc.LOGNOTICE )
-    else:
-        xbmcgui.Window( 10000 ).setProperty( "slbenfica_addon_running", "True" )
-    try:
-        lw.log( ["############################################################"], xbmc.LOGNOTICE )
-        lw.log( ["#    %-50s    #" % __addon_name__], xbmc.LOGNOTICE )
-        lw.log( ["#        default.py module                                 #"], xbmc.LOGNOTICE )
-        lw.log( ["#    %-50s    #" % __addon_id__], xbmc.LOGNOTICE )
-        lw.log( ["#    %-50s    #" % __author__], xbmc.LOGNOTICE )
-        lw.log( ["#    %-50s    #" % __version__], xbmc.LOGNOTICE )
-        lw.log( ["############################################################"], xbmc.LOGNOTICE )
+    slbenfica = Main()
 
-        window = GUI( "script-slbenfica.xml" , __addon_path__, "Default")
-        window.doModal()
-        del window
-    except:
-        lw.log(['Error in script occured:', print_exc()])
-        
 #-----------------------

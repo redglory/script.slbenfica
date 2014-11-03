@@ -18,13 +18,13 @@
 #-----------------------
 #  Common Includes
 #-----------------------
-import sys, re
+import sys, re, os
 from urlparse import urlparse, parse_qs, urljoin
 from itertools import chain
 from datetime import datetime, date
 import time
 import urllib2
-import xbmc
+import xbmc, xbmcaddon
 
 try:
     import json
@@ -34,30 +34,42 @@ except:
 # Beautiful Soup
 from BeautifulSoup import BeautifulSoup as BS
 
+
 #-----------------------------------
 #   Addon Globals & Methods
 #-----------------------------------
-__addon__         = xbmcaddon.Addon('script.slbenfica')
-__translate__     = __addon__.getLocalizedString
-__language__      = xbmc.getLanguage(1) #[language] - two letter language
-__addon_path__    = __addon__.getAddonInfo('path').decode("utf-8")
-__addon_name__    = __addon__.getAddonInfo('name')
-__addon_id__      = __addon__.getAddonInfo('id')
-__addon_icon__    = __addon__.getAddonInfo('icon')
-__author__        = __addon__.getAddonInfo('author')
-__version__       = __addon__.getAddonInfo('version')
-__resource__      = xbmc.translatePath(os.path.join(__addon_path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
-__settings_file__ = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
-__temp_folder__   = os.path.join(__resource__, "temp" ).decode( "utf-8" )
-__imagepath__     = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
-__datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __addon_id__)
-__profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __addon_id__)
-__preamble__      = '[SL Benfica]'
-#__logdebug__      = __addon__.getSetting("logging") 
+class Addon:
+    __addon__         = xbmcaddon.Addon('script.slbenfica')
+    __translate__     = __addon__.getLocalizedString
+    __language__      = xbmc.getLanguage(1) #[language] - two letter language
+    __path__          = __addon__.getAddonInfo('path').decode("utf-8")
+    __name__          = __addon__.getAddonInfo('name')
+    __id__            = __addon__.getAddonInfo('id')
+    __icon__          = __addon__.getAddonInfo('icon')
+    __author__        = __addon__.getAddonInfo('author')
+    __version__       = __addon__.getAddonInfo('version')
+    __resource__      = xbmc.translatePath(os.path.join(__path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
+    __settings_file__ = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
+    __temp_folder__   = os.path.join(__resource__, "temp" ).decode( "utf-8" )
+    __imagepath__     = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
+    __datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __id__)
+    __profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __id__)
+    __preamble__      = '[SL Benfica]'    
+    #__logdebug__      = __addon__.getSetting("logging") 
+
+#----------------------
+#     LOG CLASS
+#----------------------
+from xlogger import Logger
+
+global lw
+
+lw = Logger(preamble=Addon.__preamble__)
+
 #------------------------
 #     Addon methods
 #------------------------
-def _get_language(lang=__language__):
+def _get_language(lang=Addon.__language__):
     
     try:
         return{'pt': 'pt-PT',
@@ -68,12 +80,12 @@ def _get_language(lang=__language__):
         return 'en-US'
 
 def getSetting(name):
-    return __addon__.getSetting(name)
+    return Addon.__addon__.getSetting(name)
 
 def setSetting(name, value):
-    __addon__.setSetting(id=name, value=value)
+    Addon.__addon__.setSetting(id=name, value=value)
 
-def showNotification(title, message, timeout=2000, icon=__icon__):
+def showNotification(title, message, timeout=2000, icon=Addon.__icon__):
     def clean(s):
         return str(s.encode('utf-8', 'ignore'))
     command = ''
@@ -254,6 +266,3 @@ class Mode:
     DOWNLOADCUSTOMMODULE = 10
     REMOVEFROMCUSTOMMODULES = 11
     INSTALLADDON = 12
-
-
-
