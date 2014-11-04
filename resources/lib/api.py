@@ -197,6 +197,10 @@ class SLB(object):
     def get_sport_albums(self, cat_id):
         pass
 
+    def get_next_match(self):
+        pass
+    
+    @classmethod
     def get_headlines(self):
 
         html = _html(HOME_URL)
@@ -227,10 +231,11 @@ class SLB(object):
     
         return sorted(items, key=lambda item: item['info']['date'], reverse=True)
 
+    @classmethod
     def get_media_categories(self, media_type):
     
-        if   media_type == 'videos': html = _html(VIDEOS_URL)
-        elif media_type == 'photos': html = _html(PHOTOS_URL)
+        if   media_type == 'videos': html = _html(self.VIDEOS_URL)
+        elif media_type == 'photos': html = _html(self.PHOTOS_URL)
     
         uls = html.findAll('ul', {'class': 'cat_list'})
         lis = [ul.findAll('li') for ul in uls]
@@ -238,29 +243,32 @@ class SLB(object):
         categories = set()
         
         for li in chain(*lis):
-            _category = Category(name=li.a.string, media_type=media_type, url=li.a['href'])
+            _category = Category(media_type=media_type, url=li.a['href'])
             categories.add((_category._name(),
-                            _category._albums()))
+                            _category._albums(),
+                            _category._thumb()))
     
         items = [
             {'label': label,
              'path': path,
-            } for label, path in categories]
+             'thumbnail': thumbnail,
+            } for label, path, thumbnail in categories]
     
         return sorted(items, key=lambda item: item['label'])
 
-    def get_category_albums(self, media_type, category_id, page=1):
+    @classmethod
+    def get_category_albums(media_type, category_id, page=1):
         
         page = int(page)
         
         if media_type == 'videos':
-            category_url = VIDEOS_CATEGORY_URL.format(cat_id = category_id,
-                                                      page   = page,
-                                                      lang   = LANG) 
+            category_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id,
+                                                           page   = page,
+                                                           lang   = LANG) 
         elif media_type == 'photos':
-            category_url = PHOTOS_CATEGORY_URL.format(cat_id = category_id,
-                                                      page   = page,
-                                                      lang   = LANG) 
+            category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id,
+                                                           page   = page,
+                                                           lang   = LANG) 
         html = _html(category_url)
         uls = html.findAll('ul', {'class': 'pos_biglist_list'})
         lis = [ul.findAll('li') for ul in uls]
@@ -283,7 +291,6 @@ class SLB(object):
                         _album._date()))
     
         items = [
-            #{'label': str(label) + ' (' + str(convert_date(date, '%Y-%m-%d', '%d-%m-%Y')) + ')',
             {'label': label,
              'path': path,
              'thumbnail': thumbnail,
@@ -298,26 +305,33 @@ class SLB(object):
         sorted_items = sorted(sorted_items, key=lambda item: item['info']['date'], reverse=True) # sort by date descending
     
         if next_page:
-            sorted_items.insert(int(len(sorted_items) + 1), {'label': plugin.get_string(30201),
-                                'path': plugin.url_for('show_category_albums', media_type=media_type, category_id=category_id, 
-                                page=str(page + 1)),})
+            sorted_items.insert(int(len(sorted_items) + 1), 
+                                {'label': __translate__(30201),
+                                 'path': SLB.get_category_albums(media_type  = media_type, 
+                                                                 category_id = category_id, 
+                                                                 page        = str(page + 1)),
+                                })
         if page > 1:
-            sorted_items.insert(0, {'label': plugin.get_string(30200),
-                                'path': plugin.url_for('show_category_albums', media_type=media_type, 
-                                category_id=category_id, page=str(page - 1)),})
+            sorted_items.insert(0, 
+                                {'label': __translate__(30200),
+                                  'path': SLB.get_category_albums(media_type  = media_type, 
+                                                                  category_id = category_id, 
+                                                                  page        = str(page - 1)),
+                                })
     
         return sorted_items
 
-    def get_album_videos(self, album_id):
+    @classmethod
+    def get_album_videos(album_id):
         
-        album_url = VIDEOS_ALBUM_URL.format(album_id = album_id, 
-                                            lang     = LANG) 
-        html = _html(album_url)
+        video_album_url = VIDEOS_ALBUM_URL.format(album_id = album_id, 
+                                                  lang     = LANG) 
+        html = _html(video_album_url)
         uls  = html.findAll('ul', {'class': 'pos_biglist_vidlist'})
         lis  = [ul.findAll('li') for ul in uls]
         
         videos = set((li.find('p', {'class': 'txt_11'}).string, 
-                      plugin.url_for('play_video', youtube_url=li.a['href']), 
+                      play_video(youtube_url=li.a['href']), 
                       li.a.img['src'])
                  for li in chain(*lis))
     
@@ -328,14 +342,14 @@ class SLB(object):
              'thumbnail': thumbnail,
             } for label, path, thumbnail in videos]
     
-        return sorted(items, key=lambda item: item['path'])
+        return sorted(items, key=lambda item: item['label'])
 
-    def play_slideshow(self, album_id):
+    @classmethod
+    def play_slideshow(album_id):
         
-        album_url = PHOTOS_ALBUM_URL.format(album_id = album_id, 
-                                            lang     = LANG)
-        xbmc.log('Album url: ' + album_url)
-        html = _html(album_url)
+        photo_album_url = PHOTOS_ALBUM_URL.format(album_id = album_id, 
+                                                  lang     = LANG)
+        html = _html(photo_album_url)
         uls  = html.findAll('ul', {'class': 'pos_biglist_imglist'})
         lis  = [ul.findAll('li') for ul in uls]
         
@@ -344,10 +358,10 @@ class SLB(object):
             {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
         
-        #xbmc.log('Images to load: ' + str(images))
         start_slideshow(images)
 
-    def get_calendar(self, date, numWeeks=1):
+    @classmethod
+    def get_calendar(date, numWeeks=1):
         
         # needs re-working!!!
         _startdate = date(date[6:10], date[3:5], date[:2])
@@ -369,13 +383,12 @@ class News(object):
     def _title2(self):
         return self.html.find('h2').string.strip(' ').replace(u'\u2013', '-')
     
+    def _text(self):
+        return self.html.find('div', {'class': 'not_desc'}).get_text().replace(u'\u2013', '-')
+
     def _thumb(self):
         div = self.html.find('div', {'class': 'pos_not_img_det'}) 
         return _full_url(div.img['src']).strip(' ')
-
-    def _text(self):
-        #return self.html.find('div', {'class': 'not_desc'}).string
-        return 'path'
 
     def _date(self):
         return self.html.find('p', {'class': 'txt_10 not_date'}).string.strip(' ').replace(u'\u2013', '-')
@@ -385,11 +398,14 @@ class News(object):
 #---------------------
 class Category(object):
 
-    def __init__(self, name=None, media_type=None, url=None):
-        self.name       = name
+    def __init__(self, media_type=None, url=None):
+        
         self.media_type = media_type
         self.url        = url
         self.cat_id     = get_cat_id(self.url, 'category')
+        sport_info      = get_sport_info(int(self.cat_id))
+        self.name       = sport_info[0]
+        self.thumb      = os.path.join(Addon.__imagespath__ + sport_info[1]).decode( "utf-8" )
 
     def _name(self):
         return self.name.strip(' ').replace(u'\u2013', '-')
@@ -401,16 +417,11 @@ class Category(object):
         return self.media_type.strip(' ')
     
     def _thumb(self):
-        """
-        // TODO
-        """
-        return ''
+        return self.thumb
 
     def _albums(self):
-        return plugin.url_for('show_category_albums', 
-                              media_type  = self.media_type, 
-                              category_id = self.cat_id,
-                              page     = 1) 
+        return SLB.get_category_albums( media_type  = self.media_type, 
+                                        category_id = self.cat_id)
 
 #---------------------
 #     Album Class
@@ -441,8 +452,8 @@ class Album(object):
         return convert_date(self.date, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')
 
     def _media(self):
-        if   self.media_type == 'videos': return plugin.url_for('show_album_videos', album_id = self.album_id)
-        elif self.media_type == 'photos': return plugin.url_for('play_slideshow', album_id = self.album_id) 
+        if   self.media_type == 'videos': return SLB.get_album_videos(album_id = self.album_id)
+        elif self.media_type == 'photos': return SLB.play_slideshow(album_id = self.album_id)
 
 
 #-----------------------

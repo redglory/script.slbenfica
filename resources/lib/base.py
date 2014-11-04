@@ -24,7 +24,7 @@ from itertools import chain
 from datetime import datetime, date
 import time
 import urllib2
-import xbmc, xbmcaddon
+import xbmc, xbmcaddon, xbmcplugin
 
 try:
     import json
@@ -48,10 +48,10 @@ class Addon:
     __icon__          = __addon__.getAddonInfo('icon')
     __author__        = __addon__.getAddonInfo('author')
     __version__       = __addon__.getAddonInfo('version')
-    __resource__      = xbmc.translatePath(os.path.join(__path__, 'resources', 'lib').encode("utf-8")).decode("utf-8")
-    __settings_file__ = os.path.join(__resource__, "settings.xml").replace("\\\\","\\")
-    __temp_folder__   = os.path.join(__resource__, "temp" ).decode( "utf-8" )
-    __imagepath__     = os.path.join(__resource__,"skins", "Default", "media").decode( "utf-8" )
+    __resource__      = xbmc.translatePath(os.path.join(__path__, 'resources').encode('utf-8')).decode('utf-8')
+    __libs__          = os.path.join(__resource__, 'lib').decode( 'utf-8' )
+    __mediapath__     = os.path.join(__resource__,'skins', 'Default', 'media').decode( "utf-8" )
+    __imagespath__    = os.path.join(__resource__,'images').decode( "utf-8" )
     __datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __id__)
     __profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __id__)
     __preamble__      = '[SL Benfica]'    
@@ -113,7 +113,7 @@ def _full_url(root, url):
     return urljoin(root, url)
 
 def _html(url):
-    return BS(download_page(url), convertEntities=BS.HTML_ENTITIES)
+    return BS(download_page(url))
 
 
 #---------------------------
@@ -200,13 +200,14 @@ def resolve_youtube_url(youtube_url):
     # fail?
     return None
 
-# Needs re-writing. not gonna use xbmcswift2!
+# add item with youtube video path
 def play_video(youtube_url):
 
-    plugin_url = resolve_youtube_url(youtube_url)
+    youtube_plugin_url = resolve_youtube_url(youtube_url)
 
-    if plugin_url:
-        return plugin.set_resolved_url(plugin_url)
+    if youtube_plugin_url:
+        item = xbmcgui.ListItem(path=youtube_plugin_url) 
+        xbmcplugin.setResolvedUrl(int(sys.argv[1]), True, item)
 
 
 #------------------------

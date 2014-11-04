@@ -67,7 +67,7 @@ if REMOTE_DBG:
 #----------------------
 #    PATH INCLUDE
 #----------------------
-sys.path.append(Addon.__resource__)
+sys.path.append(Addon.__libs__)
 #----------------------
 #     GUI CLASS
 #----------------------
@@ -112,6 +112,7 @@ class Main:
             del slbWindow
         except:
             lw.log(['Error in script occured:', print_exc()])
+            xbmcgui.Window( 10000 ).setProperty( "slbenfica_addon_running", "False" )
 
     def _get_settings( self ):
         #getSetting()
