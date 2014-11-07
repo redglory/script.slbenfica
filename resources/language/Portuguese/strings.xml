@@ -19,6 +19,42 @@
     <string id="30200">[COLOR red][UPPERCASE]&lt;&lt; Página Anterior[/UPPERCASE][/COLOR]</string>
     <string id="30201">[COLOR red][UPPERCASE]Página Seguinte &gt;&gt;[/UPPERCASE][/COLOR]</string>
   
+    <!-- Sports Names -->
+    <string id="31000">Andebol</string>
+    <string id="31001">Artes Marciais</string>
+    <string id="31002">Atletismo</string>
+    <string id="31003">Automobilismo</string>
+    <string id="31004">Bancada Família</string>
+    <string id="31005">Basquetebol</string>
+    <string id="31006">Bilhar</string>
+    <string id="31007">Canoagem</string>
+    <string id="31008">Clube</string>
+    <string id="31009">Desportos de Combate</string>
+    <string id="31010">Equipa Principal</string>
+    <string id="31011">Geração Benfica</string>
+    <string id="31012">Formação</string>
+    <string id="31013">Funzone</string>
+    <string id="31014">Futebol</string>
+    <string id="31015">Futsal</string>
+    <string id="31016">Geral</string>
+    <string id="31017">Ginástica</string>
+    <string id="31018">Golfe</string>
+    <string id="31019">Hóquei</string>
+    <string id="31020">Hóquei Feminino</string>
+    <string id="31021">Jogos Olímpicos</string>
+    <string id="31022">Judo</string>
+    <string id="31023">Natação</string>
+    <string id="31024">Outras</string>
+    <string id="31025">Paintball</string>
+    <string id="31026">Pesca Desportiva</string>
+    <string id="31027">Prospeção</string>
+    <string id="31028">Rugby</string>
+    <string id="31029">Rugby Feminino</string>
+    <string id="31030">SL Benfica B</string>
+    <string id="31031">Ténis de Mesa</string>
+    <string id="31032">Triatlo</string>
+    <string id="31033">Voleibol</string>
+    <string id="31034">Xadrez</string>
     
     <!--
         #######################

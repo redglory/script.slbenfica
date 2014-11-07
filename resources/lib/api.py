@@ -34,126 +34,7 @@ except:
 from bs4 import BeautifulSoup as BS
 
 # Common
-from resources.lib.base import *
-
-#-----------------------
-#  Scrapping Methods
-#-----------------------
-
-def get_sport_id(sport):
-
-    _sport = translate_sport(sport)
-
-    return{
-        'futebol'              : 12,
-        'formacao'             : 38,
-        'sl benfica b'         : 1914,
-        'prospecao'            : 40,
-        'futsal'               : 14,
-        'hoquei'               : 16,
-        'basquetebol'          : 17,
-        'andebol'              : 18,
-        'voleibol'             : 15,
-        'xadrez'               : 2190,
-        'automobilismo'        : 2781,
-        'atletismo'            : 19,
-        'artes marciais'       : 20,
-        'bilhar'               : 21,
-        'canoagem'             : 22,
-        'desportos de combate' : 23,
-        'ginastica'            : 24,
-        'golfe'                : 25,
-        'judo'                 : 26,
-        'pesca desportiva'     : 28,
-        'rugby'                : 29,
-        'tenis de mesa'        : 31,
-        'triatlo'              : 33,
-        'paintball'            : 34,
-        'natacao'              : 41,
-        'clube'                : 44,
-        'jogos olimpicos'      : 46,
-        'outras'               : 45,
-        'geral'                : 1614
-    }[_sport]
-
-def translate_sport(sport):
-    return{
-        'handball': 'andebol', 'balonmano': 'andebol',
-        'football': 'futebol', 'futbol': 'futebol',
-        'basketball': 'basquetebol', 'baloncesto': 'basquetebol',
-        'funzone': 'funzone',
-        'futsal': 'futsal',
-        'hockey': 'hoquei',
-        'rugby': 'rugby',
-        'volleyball': 'voleibol',
-        'table tennis': 'tenis de mesa',
-        'athletics': 'atletismo', 
-        'billiards': 'bilhar', 'billar': 'bilhar',
-        'geral': 'geral',
-        'automobilismo': 'automobilismo',
-        'judo': 'judo',
-    }[sport]
-
-def get_sport_info(sport_id):
-
-    # [id]: (sport_name, img)
-    return{
-            18    :('andebol', "Handball.png"),
-            20    :('artes marciais', "Martial Arts.png"),
-            19    :('atletismo', "Athletics.png"),
-            2781  :('automobilismo', "Racing.png"),
-            2132  :('bancada familia', "Racing.png"),
-            17    :('basquetebol', "Basketball.png"),
-            21    :('bilhar', "Billiard.png"),
-            22    :('canoagem', "Canoe Racing.png"),              
-            44    :('clube', "Club.png"),
-            23    :('desportos de combate', "Boxing.png"),
-            37    :('equipa principal', "Team.png"),
-            39    :('escolas geracao benfica', "Team.png"),
-            38    :('formacao', "Team.png"),
-            4     :('funzone', "FunZone.png"),
-            12    :('futebol', "Football.png"),               
-            14    :('futsal', "Football.png"),                
-            1614  :('geral', "Other.png"),                 
-            24    :('ginastica', "Gymnastics.png"),
-            25    :('golfe', "Golf.png"),        
-            16    :('hoquei', "Hockey.png"),                
-            1814  :('hoquei feminino', "Hockey.png"),                
-            46    :('jogos olimpicos', "Olympic Games.png"),
-            26    :('judo', "Judo.png"),                  
-            41    :('natacao', "Swimming.png"),  
-            45    :('outras', "Other.png"),
-            34    :('paintball', "Paintball.png"),          
-            28    :('pesca desportiva', "Sport Fishing.png"),
-            40    :('prospecao', "Team.png"), 
-            29    :('rugby', "Rugby.png"),      
-            2030  :('rugby feminino', "Rugby.png"),
-            1914  :('sl benfica b', "Club.png"),        
-            31    :('tenis de mesa', "Table Tennis.png"),         
-            33    :('triatlo',"Triatlo.png"),
-            15    :('voleibol', "Volleyball.png"),              
-            2190  :('xadrez', "Chess.png"),
-
-    }[sport_id]
-
-
-def get_cat_id(url, otype):
-
-    pattern = '/cat/(.*?)/'
-
-    match = re.search(pattern, url)
-    
-    return match.group(1)
-
-def find_previous_next_page(page_html):
-
-    prev_page = page_html.find('a', {'class': 'ic_arrow_prev'})
-    next_page = page_html.find('a', {'class': 'ic_arrow_next'})
-    
-    prev_page_url = True if prev_page else False
-    next_page_url = True if next_page else False
-
-    return prev_page_url, next_page_url
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode
 
 #-----------------------
 #  Scrapping class
@@ -169,41 +50,222 @@ class SLB(object):
     #------------------------------------------
     def __init__(self, lang='pt-PT'):
         
-        self.LANG = lang
+        self.LANG                = lang
         self.ROOT_URL            = 'http://www.slbenfica.pt/'
         self.HOME_URL            = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=lang)
         self.NEWS_URL            = 'http://www.slbenfica.pt/{lang}/noticias.aspx'.format(lang=lang)
         self.VIDEOS_URL          = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=lang)
         self.PHOTOS_URL          = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=lang)
-        self.NEWS_CATEGORY_URL   = 'http://www.slbenfica.pt/noticias/listagemdenoticia/tabid/2790/cat/{album_id}/language/{lang}/Default.aspx'.format(lang=lang)
-        self.VIDEOS_CATEGORY_URL = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'.format(lang=lang)
-        self.PHOTOS_CATEGORY_URL = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'.format(lang=lang)
-        self.VIDEOS_ALBUM_URL    = 'http://www.slbenfica.pt/video/detalhealbum/tabid/2806/cat/{album_id}/language/{lang}/Default.aspx'.format(lang=lang)
-        self.PHOTOS_ALBUM_URL    = 'http://www.slbenfica.pt/fotos/detalhealbum/tabid/2803/cat/{album_id}/language/{lang}/Default.aspx'.format(lang=lang)
+        self.NEWS_CATEGORY_URL   = 'http://www.slbenfica.pt/noticias/listagemdenoticia/tabid/2790/cat/{album_id}/language/{lang}/Default.aspx'
+        self.VIDEOS_CATEGORY_URL = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.PHOTOS_CATEGORY_URL = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.VIDEOS_ALBUM_URL    = 'http://www.slbenfica.pt/video/detalhealbum/tabid/2806/cat/{album_id}/language/{lang}/Default.aspx'
+        self.PHOTOS_ALBUM_URL    = 'http://www.slbenfica.pt/fotos/detalhealbum/tabid/2803/cat/{album_id}/language/{lang}/Default.aspx'
         self.YOUTUBE_URL         = 'plugin://plugin.video.youtube?path=/root/video&action=play_video&videoid={id}'
 
-    def get_news_by_category(self, cat_id):
-        pass
+    def get_sport_id(self, sport):
     
-    def get_videos_by_category(self, cat_id):
-        pass
-
-    def get_photos_by_category(self, cat_id):
-        pass
-
-    def get_sport_categories(self, cat_id):
-        pass
-
-    def get_sport_albums(self, cat_id):
-        pass
-
-    def get_next_match(self):
-        pass
+        _sport = translate_sport(sport)
     
-    @classmethod
+        return{
+            'futebol'              : 12,
+            'formacao'             : 38,
+            'sl benfica b'         : 1914,
+            'prospecao'            : 40,
+            'futsal'               : 14,
+            'hoquei'               : 16,
+            'basquetebol'          : 17,
+            'andebol'              : 18,
+            'funzone'              : 1707,
+            'voleibol'             : 15,
+            'xadrez'               : 2190,
+            'automobilismo'        : 2781,
+            'atletismo'            : 19,
+            'artes marciais'       : 20,
+            'bilhar'               : 21,
+            'canoagem'             : 22,
+            'desportos de combate' : 23,
+            'ginastica'            : 24,
+            'golfe'                : 25,
+            'judo'                 : 26,
+            'pesca desportiva'     : 28,
+            'rugby'                : 29,
+            'tenis de mesa'        : 31,
+            'triatlo'              : 33,
+            'paintball'            : 34,
+            'natacao'              : 41,
+            'clube'                : 44,
+            'jogos olimpicos'      : 46,
+            'outras'               : 45,
+            'geral'                : 1614
+        }[_sport]
+    
+    def translate_sport(self, sport):
+        try:
+            return{
+                'athletics'           : 'atletismo', 
+                'baloncesto'          : 'basquetebol',
+                'balonmano'           : 'andebol',
+                'basketball'          : 'basquetebol', 
+                'billar'              : 'bilhar',
+                'billiards'           : 'bilhar',
+                'canoeing'            : 'canoagem',
+                'club'                : 'clube',
+                'combat sports'       : 'desportos de combate',
+                'deportes de combate' : 'desportos de combate',
+                'handball'            : 'andebol', 
+                'hockey'              : 'hoquei',
+                'football'            : 'futebol',
+                'formation'           : 'formacao',
+                'futbol'              : 'futebol', 
+                'gimnasia'            : 'ginastica',
+                'gymnastics'          : 'ginastica',
+                'golf'                : 'golfe',
+                'juegos olimpicos'    : 'jogos olimpicos',
+                'martial arts'        : 'artes marciais',
+                'natacion'            : 'natacao',
+                'olimpic games'       : 'jogos olimpicos',
+                'others'              : 'outras',
+                'outro'               : 'outras',
+                'piraguismo'          : 'canoagem',
+                'prospeccion'         : 'prospecao',
+                'prospecting'         : 'prospecao',
+                'sport fishing'       : 'pesca desportiva',
+                'swimming'            : 'natacao',
+                'table tennis'        : 'tenis de mesa',
+                'triathlon'           : 'triatlo',
+                'triatlon'            : 'triatlo',
+                'volleyball'          : 'voleibol',
+                'youth teams'         : 'formacao' 
+            }[sport]
+        except: # are the same
+            return sport
+    
+    def get_sport_info(self, sport_id):
+    
+        # [id]: (sport_name, img)
+        return{
+                18    :(Addon.__translate__(31000), "Handball.png"),
+                20    :(Addon.__translate__(31001), "Martial Arts.png"),
+                19    :(Addon.__translate__(31002), "Athletics.png"),
+                2781  :(Addon.__translate__(31003), "Racing.png"),
+                2132  :(Addon.__translate__(31004), "Club.png"),
+                17    :(Addon.__translate__(31005), "Basketball.png"),
+                21    :(Addon.__translate__(31006), "Billiard.png"),
+                22    :(Addon.__translate__(31007), "Canoeing.png"),              
+                44    :(Addon.__translate__(31008), "Club.png"),
+                23    :(Addon.__translate__(31009), "Boxing.png"),
+                37    :(Addon.__translate__(31010), "Team.png"),
+                39    :(Addon.__translate__(31011), "Team.png"),
+                38    :(Addon.__translate__(31012), "Team.png"),
+                1707  :(Addon.__translate__(31013), "FunZone.png"),
+                12    :(Addon.__translate__(31014), "Football.png"),               
+                14    :(Addon.__translate__(31015), "Football.png"),                
+                1614  :(Addon.__translate__(31016), "Other.png"),                 
+                24    :(Addon.__translate__(31017), "Gymnastics.png"),
+                25    :(Addon.__translate__(31018), "Golf.png"),        
+                16    :(Addon.__translate__(31019), "Hockey.png"),                
+                1814  :(Addon.__translate__(31020), "Hockey.png"),                
+                46    :(Addon.__translate__(31021), "Olympic Games.png"),
+                26    :(Addon.__translate__(31022), "Judo.png"),                  
+                41    :(Addon.__translate__(31023), "Swimming.png"),  
+                45    :(Addon.__translate__(31024), "Other.png"),
+                34    :(Addon.__translate__(31025), "Paintball.png"),          
+                28    :(Addon.__translate__(31026), "Sport Fishing.png"),
+                40    :(Addon.__translate__(31027), "Team.png"), 
+                29    :(Addon.__translate__(31028), "Rugby.png"),      
+                2030  :(Addon.__translate__(31029), "Rugby.png"),
+                1914  :(Addon.__translate__(31030), "Club.png"),        
+                31    :(Addon.__translate__(31031), "Table Tennis.png"),         
+                33    :(Addon.__translate__(31032), "Triathlon.png"),
+                15    :(Addon.__translate__(31033), "Volleyball.png"),              
+                2190  :(Addon.__translate__(31034), "Chess.png")
+        }[sport_id]
+    
+    
+    def get_cat_id(self, url, otype):
+    
+        pattern = '/cat/(.*?)/'
+        match = re.search(pattern, url)
+
+        return match.group(1)
+    
+    def find_previous_next_page(self, page_html):
+    
+        prev_page = page_html.find('a', {'class': 'ic_arrow_prev'})
+        next_page = page_html.find('a', {'class': 'ic_arrow_next'})
+        
+        prev_page_url = True if prev_page else False
+        next_page_url = True if next_page else False
+    
+        return prev_page_url, next_page_url
+
+    def get_next_matches(self):
+        #---------------------------------------------------------------------------------------
+        #     Next Matches (json format)
+        #---------------------------------------------------------------------------------------
+        #                                       structure:
+        #---------------------------------------------------------------------------------------
+        # [{"id"    : "12", 
+        #    "sport" : "futebol",
+        #    "match_info" : {"competition"  : "10ª Jornada - Primeira Liga"
+        #                    "match"        : "Nacional da Madeira vs. SL Benfica"
+        #                    "date"         : "Domingo, 09-11-2014 16:00"
+        #                    "local"        : "Estádio da Madeira"}
+        #   },
+        #   {"id"    : "14", 
+        #    "sport" : "futsal", 
+        #    "match_info" : {"competition"  : "9ª Jornada - Campeonato Nacional"
+        #                    "match"        : "Belenenses vs. SL Benfica"
+        #                    "date"         : "Domingo, 09-11-2014 17:00"
+        #                    "local"        : "Pavilhão Acácio Rosa"},
+        #   },
+        # ]
+        #---------------------------------------------------------------------------------------
+
+        COMPETITION = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_CompetitionNameLit_0'
+        MATCH       = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDesc_0'
+        MATCH_DATE  = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDateDesc_0'
+        MATCH_LOCAL = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameLocalDesc_0'
+    
+        html = _html(self.HOME_URL)
+        
+        # Sports id's list
+        sports_lis  = html.find('ul', {'class': 'next_games_categories_menu clearfix'}).findAll('li')
+    
+        # Sports next matches
+        matches_uls = html.findAll('ul', {'class': 'next_games_competitions'})
+        matches_lis = [match_ul.findAll('li')[0] for match_ul in matches_uls]
+    
+        matches = []
+        for index, match_li in enumerate(matches_lis):
+            
+            competition = match_li.find('span', {'id': COMPETITION.format(index=str(index))}).string
+            match       = match_li.find('span', {'id': MATCH.format(index=str(index))}).string
+            match_date  = match_li.find('span', {'id': MATCH_DATE.format(index=str(index))}).string
+            match_local = match_li.find('span', {'id': MATCH_LOCAL.format(index=str(index))}).string
+            matches.append({'competition': competition, 
+                            'match': match, 
+                            'match_date': match_date, 
+                            'match_local': match_local})    
+    
+        next_matches = []
+        for index, sport_li in enumerate(sports_lis):
+            _id = int(sport_li.find('a')['id'])
+            _sport, _thumb = self.get_sport_info(_id)
+            next_matches.append({'id': _id,
+                                 'sport': _sport,
+                                 'thumbnail': _thumb,
+                                 'match_info': {'competition_name' : matches[index]['competition'],
+                                                'competition_match': matches[index]['match'],
+                                                'competition_date' : matches[index]['match_date'],
+                                                'competition_local': matches[index]['match_local']}
+                                })
+        return next_matches
+    
     def get_headlines(self):
 
-        html = _html(HOME_URL)
+        html = _html(self.HOME_URL)
     
         uls = html.findAll('ul', {'class': 'dest_carr_list'})
         lis = [ul.findAll('li') for ul in uls]
@@ -219,7 +281,6 @@ class SLB(object):
                            _news._date()))
     
         items = [
-            #{'label': str(label) + ' (' + str(date) + ')',
             {'label': label,
              'path': '',
              'thumbnail': thumbnail,
@@ -231,7 +292,6 @@ class SLB(object):
     
         return sorted(items, key=lambda item: item['info']['date'], reverse=True)
 
-    @classmethod
     def get_media_categories(self, media_type):
     
         if   media_type == 'videos': html = _html(self.VIDEOS_URL)
@@ -256,19 +316,18 @@ class SLB(object):
     
         return sorted(items, key=lambda item: item['label'])
 
-    @classmethod
-    def get_category_albums(media_type, category_id, page=1):
+    def get_category_albums(self, media_type, category_id, page=1):
         
         page = int(page)
         
         if media_type == 'videos':
             category_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id,
                                                            page   = page,
-                                                           lang   = LANG) 
+                                                           lang   = self.LANG) 
         elif media_type == 'photos':
             category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id,
                                                            page   = page,
-                                                           lang   = LANG) 
+                                                           lang   = self.LANG) 
         html = _html(category_url)
         uls = html.findAll('ul', {'class': 'pos_biglist_list'})
         lis = [ul.findAll('li') for ul in uls]
@@ -306,26 +365,25 @@ class SLB(object):
     
         if next_page:
             sorted_items.insert(int(len(sorted_items) + 1), 
-                                {'label': __translate__(30201),
-                                 'path': SLB.get_category_albums(media_type  = media_type, 
-                                                                 category_id = category_id, 
-                                                                 page        = str(page + 1)),
+                                {'label': Addon.__translate__(30201),
+                                 'path': get_category_albums(media_type  = media_type, 
+                                                             category_id = category_id, 
+                                                             page        = str(page + 1)),
                                 })
         if page > 1:
             sorted_items.insert(0, 
-                                {'label': __translate__(30200),
-                                  'path': SLB.get_category_albums(media_type  = media_type, 
-                                                                  category_id = category_id, 
-                                                                  page        = str(page - 1)),
+                                {'label': Addon.__translate__(30200),
+                                  'path': get_category_albums(media_type  = media_type, 
+                                                              category_id = category_id, 
+                                                              page        = str(page - 1)),
                                 })
     
         return sorted_items
 
-    @classmethod
-    def get_album_videos(album_id):
+    def get_album_videos(self, album_id):
         
-        video_album_url = VIDEOS_ALBUM_URL.format(album_id = album_id, 
-                                                  lang     = LANG) 
+        video_album_url = self.VIDEOS_ALBUM_URL.format(album_id = album_id, 
+                                                       lang     = self.LANG) 
         html = _html(video_album_url)
         uls  = html.findAll('ul', {'class': 'pos_biglist_vidlist'})
         lis  = [ul.findAll('li') for ul in uls]
@@ -344,11 +402,10 @@ class SLB(object):
     
         return sorted(items, key=lambda item: item['label'])
 
-    @classmethod
-    def play_slideshow(album_id):
+    def get_album_photos(self, album_id):
         
-        photo_album_url = PHOTOS_ALBUM_URL.format(album_id = album_id, 
-                                                  lang     = LANG)
+        photo_album_url = self.PHOTOS_ALBUM_URL.format(album_id = album_id, 
+                                                       lang     = self.LANG)
         html = _html(photo_album_url)
         uls  = html.findAll('ul', {'class': 'pos_biglist_imglist'})
         lis  = [ul.findAll('li') for ul in uls]
@@ -357,216 +414,204 @@ class SLB(object):
         images = [
             {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
+
+
+    #---------------------
+    #      News Class
+    #---------------------
+    class News(object):
+    
+        def __init__(self, url=None):
+            self.url    = url
+            self.html   = _html(url)
         
-        start_slideshow(images)
-
-    @classmethod
-    def get_calendar(date, numWeeks=1):
+        def _title(self):
+            return self.html.find('h1').string.strip(' ').replace(u'\u2013', '-')
         
-        # needs re-working!!!
-        _startdate = date(date[6:10], date[3:5], date[:2])
-        calendar = Calendar.get_calendar(startDate=_startdate, numWeeks=numWeeks, lang=self.LANG)
-
-
-#---------------------
-#      News Class
-#---------------------
-class News(object):
-
-    def __init__(self, url=None):
-        self.url    = url
-        self.html   = _html(url)
-    
-    def _title(self):
-        return self.html.find('h1').string.strip(' ').replace(u'\u2013', '-')
-    
-    def _title2(self):
-        return self.html.find('h2').string.strip(' ').replace(u'\u2013', '-')
-    
-    def _text(self):
-        return self.html.find('div', {'class': 'not_desc'}).get_text().replace(u'\u2013', '-')
-
-    def _thumb(self):
-        div = self.html.find('div', {'class': 'pos_not_img_det'}) 
-        return _full_url(div.img['src']).strip(' ')
-
-    def _date(self):
-        return self.html.find('p', {'class': 'txt_10 not_date'}).string.strip(' ').replace(u'\u2013', '-')
-
-#---------------------
-#    Category Class
-#---------------------
-class Category(object):
-
-    def __init__(self, media_type=None, url=None):
+        def _title2(self):
+            return self.html.find('h2').string.strip(' ').replace(u'\u2013', '-')
         
-        self.media_type = media_type
-        self.url        = url
-        self.cat_id     = get_cat_id(self.url, 'category')
-        sport_info      = get_sport_info(int(self.cat_id))
-        self.name       = sport_info[0]
-        self.thumb      = os.path.join(Addon.__imagespath__ + sport_info[1]).decode( "utf-8" )
-
-    def _name(self):
-        return self.name.strip(' ').replace(u'\u2013', '-')
-
-    def _cat_id(self):
-        return self.cat_id.strip(' ')
-
-    def _media_type(self):
-        return self.media_type.strip(' ')
+        def _text(self):
+            return self.html.find('div', {'class': 'not_desc'}).get_text().replace(u'\u2013', '-')
     
-    def _thumb(self):
-        return self.thumb
+        def _thumb(self):
+            div = self.html.find('div', {'class': 'pos_not_img_det'}) 
+            return _full_url(div.img['src']).strip(' ')
+    
+        def _date(self):
+            return self.html.find('p', {'class': 'txt_10 not_date'}).string.strip(' ').replace(u'\u2013', '-')
 
-    def _albums(self):
-        return SLB.get_category_albums( media_type  = self.media_type, 
+    #---------------------
+    #    Category Class
+    #---------------------
+    class Category(object):
+    
+        def __init__(self, media_type=None, url=None):
+            
+            self.media_type = media_type
+            self.url        = url
+            self.cat_id     = get_cat_id(self.url, 'category')
+            sport_info      = get_sport_info(int(self.cat_id))
+            self.name       = sport_info[0]
+            self.thumb      = os.path.join(Addon.__imagespath__ + sport_info[1]).decode( "utf-8" )
+    
+        def _name(self):
+            return self.name.strip(' ').replace(u'\u2013', '-')
+    
+        def _cat_id(self):
+            return self.cat_id.strip(' ')
+    
+        def _media_type(self):
+            return self.media_type.strip(' ')
+        
+        def _thumb(self):
+            return self.thumb
+    
+        def _albums(self):
+            return get_category_albums( media_type  = self.media_type, 
                                         category_id = self.cat_id)
 
-#---------------------
-#     Album Class
-#---------------------
-class Album(object):
-
-    def __init__(self, name=None, media_type=None, url=None, thumb=None, date=None):
-        self.name       = name
-        self.media_type = media_type
-        self.url        = url
-        self.thumb      = thumb
-        self.date       = date
-        self.album_id   = get_cat_id(self.url, 'album')
-
-    def _name(self):
-        return self.name.strip(' ').replace(u'\u2013', '-')
-
-    def _album_id(self):
-        return self.album_id.strip(' ')
-
-    def _media_type(self):
-        return self.media_type.strip(' ')
+    #---------------------
+    #     Album Class
+    #---------------------
+    class Album(object):
     
-    def _thumb(self):
-        return self.thumb.strip(' ')
-
-    def _date(self):
-        return convert_date(self.date, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')
-
-    def _media(self):
-        if   self.media_type == 'videos': return SLB.get_album_videos(album_id = self.album_id)
-        elif self.media_type == 'photos': return SLB.play_slideshow(album_id = self.album_id)
-
-
-#-----------------------
-#  CALENDAR METHODS
-#-----------------------
-class Calendar(object):
+        def __init__(self, name=None, media_type=None, url=None, thumb=None, date=None):
+            self.name       = name
+            self.media_type = media_type
+            self.url        = url
+            self.thumb      = thumb
+            self.date       = date
+            self.album_id   = get_cat_id(self.url, 'album')
     
-    def __init__(self, startDate=date.today(), numWeeks='1', language='pt-PT'):
-
-        self.startDate = startDate
-        self.numWeeks = numWeeks
-        self.language = language
-        self.first_day, self.last_day = Calendar.first_last_day(self.startDate, self.numWeeks, self.language)
-
-    @staticmethod
-    def first_last_day(day, numWeeks=1, language='pt-pt'):
-
-        if numWeeks:
-            end_day = (7 * int(numWeeks)) - 1
+        def _name(self):
+            return self.name.strip(' ').replace(u'\u2013', '-')
+    
+        def _album_id(self):
+            return self.album_id.strip(' ')
+    
+        def _media_type(self):
+            return self.media_type.strip(' ')
         
-        day_of_week = day.weekday()
+        def _thumb(self):
+            return self.thumb.strip(' ')
     
-        to_beginning_of_week = timedelta(days=day_of_week)
-        beginning_of_week = day - to_beginning_of_week
+        def _date(self):
+            return convert_date(self.date, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')
     
-        to_end_of_week = timedelta(days=end_day - day_of_week)
-        end_of_week = day + to_end_of_week
+        def _media(self):
+            if   self.media_type == 'videos': return get_album_videos(album_id = self.album_id)
+            elif self.media_type == 'photos': return play_slideshow(album_id = self.album_id)
+    
+    
+    #-----------------------
+    #  CALENDAR METHODS
+    #-----------------------
+    class Calendar(object):
         
-        if language.lower() == 'pt-pt':
-            return (beginning_of_week.strftime("%d-%m-%Y"), end_of_week.strftime("%d-%m-%Y"))
-        elif language.lower() == 'en-us':
-            return (beginning_of_week.strftime("%m/%d/%Y"), end_of_week.strftime("%m/%d/%Y"))
-        elif language.lower() == 'es-es':
-            return (beginning_of_week.strftime("%d/%m/%Y"), end_of_week.strftime("%d/%m/%Y"))
+        def __init__(self, startDate=date.today(), numWeeks='1', language='pt-PT', sport_id=None):
+    
+            self.startDate = startDate
+            self.numWeeks = numWeeks
+            self.language = language
+            self.first_day, self.last_day = Calendar.first_last_day(self.startDate, self.numWeeks, self.language)
 
-    @staticmethod
-    def get_calendar(startDate=date.today(), numWeeks='1', language='pt-pt'):
-
-        first_day, last_day = Calendar.first_last_day(startDate, numWeeks, language)
-
-        url = 'http://m.slbenfica.pt/HttpHandlers/SLBSportsAgenda.ashx?ModID=1172&LvlId=-1&AgendaStartDate='+first_day+'%2000:00:00&NumWeeks='+numWeeks+'&CurrentType=Event&Culture='+language+'&Mobile=true&PurchaseTicketURL=https://m.slbenfica.pt/'+language+'/bilhetes/comprar.aspx'
-
-        # convert html to json
-        calendar = {}
-        sports = []
-        sports_events = {}
-        events = []
-        event  = {}
-
-        html_soup = BS(download_page(url).read().decode('utf-8', 'ignore'))
-        
-        uls = html_soup.findAll('ul', {'class': 'agEvt'})
-        lis = [ul.findAll('li') for ul in uls]
-
-        for li in chain(*lis):
+        def first_last_day(self, day):
+    
+            if self.numWeeks:
+                end_day = (7 * int(self.numWeeks)) - 1
             
-            # event date
-            day = int(li.find('span', {'class': 't20wt'}).string)
-            _month = li.find('p', {'class': 't9red'}).string
-            month = monthToNum(_month)
-            year = datetime.now().year
-            if _month < datetime.now().month:
-                year = year + 1
-            _date = date(year, month, day).strftime("%d-%m-%Y")
-            weekday                 = li.find('p', {'class': 't9lt'}).string
-
-            # sport
-            _sport                  = li.find('div', {'class': 'agMod t14red'}).string
-            sportName               = remove_accents(_sport) # no accents
-
-            # sport event
-            event["date"]           = _date
-            event["event"]          = li.find('p', {'class': 'agTit t12wtB'}).string
-            event["local"]          = li.find('p', {'class': 'agLoc t12lt2B'}).string
-            event["description"]    = li.find('span', {'class': 't12lt'}).string if li.find('span', {'class': 't12lt'}) else ""
-            img_home                = li.find('div', {'class': 'eHo'})
-            event["home_team_img"]  = _full_url(img_home.img['src']) if img_home else ""
-            event["home_team_name"] = img_home.img['alt'] if img_home else ""
-            img_away                = li.find('div', {'class': 'eVi'})
-            event["away_team_img"]  = _full_url(img_away.img['src']) if img_away else ""
-            event["away_team_name"] = img_away.img['alt'] if img_away else ""
-            event["buy_ticket"]     = li.find('a', {'class': 'agBt btDark'}).href if li.find('a', {'class': 'agBt btDark'}) else ""
-
-            # build sports events
-            if sports_events.get(sportName): # sport already exists
-                sports_events[sportName].append(event)
-            else: # new sport -> add to dict with event
-                events.append(event)
-                sports_events[sportName] = events
+            day_of_week = day.weekday()
         
-            event = {}
+            to_beginning_of_week = timedelta(days=day_of_week)
+            beginning_of_week = day - to_beginning_of_week
+        
+            to_end_of_week = timedelta(days=end_day - day_of_week)
+            end_of_week = day + to_end_of_week
+            
+            if language.lower() == 'pt-pt':
+                return (beginning_of_week.strftime("%d-%m-%Y"), end_of_week.strftime("%d-%m-%Y"))
+            elif language.lower() == 'en-us':
+                return (beginning_of_week.strftime("%m/%d/%Y"), end_of_week.strftime("%m/%d/%Y"))
+            elif language.lower() == 'es-es':
+                return (beginning_of_week.strftime("%d/%m/%Y"), end_of_week.strftime("%d/%m/%Y"))
+    
+        def get_calendar(self):
+    
+            url = 'http://m.slbenfica.pt/HttpHandlers/SLBSportsAgenda.ashx?ModID=1172&LvlId=-1&AgendaStartDate='+self.first_day+'%2000:00:00&NumWeeks='+self.numWeeks+'&CurrentType=Event&Culture='+self.language+'&Mobile=true&PurchaseTicketURL=https://m.slbenfica.pt/'+self.language+'/bilhetes/comprar.aspx'
+    
+            # convert html to json
+            calendar = {}
+            sports = []
+            sports_events = {}
             events = []
-
-        #---------------------------------------------------------------------------------------
-        #     build json format
-        #---------------------------------------------------------------------------------------
-        # structure:
-        # { "calendar": { "type": "list"
-        #                 "sports": [ {"id": "5", "name": "futebol", "events": [...] }
-        #                             {"id": "2", "name": "automobilismo", "events": [...] }
-        #                             {"id": "6", "name": "futsal", "events": [...] }
-        #                           ]
-        #                 "start_date" : "01-01-2014"
-        #                 "end_date"   : "15-03-2014"
-        # }
-        #---------------------------------------------------------------------------------------
-
-        calendar["calendar"] = {"type": "list", "start_date" : first_day, "end_date": last_day}
-
-        for k, v in sports_events.iteritems():
-            _id, _img = get_sport_info(k)
-            sports.append({"id": _id, "name": k, "img": _img, "events": v})
-
-        calendar["calendar"]["sports"] = sports
-
-        return calendar if calendar else []
+            event  = {}
+    
+            html_soup = BS(download_page(url).read().decode('utf-8', 'ignore'))
+            
+            uls = html_soup.findAll('ul', {'class': 'agEvt'})
+            lis = [ul.findAll('li') for ul in uls]
+    
+            for li in chain(*lis):
+                
+                # event date
+                day = int(li.find('span', {'class': 't20wt'}).string)
+                _month = li.find('p', {'class': 't9red'}).string
+                month = monthToNum(_month)
+                year = datetime.now().year
+                if _month < datetime.now().month:
+                    year = year + 1
+                _date = date(year, month, day).strftime("%d-%m-%Y")
+                weekday                 = li.find('p', {'class': 't9lt'}).string
+    
+                # sport
+                _sport                  = li.find('div', {'class': 'agMod t14red'}).string
+                sportName               = remove_accents(_sport) # no accents
+    
+                # sport event
+                event["date"]           = _date
+                event["event"]          = li.find('p', {'class': 'agTit t12wtB'}).string
+                event["local"]          = li.find('p', {'class': 'agLoc t12lt2B'}).string
+                event["description"]    = li.find('span', {'class': 't12lt'}).string if li.find('span', {'class': 't12lt'}) else ""
+                img_home                = li.find('div', {'class': 'eHo'})
+                event["home_team_img"]  = _full_url(img_home.img['src']) if img_home else ""
+                event["home_team_name"] = img_home.img['alt'] if img_home else ""
+                img_away                = li.find('div', {'class': 'eVi'})
+                event["away_team_img"]  = _full_url(img_away.img['src']) if img_away else ""
+                event["away_team_name"] = img_away.img['alt'] if img_away else ""
+                event["buy_ticket"]     = li.find('a', {'class': 'agBt btDark'}).href if li.find('a', {'class': 'agBt btDark'}) else ""
+    
+                # build sports events
+                if sports_events.get(sportName): # sport already exists
+                    sports_events[sportName].append(event)
+                else: # new sport -> add to dict with event
+                    events.append(event)
+                    sports_events[sportName] = events
+            
+                event = {}
+                events = []
+    
+            #---------------------------------------------------------------------------------------
+            #     build json format
+            #---------------------------------------------------------------------------------------
+            # structure:
+            # { "calendar": { "type": "list"
+            #                 "sports": [ {"id": "5", "name": "futebol", "events": [...] }
+            #                             {"id": "2", "name": "automobilismo", "events": [...] }
+            #                             {"id": "6", "name": "futsal", "events": [...] }
+            #                           ]
+            #                 "start_date" : "01-01-2014"
+            #                 "end_date"   : "15-03-2014"
+            # }
+            #---------------------------------------------------------------------------------------
+    
+            calendar["calendar"] = {"type": "list", "start_date" : self.first_day, "end_date": self.last_day}
+    
+            for k, v in sports_events.iteritems():
+                _id   = get_sport_id(k)
+                _name = get_sport_info(_id)[0]
+                sports.append({"id": _id, "name": _name, "events": v})
+    
+            calendar["calendar"]["sports"] = sports
+    
+            return calendar if calendar else [] 

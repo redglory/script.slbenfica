@@ -57,6 +57,7 @@
   9073    - Calendar Monthly View
   9074    - Calendar Sports View
   9075    - Calendar Sport Events List
+  9076    - Calendar Next Matches List
 9008    - Sports Menu
   # Content
   9080    - Sports View
@@ -76,12 +77,17 @@
  id     | description
 #######################
 100     - LOGO Image
+101     - Sport Image
+102     - Home Team Image
+103     - Away Team Image
 
 #######################
   "Button" Controls
 #######################
  id     | description
 #######################
+104     - Next Match LEFT Arrow
+105     - Next Match RIGHT Arrow
 110     - Main Menu - Club button
   111     - Club Menu - Info button
   112     - Club Menu - Structure button
@@ -144,7 +150,7 @@
 <window>
     <allowoverlay>no</allowoverlay>
 
-    <defaultcontrol always="true">9100</defaultcontrol>
+    <defaultcontrol always="true">9070</defaultcontrol>
 
     <controls>
         <control type="group">
@@ -164,13 +170,224 @@
             <control type="image" id="100">
                 <description>LOGO</description>
                 <posx>0</posx>
-                <posy>35</posy>
+                <posy>15</posy>
                 <width>250</width>
                 <height>165</height>
                 <aspectratio aligny="top" align="left">keep</aspectratio>
                 <texture>slb-logo.png</texture>
-                <include>VisibleFadeEffect</include>
-                <include>Window_OpenClose_Animation</include>
+            </control>
+
+            <!-- NEXT MATCHES -->
+            <control type="group" id="9070">
+                <description>Next Matches View</description>
+                <posx>0</posx>
+                <posy>130</posy>
+                <width>260</width>
+                <height>135</height>
+                <visible>true</visible>
+                <control type="image">
+                    <description>Content Panel</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>135</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+                <!--<control type="button" id="104">
+                    <description>Prev Match Button</description>
+                    <posx>10</posx>
+                    <posy>45</posy>
+                    <width>20</width>
+                    <height>48</height>
+                    <onleft>105</onleft>
+                    <onright>105</onright>
+                    <texturefocus>scroll-left-focus.png</texturefocus>
+                    <texturenofocus>scroll-left.png</texturenofocus>
+                    <onup>9000</onup>
+                    <ondown>9000</ondown>
+                </control>
+                <control type="button" id="105">
+                    <description>Next Match Button</description>
+                    <posx>230</posx>
+                    <posy>45</posy>
+                    <width>20</width>
+                    <height>48</height>
+                    <onleft>104</onleft>
+                    <onright>104</onright>
+                    <texturefocus>scroll-right-focus.png</texturefocus>
+                    <texturenofocus>scroll-right.png</texturenofocus>
+                    <onup>9000</onup>
+                    <ondown>9000</ondown>
+                </control>
+                -->
+                <control type="list" id="9076"> <!-- Next Matches List -->
+                    <description>Next Matches List</description>
+                    <width>260</width>
+                    <height>135</height>
+                    <visible>true</visible>
+                    <pagecontrol>25</pagecontrol>
+                    <scrolltime>200</scrolltime>
+                    <autoscroll>false</autoscroll>
+                    <orientation>horizontal</orientation>
+                    <itemlayout width="260" height="135">
+                        <control type="image" id="101"> <!-- Next Match Sport Image -->
+                            <description>Sport Image</description> 
+                            <posx>130</posx>
+                            <posy>5</posy>
+                            <width>40</width>
+                            <height>40</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Listitem.Thumb</texture>
+                        </control>
+                        <control type="image" id="102"> <!-- Next Match Home Team Image -->
+                            <description>Home Team</description>
+                            <posx>50</posx>
+                            <posy>25</posy>
+                            <width>60</width>
+                            <height>60</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Club.png</texture>
+                        </control>
+                        <control type="image" id="103"> <!-- Next Match Away Team Image -->
+                            <description>Away Team</description>
+                            <posx>150</posx>
+                            <posy>25</posy>
+                            <width>60</width>
+                            <height>60</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Wrestling.png</texture>
+                        </control>
+                        <control type="label"> <!-- Next Match Competition name -->
+                            <posx>30</posx>
+                            <posy>130</posy>
+                            <width>260</width>
+                            <height>15</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_name)</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Home Team name -->
+                            <posx>30</posx>
+                            <posy>50</posy>
+                            <width>40</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>SL Benfica</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Away Team name -->
+                            <posx>200</posx>
+                            <posy>50</posy>
+                            <width>40</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>FC Barcelona</info>
+                        </control>            
+                        <control type="label"> <!-- Next Match Date -->
+                            <posx>130</posx>
+                            <posy>90</posy>
+                            <width>260</width>
+                            <height>15</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_date)</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Local -->
+                            <posx>130</posx>
+                            <posy>110</posy>
+                            <width>260</width>
+                            <height>10</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_local)</info>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout width="260" height="135">
+                        <control type="image" id="101"> <!-- Next Match Sport Image -->
+                            <description>Sport Image</description> 
+                            <posx>130</posx>
+                            <posy>5</posy>
+                            <width>40</width>
+                            <height>40</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Listitem.Thumb</texture>
+                        </control>
+                        <control type="image" id="102"> <!-- Next Match Home Team Image -->
+                            <description>Home Team</description>
+                            <posx>50</posx>
+                            <posy>25</posy>
+                            <width>60</width>
+                            <height>60</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Club.png</texture>
+                        </control>
+                        <control type="image" id="103"> <!-- Next Match Away Team Image -->
+                            <description>Away Team</description>
+                            <posx>150</posx>
+                            <posy>25</posy>
+                            <width>60</width>
+                            <height>60</height>
+                            <aspectratio aligny="top" align="center">keep</aspectratio>
+                            <texture>Wrestling.png</texture>
+                        </control>
+                        <control type="label"> <!-- Next Match Competition name -->
+                            <posx>30</posx>
+                            <posy>130</posy>
+                            <width>260</width>
+                            <height>15</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_name)</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Home Team name -->
+                            <posx>30</posx>
+                            <posy>50</posy>
+                            <width>40</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>SL Benfica</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Away Team name -->
+                            <posx>200</posx>
+                            <posy>50</posy>
+                            <width>40</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>FC Barcelona</info>
+                        </control>            
+                        <control type="label"> <!-- Next Match Date -->
+                            <posx>130</posx>
+                            <posy>90</posy>
+                            <width>260</width>
+                            <height>15</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_date)</info>
+                        </control>
+                        <control type="label"> <!-- Next Match Local -->
+                            <posx>130</posx>
+                            <posy>110</posy>
+                            <width>260</width>
+                            <height>10</height>
+                            <font>font8</font>
+                            <aligny>center</aligny>
+                            <align>center</align>
+                            <info>ListItem.Property(competition_local)</info>
+                        </control>
+                    </focusedlayout>
+                </control>
             </control>
 
             <!-- CONTENT PANEL -->
@@ -1899,7 +2116,6 @@
                 <posx>0</posx>
                 <posy>35r</posy>
                 <visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
-                <include>Window_OpenClose_Animation</include>
                 <!-- FLOOR -->
                 <control type="image">
                     <posx>0</posx>

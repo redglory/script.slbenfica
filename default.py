@@ -41,9 +41,8 @@ import xbmcgui
 import xbmc
 import xbmcaddon
 
-# Custom includes
+# Custom
 from resources.lib.base import *
-from resources.lib.api import SLB, Calendar
 
 
 # DEBUG
@@ -68,10 +67,12 @@ if REMOTE_DBG:
 #    PATH INCLUDE
 #----------------------
 sys.path.append(Addon.__libs__)
+
 #----------------------
-#     GUI CLASS
-#----------------------
-from gui import SLB
+# Custom includes
+from gui import GUI
+from base import *
+from api import SLB
 
 #-----------------------
 #     MAIN CLASS
@@ -107,7 +108,7 @@ class Main:
             lw.log( ["#    %-50s    #" % Addon.__version__], xbmc.LOGNOTICE )
             lw.log( ["############################################################"], xbmc.LOGNOTICE )
     
-            slbWindow = SLB( "script-slbenfica.xml" , Addon.__path__, "Default")
+            slbWindow = GUI( "script-slbenfica.xml" , Addon.__path__, "Default")
             slbWindow.doModal()
             del slbWindow
         except:

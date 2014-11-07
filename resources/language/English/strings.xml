@@ -19,6 +19,42 @@
     <string id="30200">[COLOR red][UPPERCASE]&lt;&lt; Página Anterior[/UPPERCASE][/COLOR]</string>
     <string id="30201">[COLOR red][UPPERCASE]Página Seguinte &gt;&gt;[/UPPERCASE][/COLOR]</string>
   
+    <!-- Sports Names -->
+    <string id="31000">Handball</string>
+    <string id="31001">Martial Arts</string>
+    <string id="31002">Athletics</string>
+    <string id="31003">Motor Sports</string>
+    <string id="31004">Family Stand</string>
+    <string id="31005">Basketball</string>
+    <string id="31006">Billiard</string>
+    <string id="31007">Canoe Racing</string>
+    <string id="31008">Club</string>
+    <string id="31009">Fighting Sports</string>
+    <string id="31010">First Team</string>
+    <string id="31011">Benfica Young Generation</string>
+    <string id="31012">Formation</string>
+    <string id="31013">Funzone</string>
+    <string id="31014">Football</string>
+    <string id="31015">Futsal</string>
+    <string id="31016">General</string>
+    <string id="31017">Gymnastics</string>
+    <string id="31018">Golf</string>
+    <string id="31019">Hockey</string>
+    <string id="31020">Female Hockey</string>
+    <string id="31021">Olympic Games</string>
+    <string id="31022">Judo</string>
+    <string id="31023">Swimming</string>
+    <string id="31024">Other</string>
+    <string id="31025">Paintball</string>
+    <string id="31026">Sport Fishing</string>
+    <string id="31027">Scouting</string>
+    <string id="31028">Rugby</string>
+    <string id="31029">Female Rugby</string>
+    <string id="31030">SL Benfica B Team</string>
+    <string id="31031">Table Tennis</string>
+    <string id="31032">Triatlo</string>
+    <string id="31033">Volleyball</string>
+    <string id="31034">Chess</string>
     
     <!--
         #######################
