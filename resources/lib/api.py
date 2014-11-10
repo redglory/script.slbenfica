@@ -291,6 +291,49 @@ class SLB(object):
 
         return club_structure
 
+    def get_club_history(self):
+
+        foundation = {}
+        symbol_history = {}
+        presidents = {}
+        honours = {}
+
+        # foundation
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=LANG))
+        foundation = {'img': _full_url(html.find('div', {'class': 'main_cont2_bannertop'}).img['src']),
+                      'text': html.find('div', {'id': 'dnn_ctr664_MLHTML_lblContent'}).get_text()}
+        # symbols
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
+        symbols = html.find('ul', {'class': 'main_cont2_list'})
+        symbols.extract() # remove list of symbols to get text only
+        symbol_history = { 'text': html.find('div', {'class': 'dnn_ctr670_MLHTML_lblContent'}).get_text()
+                           'symbols': [{'img': _full_url(symbol.find('div', {'class': 'main_cont2_list_img'}).img['src']),
+                                        'text': symbol.find('div', {'class': 'main_cont2_list_det'})} 
+                                      for symbol in symbols.findAll('li')]}
+        # presidents
+        def get_president_text(self, president):
+            short = president.find('p', {'class': 'description'}).get_text()
+            text  = _html(president.find('p', {'class': 'view_more'}).a['href']).find('div').find('p').get_text()
+            return ''.join(short, text)
+
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
+        presidents = {'text': html.find('div', {'class': 'dnn_ctr2916_MLHTML_lblContent'}).get_text(),
+                      'presidents': [{'period': president.find('p', {'class': 'line_1st'}).string,
+                                      'name': president.find('p', {'class': 'line_2nd'}).string,
+                                      'description': get_president_text(president)}
+                                    for president in html.find('div', {'class': 'dnn_ctr2916_MLHTML_lblContent'}).findAll('div', {'class': 'body'})]}
+        # honours
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
+        honours = [{'name': honour.find('h3'),
+                    'awards': honour.find('p')} for honour in html.findAll('h3')]
+
+        club_history = {'foundation': foundation,
+                        'symbols': symbol_history,
+                        'presidents': presidents,
+                        'honours': honours }
+
+        return club_history
+
     def get_headlines(self):
 
         html = _html(self.HOME_URL)
