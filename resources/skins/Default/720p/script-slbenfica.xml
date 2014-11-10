@@ -193,33 +193,6 @@
                     <height>135</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-                <!--<control type="button" id="104">
-                    <description>Prev Match Button</description>
-                    <posx>10</posx>
-                    <posy>45</posy>
-                    <width>20</width>
-                    <height>48</height>
-                    <onleft>105</onleft>
-                    <onright>105</onright>
-                    <texturefocus>scroll-left-focus.png</texturefocus>
-                    <texturenofocus>scroll-left.png</texturenofocus>
-                    <onup>9000</onup>
-                    <ondown>9000</ondown>
-                </control>
-                <control type="button" id="105">
-                    <description>Next Match Button</description>
-                    <posx>230</posx>
-                    <posy>45</posy>
-                    <width>20</width>
-                    <height>48</height>
-                    <onleft>104</onleft>
-                    <onright>104</onright>
-                    <texturefocus>scroll-right-focus.png</texturefocus>
-                    <texturenofocus>scroll-right.png</texturenofocus>
-                    <onup>9000</onup>
-                    <ondown>9000</ondown>
-                </control>
-                -->
                 <control type="list" id="9076"> <!-- Next Matches List -->
                     <description>Next Matches List</description>
                     <width>260</width>
@@ -258,51 +231,51 @@
                             <texture>Wrestling.png</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
-                            <posx>30</posx>
-                            <posy>130</posy>
-                            <width>260</width>
+                            <posx>130</posx>
+                            <posy>5</posy>
+                            <width>220</width>
                             <height>15</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_name)</info>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
-                            <posx>30</posx>
-                            <posy>50</posy>
-                            <width>40</width>
+                            <posx>75</posx>
+                            <posy>75</posy>
+                            <width>100</width>
                             <height>20</height>
-                            <font>font13</font>
+                            <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>SL Benfica</info>
+                            <info>ListItem.Property(competition_home_team)</info>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
-                            <posx>200</posx>
-                            <posy>50</posy>
-                            <width>40</width>
+                            <posx>180</posx>
+                            <posy>75</posy>
+                            <width>100</width>
                             <height>20</height>
-                            <font>font13</font>
+                            <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>FC Barcelona</info>
+                            <info>ListItem.Property(competition_away_team)</info>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
                             <posx>130</posx>
-                            <posy>90</posy>
-                            <width>260</width>
+                            <posy>96</posy>
+                            <width>220</width>
                             <height>15</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_date)</info>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
                             <posx>130</posx>
-                            <posy>110</posy>
-                            <width>260</width>
+                            <posy>113</posy>
+                            <width>220</width>
                             <height>10</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_local)</info>
@@ -337,51 +310,51 @@
                             <texture>Wrestling.png</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
-                            <posx>30</posx>
-                            <posy>130</posy>
-                            <width>260</width>
+                            <posx>130</posx>
+                            <posy>5</posy>
+                            <width>220</width>
                             <height>15</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_name)</info>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
-                            <posx>30</posx>
-                            <posy>50</posy>
-                            <width>40</width>
+                            <posx>75</posx>
+                            <posy>75</posy>
+                            <width>100</width>
                             <height>20</height>
-                            <font>font13</font>
+                            <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>SL Benfica</info>
+                            <info>ListItem.Property(competition_home_team)</info>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
-                            <posx>200</posx>
-                            <posy>50</posy>
-                            <width>40</width>
+                            <posx>180</posx>
+                            <posy>75</posy>
+                            <width>100</width>
                             <height>20</height>
-                            <font>font13</font>
+                            <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>FC Barcelona</info>
+                            <info>ListItem.Property(competition_away_team)</info>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
                             <posx>130</posx>
-                            <posy>90</posy>
-                            <width>260</width>
+                            <posy>96</posy>
+                            <width>220</width>
                             <height>15</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_date)</info>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
                             <posx>130</posx>
-                            <posy>110</posy>
-                            <width>260</width>
+                            <posy>113</posy>
+                            <width>220</width>
                             <height>10</height>
-                            <font>font8</font>
+                            <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
                             <info>ListItem.Property(competition_local)</info>
@@ -443,7 +416,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32110]</label>
@@ -477,7 +450,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32120]</label>
@@ -511,7 +484,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32130]</label>
@@ -545,7 +518,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32140]</label>
@@ -577,7 +550,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32150]</label>
@@ -609,7 +582,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32160]</label>
@@ -641,7 +614,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32170]</label>
@@ -673,7 +646,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32180]</label>
@@ -695,7 +668,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32190]</label>
@@ -717,7 +690,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32200]</label>
@@ -763,7 +736,7 @@
                     <textoffsetx>10</textoffsetx>
                     <width>210</width>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32111]</label>
@@ -784,7 +757,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32112]</label>
@@ -805,7 +778,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32113]</label>
@@ -826,7 +799,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32114]</label>
@@ -870,7 +843,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32121]</label>
@@ -891,7 +864,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32122]</label>
@@ -943,7 +916,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32131]</label>
@@ -974,7 +947,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32132]</label>
@@ -995,7 +968,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32133]</label>
@@ -1016,7 +989,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32134]</label>
@@ -1037,7 +1010,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32135]</label>
@@ -1058,7 +1031,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32136]</label>
@@ -1079,7 +1052,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32137]</label>
@@ -1100,7 +1073,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32138]</label>
@@ -1121,7 +1094,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32139]</label>
@@ -1142,7 +1115,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32230]</label>
@@ -1186,7 +1159,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32231]</label>
@@ -1207,7 +1180,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32232]</label>
@@ -1261,7 +1234,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32141]</label>
@@ -1292,7 +1265,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32142]</label>
@@ -1313,7 +1286,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32143]</label>
@@ -1344,7 +1317,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32144]</label>
@@ -1365,7 +1338,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32145]</label>
@@ -1386,7 +1359,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32146]</label>
@@ -1407,7 +1380,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32147]</label>
@@ -1428,7 +1401,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32148]</label>
@@ -1449,7 +1422,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32149]</label>
@@ -1470,7 +1443,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32240]</label>
@@ -1501,7 +1474,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32241]</label>
@@ -1532,7 +1505,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32242]</label>
@@ -1578,7 +1551,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32243]</label>
@@ -1599,7 +1572,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32244]</label>
@@ -1620,7 +1593,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32245]</label>
@@ -1641,7 +1614,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32246]</label>
@@ -1683,7 +1656,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32247]</label>
@@ -1725,7 +1698,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32248]</label>
@@ -1767,7 +1740,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32249]</label>
@@ -1813,7 +1786,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32151]</label>
@@ -1834,7 +1807,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32152]</label>
@@ -1855,7 +1828,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32153]</label>
@@ -1876,7 +1849,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32154]</label>
@@ -1919,7 +1892,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32161]</label>
@@ -1940,7 +1913,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32162]</label>
@@ -1984,7 +1957,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32171]</label>
@@ -2005,7 +1978,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32172]</label>
@@ -2026,7 +1999,7 @@
                     <textoffsetx>10</textoffsetx>
                     <textwidth>210</textwidth>
                     <aligny>center</aligny>
-                    <font>font13</font>
+                    <font>font13_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32173]</label>

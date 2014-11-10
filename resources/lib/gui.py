@@ -150,8 +150,12 @@ class GUI(xbmcgui.WindowXML):
         
 
     def onClick( self, controlID ):
-        if controlID == Controls.MAIN_MENU_EXIT_BTN: # Exit Button
+        # EXIT BUTTON
+        if controlID == Controls.MAIN_MENU_EXIT_BTN:
             self.close()
+        # Club Navigation
+        elif controlID == Controls.CLUB_MENU_STRUCTURE_BTN:
+            self.club_structure = self.SLB.get_club_structure()
 
     def onAction( self, action ):
         pass
@@ -175,13 +179,15 @@ class GUI(xbmcgui.WindowXML):
             match_item.setLabel(next_match['sport'])
             # sport competition + match + date + local
             match_item.setProperty('competition_name', next_match['match_info']['competition_name'])
-            # sport match
-            match_item.setProperty('competition_match', next_match['match_info']['competition_match'])
+            # sport match home team
+            match_item.setProperty('competition_home_team', next_match['match_info']['competition_home_team'])
+            # sport match away team
+            match_item.setProperty('competition_away_team', next_match['match_info']['competition_away_team'])
             # sport date
             match_item.setProperty('competition_date', next_match['match_info']['competition_date'])
             # sport local
             match_item.setProperty('competition_local', next_match['match_info']['competition_local'])
             # sport image as thumbnail
             match_item.setThumbnailImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
-            lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_match'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
+            #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)

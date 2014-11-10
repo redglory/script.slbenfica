@@ -242,27 +242,55 @@ class SLB(object):
             
             competition = match_li.find('span', {'id': COMPETITION.format(index=str(index))}).string
             match       = match_li.find('span', {'id': MATCH.format(index=str(index))}).string
+            if match.find('vs.') != -1:
+                home_team, away_team = match.split('vs.')
             match_date  = match_li.find('span', {'id': MATCH_DATE.format(index=str(index))}).string
             match_local = match_li.find('span', {'id': MATCH_LOCAL.format(index=str(index))}).string
-            matches.append({'competition': competition, 
-                            'match': match, 
+            matches.append({'competition': competition.strip(' ...'), 
+                            'home_team': home_team.strip(' '), 
+                            'away_team': away_team.strip(' '), 
                             'match_date': match_date, 
-                            'match_local': match_local})    
+                            'match_local': match_local.strip(' ...').strip(' -')})    
     
         next_matches = []
         for index, sport_li in enumerate(sports_lis):
             _id = int(sport_li.find('a')['id'])
-            _sport, _thumb = self.get_sport_info(_id)
-            next_matches.append({'id': _id,
-                                 'sport': _sport,
-                                 'thumbnail': _thumb,
-                                 'match_info': {'competition_name' : matches[index]['competition'],
-                                                'competition_match': matches[index]['match'],
-                                                'competition_date' : matches[index]['match_date'],
-                                                'competition_local': matches[index]['match_local']}
+            if _id != 1707: # remove funzone events
+                _sport, _thumb = self.get_sport_info(_id)
+                next_matches.append({'id': _id,
+                                     'sport': _sport,
+                                     'thumbnail': _thumb,
+                                     'match_info': {'competition_name' : matches[index]['competition'],
+                                                    'competition_home_team': matches[index]['home_team'],
+                                                    'competition_away_team': matches[index]['away_team'],
+                                                    'competition_date' : matches[index]['match_date'],
+                                                    'competition_local': matches[index]['match_local']}
                                 })
         return next_matches
     
+    def get_club_structure(self):
+
+        html = _html('http://www.slbenfica.pt/{lang}/clube/org%C3%A3ossociais.aspx'.format(lang=LANG))
+    
+        club_structure = {}
+        
+        table = html.find('table', {'class': 'pos_tab_generic'}) 
+        # table headers
+        header = table.find('tr', {'class': 'tab_top_red'})
+        titles = ['board', 'assembly', 'fiscal']
+    
+        header.extract() # remove header row from table
+    
+        members = [tr.findAll('td') for tr in table.findAll('tr')]
+    
+        for idx, title in enumerate(titles): # for each table column
+            club_structure[title] = [{'position': member[idx].find('p', {'class': 'txt_11_red'}).string if member[idx].find('p', {'class': 'txt_11_red'}) else '',
+                                      'name': member[idx].find('p', {'class': 'txt_11_dark'}).string if member[idx].find('p', {'class': 'txt_11_dark'}) else '',
+                                      'affiliate': member[idx].find('p', {'class': 'txt_10'}).string if member[idx].find('p', {'class': 'txt_10'}) else ''}
+                                      for member in members]
+
+        return club_structure
+
     def get_headlines(self):
 
         html = _html(self.HOME_URL)

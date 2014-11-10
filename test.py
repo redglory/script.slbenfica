@@ -5,6 +5,7 @@ from datetime import date, timedelta, datetime
 from itertools import chain
 from urlparse import urljoin
 from BeautifulSoup import BeautifulSoup as BS
+import pprint
 
 LANG = 'pt-PT'
 HOME_URL = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=LANG)
@@ -154,44 +155,67 @@ def get_cat_id(url, otype):
     match = re.search(pattern, url)
     return match.group(1)
 
+
+
 if __name__ == '__main__':
+
+    html = _html('http://www.slbenfica.pt/{lang}/clube/org%C3%A3ossociais.aspx'.format(lang=LANG))
     
-    COMPETITION = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_CompetitionNameLit_0'
-    MATCH       = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDesc_0'
-    MATCH_DATE  = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDateDesc_0'
-    MATCH_LOCAL = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameLocalDesc_0'
-
-    html = _html(HOME_URL)
+    club_structure = {}
     
-    # Sports id's list
-    sports_lis  = html.find('ul', {'class': 'next_games_categories_menu clearfix'}).findAll('li')
+    table = html.find('table', {'class': 'pos_tab_generic'}) 
+    # table headers
+    header = table.find('tr', {'class': 'tab_top_red'})
+    titles = ['board', 'assembly', 'fiscal']
 
-    # Sports next matches
-    matches_uls = html.findAll('ul', {'class': 'next_games_competitions'})
-    matches_lis = [match_ul.findAll('li')[0] for match_ul in matches_uls]
+    header.extract() # remove header row from table
 
-    matches = []
-    for index, match_li in enumerate(matches_lis):
-        
-        competition = match_li.find('span', {'id': COMPETITION.format(index=str(index))}).string
-        match       = match_li.find('span', {'id': MATCH.format(index=str(index))}).string
-        match_date  = match_li.find('span', {'id': MATCH_DATE.format(index=str(index))}).string
-        match_local = match_li.find('span', {'id': MATCH_LOCAL.format(index=str(index))}).string
-        matches.append({'competition': competition, 
-                        'match': match, 
-                        'match_date': match_date, 
-                        'match_local': match_local})    
+    members = [tr.findAll('td') for tr in table.findAll('tr')]
 
-    next_matches = []
-    for index, sport_li in enumerate(sports_lis):
-        next_matches.append({'id': int(sport_li.find('a')['id']),
-                             'sport': get_sport_info(int(sport_li.find('a')['id']))[0],
-                             'thumbnail': get_sport_info(int(sport_li.find('a')['id']))[1],
-                             'match_info': {'competition_name' : matches[index]['competition'],
-                                            'competition_match': matches[index]['match'],
-                                            'competition_date' : matches[index]['match_date'],
-                                            'competition_local': matches[index]['match_local']}
-                            })
+    for idx, title in enumerate(titles): # for each table column
+        club_structure[title] = [{'position': member[idx].find('p', {'class': 'txt_11_red'}).string if member[idx].find('p', {'class': 'txt_11_red'}) else '',
+                                  'name': member[idx].find('p', {'class': 'txt_11_dark'}).string if member[idx].find('p', {'class': 'txt_11_dark'}) else '',
+                                  'affiliate': member[idx].find('p', {'class': 'txt_10'}).string if member[idx].find('p', {'class': 'txt_10'}) else ''}
+                                  for member in members]
+
+    pprint.pprint(club_structure)
     
-    print next_matches
+    #COMPETITION = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_CompetitionNameLit_0'
+    #MATCH       = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDesc_0'
+    #MATCH_DATE  = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDateDesc_0'
+    #MATCH_LOCAL = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameLocalDesc_0'
+#
+    #html = _html(HOME_URL)
+    #
+    ## Sports id's list
+    #sports_lis  = html.find('ul', {'class': 'next_games_categories_menu clearfix'}).findAll('li')
+#
+    ## Sports next matches
+    #matches_uls = html.findAll('ul', {'class': 'next_games_competitions'})
+    #matches_lis = [match_ul.findAll('li')[0] for match_ul in matches_uls]
+#
+    #matches = []
+    #for index, match_li in enumerate(matches_lis):
+    #    
+    #    competition = match_li.find('span', {'id': COMPETITION.format(index=str(index))}).string
+    #    match       = match_li.find('span', {'id': MATCH.format(index=str(index))}).string
+    #    match_date  = match_li.find('span', {'id': MATCH_DATE.format(index=str(index))}).string
+    #    match_local = match_li.find('span', {'id': MATCH_LOCAL.format(index=str(index))}).string
+    #    matches.append({'competition': competition, 
+    #                    'match': match, 
+    #                    'match_date': match_date, 
+    #                    'match_local': match_local})    
+#
+    #next_matches = []
+    #for index, sport_li in enumerate(sports_lis):
+    #    next_matches.append({'id': int(sport_li.find('a')['id']),
+    #                         'sport': get_sport_info(int(sport_li.find('a')['id']))[0],
+    #                         'thumbnail': get_sport_info(int(sport_li.find('a')['id']))[1],
+    #                         'match_info': {'competition_name' : matches[index]['competition'],
+    #                                        'competition_match': matches[index]['match'],
+    #                                        'competition_date' : matches[index]['match_date'],
+    #                                        'competition_local': matches[index]['match_local']}
+    #                        })
+    #
+    #print next_matches
     
