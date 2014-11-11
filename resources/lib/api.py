@@ -298,40 +298,71 @@ class SLB(object):
 
         # foundation
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=LANG))
-        foundation = {'img': _full_url(ROOT_URL, html.find('div', {'class': 'main_cont2_bannertop'}).img['src']),
-                      'text': html.find('div', {'id': 'dnn_ctr664_MLHTML_lblContent'}).getText() if html.find('div', {'id': 'dnn_ctr664_MLHTML_lblContent'}) else ''}
+        text = html.find('div', {'id': 'dnn_ctr664_MLHTML_lblContent'})
+        h1 = text.find('h1')
+        h1.extract() # remove title
+        foundation = {'title': h1.string,
+                      'img': _full_url(ROOT_URL, html.find('div', {'class': 'main_cont2_bannertop'}).img['src']),
+                      'text': text.getText()}
         # symbols
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
         symbols = html.find('ul', {'class': 'main_cont2_list'})
         symbols.extract() # remove list of symbols to get text only
-        symbol_history = { 'text': html.find('div', {'id': 'dnn_ctr670_MLHTML_lblContent'}).getText(),
-                           'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', {'class': 'main_cont2_list_img'}).img['src']),
-                                        'text': symbol.find('div', {'class': 'main_cont2_list_det'}).getText()} 
-                                      for symbol in symbols.findAll('li')]}
+        intro = html.find('div', {'id': 'dnn_ctr670_MLHTML_lblContent'})
+        for br in intro.find('br'):
+            br.replaceText(' ')
+        title1 = intro.find('h1')
+        title1.extract()
+        title2 = intro.find('h2')
+        title2.extract()
+        title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
+        pprint(intro)
+        symbol_history = {'title': title, 
+                          'text': intro.getText(),
+                          'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', {'class': 'main_cont2_list_img'}).img['src']),
+                                       'text': symbol.find('div', {'class': 'main_cont2_list_det'}).getText()} 
+                                     for symbol in symbols.findAll('li')]}
         # presidents
         def get_president_text(president):
             short = president.find('p', {'class': 'description'}).getText()
             view_more = _html(president.find('p', {'class': 'view_more'}).a['href'].encode('utf-8'))
-            text  = view_more.find('h2').parent.getText() if view_more.find('h2') else view_more.find('h2')
+            text = ''
+            if view_more.find('h2'): 
+                info = view_more.find('h2').parent
+                tags = ['h1', 'h2', 'a']
+                for tag in tags:
+                    block = info.find(tag) # remove tags from info
+                    block.extract()
+                text = info.getText()
             return {'short': short, 'long': text}
     
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
-        presidents = {'text': html.find('div', {'id': 'dnn_ctr2916_MLHTML_lblContent'}).getText(),
-                      'presidents': [{'period': president.find('p', {'class': 'line_1st'}).string,
-                                      'name': president.find('p', {'class': 'line_2nd'}).string,
-                                      'description': get_president_text(president)}
-                                    for president in html.find('div', {'class': 'modal_window_content clearfix'}).findAll('div', {'class': 'body'})]}
+    
+        intro = html.find('div', {'id': 'dnn_ctr2916_MLHTML_lblContent'})
+        title = intro.find('h1') # title
+        title.extract()
+        tags = ['div', 'a']
+        for tag in tags:
+            block = intro.find(tag) # remove tags from intro
+            block.extract()
+    
+        presidents = {'title': title.string,
+                      'text': intro.getText(),
+                      'list': [{'num': index + 1,
+                                'period': president.find('p', {'class': 'line_1st'}).string,
+                                'name': president.find('p', {'class': 'line_2nd'}).string,
+                                'description': get_president_text(president)}
+                                for index, president in enumerate(html.find('div', {'class': 'modal_window_content clearfix'}).findAll('div', {'class': 'body'}))]}
         # honours
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
-        
         honours = [{'name': honour.find('h3'),
                     'awards': honour.find('p')} for honour in html.findAll('h3')]
     
         club_history = {'foundation': foundation,
                         'symbols': symbol_history,
                         'presidents': presidents,
-                        'honours': honours}
-    
+                        'honours': honours }
+        
         return club_history
 
     #---------------------
