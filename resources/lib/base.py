@@ -240,7 +240,6 @@ def runPlugin(url):
 #  Web related methods
 #------------------------
 def download_page(url, data=None):
-    
     proxy = urllib2.ProxyHandler({'http': 'peu141:Jason1981#@ep-proxy.bportugal.pt:8080'})
     opener = urllib2.build_opener(proxy)
     urllib2.install_opener(opener)
@@ -253,7 +252,7 @@ def _full_url(root, url):
     return urljoin(root, url)
 
 def _html(url):
-    return BS(download_page(url))
+    return BS(download_page(url), convertEntities=BS.HTML_ENTITIES)
 
 
 #---------------------------
