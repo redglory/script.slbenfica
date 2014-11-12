@@ -32,7 +32,9 @@ except:
     import simplejson as json
 
 # Beautiful Soup
-from BeautifulSoup import BeautifulSoup as BS
+import html5lib
+import six
+from bs4 import BeautifulSoup
 
 #-----------------------------------
 #   Utils Methods
@@ -240,7 +242,7 @@ def runPlugin(url):
 #  Web related methods
 #------------------------
 def download_page(url, data=None):
-    proxy = urllib2.ProxyHandler({'http': 'peu141:Jason1981#@ep-proxy.bportugal.pt:8080'})
+    proxy = urllib2.ProxyHandler({'http': 'peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'})
     opener = urllib2.build_opener(proxy)
     urllib2.install_opener(opener)
     request = urllib2.Request(url, data)
@@ -252,7 +254,7 @@ def _full_url(root, url):
     return urljoin(root, url)
 
 def _html(url):
-    return BS(download_page(url), convertEntities=BS.HTML_ENTITIES)
+    return BeautifulSoup(download_page(url), 'html5lib')
 
 
 #---------------------------

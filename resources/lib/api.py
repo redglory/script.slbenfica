@@ -30,11 +30,8 @@ try:
 except:
     import simplejson as json
 
-# Beautiful Soup
-from bs4 import BeautifulSoup as BS
-
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, BeautifulSoup
 
 #-----------------------
 #  Scrapping class
@@ -192,8 +189,8 @@ class SLB(object):
     
     def find_previous_next_page(self, page_html):
     
-        prev_page = page_html.find('a', {'class': 'ic_arrow_prev'})
-        next_page = page_html.find('a', {'class': 'ic_arrow_next'})
+        prev_page = page_html.find('a', class_='ic_arrow_prev')
+        next_page = page_html.find('a', class_='ic_arrow_next')
         
         prev_page_url = True if prev_page else False
         next_page_url = True if next_page else False
@@ -231,10 +228,10 @@ class SLB(object):
         html = _html(self.HOME_URL)
         
         # Sports id's list
-        sports_lis  = html.find('ul', {'class': 'next_games_categories_menu clearfix'}).findAll('li')
+        sports_lis  = html.find('ul', class_='next_games_categories_menu clearfix').findAll('li')
     
         # Sports next matches
-        matches_uls = html.findAll('ul', {'class': 'next_games_competitions'})
+        matches_uls = html.findAll('ul', class_='next_games_competitions')
         matches_lis = [match_ul.findAll('li')[0] for match_ul in matches_uls]
     
         matches = []
@@ -298,34 +295,34 @@ class SLB(object):
 
         # foundation
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=LANG))
-        text = html.find('div', {'id': 'dnn_ctr664_MLHTML_lblContent'})
+        text = html.find('div', id='dnn_ctr664_MLHTML_lblContent')
         h1 = text.find('h1')
         h1.extract() # remove title
         foundation = {'title': h1.string,
-                      'img': _full_url(ROOT_URL, html.find('div', {'class': 'main_cont2_bannertop'}).img['src']),
-                      'text': text.getText()}
+                      'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                      'text': [line for line in text.stripped_strings]}
+    
         # symbols
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
-        symbols = html.find('ul', {'class': 'main_cont2_list'})
+        symbols = html.find('ul', class_='main_cont2_list')
         symbols.extract() # remove list of symbols to get text only
-        intro = html.find('div', {'id': 'dnn_ctr670_MLHTML_lblContent'})
-        for br in intro.find('br'):
-            br.replaceText(' ')
+        intro = html.find('div', id='dnn_ctr670_MLHTML_lblContent')
         title1 = intro.find('h1')
         title1.extract()
         title2 = intro.find('h2')
         title2.extract()
         title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
-        pprint(intro)
+    
         symbol_history = {'title': title, 
-                          'text': intro.getText(),
-                          'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', {'class': 'main_cont2_list_img'}).img['src']),
-                                       'text': symbol.find('div', {'class': 'main_cont2_list_det'}).getText()} 
+                          'text': [line for line in intro.stripped_strings],
+                          'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
+                                       'text': [line for line in symbol.find('div', class_='main_cont2_list_det').stripped_strings]} 
                                      for symbol in symbols.findAll('li')]}
+        
         # presidents
         def get_president_text(president):
-            short = president.find('p', {'class': 'description'}).getText()
-            view_more = _html(president.find('p', {'class': 'view_more'}).a['href'].encode('utf-8'))
+            short = [line for line in president.find('p', class_='description').stripped_strings]
+            view_more = _html(president.find('p', class_='view_more').a['href'].encode('utf-8'))
             text = ''
             if view_more.find('h2'): 
                 info = view_more.find('h2').parent
@@ -333,12 +330,12 @@ class SLB(object):
                 for tag in tags:
                     block = info.find(tag) # remove tags from info
                     block.extract()
-                text = info.getText()
+                text = [line for line in info.stripped_strings]
             return {'short': short, 'long': text}
     
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
     
-        intro = html.find('div', {'id': 'dnn_ctr2916_MLHTML_lblContent'})
+        intro = html.find('div', id='dnn_ctr2916_MLHTML_lblContent')
         title = intro.find('h1') # title
         title.extract()
         tags = ['div', 'a']
@@ -346,13 +343,14 @@ class SLB(object):
             block = intro.find(tag) # remove tags from intro
             block.extract()
     
-        presidents = {'title': title.string,
-                      'text': intro.getText(),
+        presidents = {'title': title.get_text(strip=True),
+                      'text': [line for line in intro.stripped_strings],
                       'list': [{'num': index + 1,
-                                'period': president.find('p', {'class': 'line_1st'}).string,
-                                'name': president.find('p', {'class': 'line_2nd'}).string,
+                                'period': president.find('p', class_='line_1st').string,
+                                'name': president.find('p', class_='line_2nd').string,
                                 'description': get_president_text(president)}
-                                for index, president in enumerate(html.find('div', {'class': 'modal_window_content clearfix'}).findAll('div', {'class': 'body'}))]}
+                                for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').findAll('div', class_='body'))]}
+        
         # honours
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
         honours = [{'name': honour.find('h3'),
