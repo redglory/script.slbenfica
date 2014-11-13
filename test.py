@@ -22,7 +22,7 @@ VIDEOS_URL = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=LANG)
 PHOTOS_URL = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=LANG)
 
 class Addon:
-    __imagespath__ = os.path.join('C:\\Users\\peu141\\AppData\\Roaming\\XBMC\\addons\\script.slbenfica\\resources\\images').decode( "utf-8" )
+    __imagespath__ = os.path.join(u'C:\\Users\\peu141\\AppData\\Roaming\\XBMC\\addons\\script.slbenfica\\resources\\images\\'.encode('utf-8')).decode( "utf-8" )
 
 #-------------------
 #  Script Modes
@@ -286,9 +286,6 @@ def get_cat_id(url, otype):
 #  Web related methods
 #------------------------
 def download_page(url, data=None):
-    #proxy = urllib2.ProxyHandler({'http': 'peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'})
-    #opener = urllib2.build_opener(proxy)
-    #urllib2.install_opener(opener)
     request = urllib2.Request(url, data)
     request.add_header('Accept-Encoding', 'utf-8')
     response = urllib2.urlopen(request)
@@ -339,28 +336,17 @@ def kodi_text(text):
 
 if __name__ == '__main__':
 
-    def get_category_albums():
-        return {'albums': []}
-
-    def get_category_info(media_type, link):
-        category = _html(link.encode('utf-8'))
-
-        cat_id     = get_cat_id(link, 'category')
-        sport_info = get_sport_info(int(cat_id))
-
-        return {'name': sport_info[0].encode('utf-8'),
-                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8'),
-                'albums': get_category_albums()}
-
-    def get_media_categories(media_type):
-        if   media_type == 'videos': html = _html(VIDEOS_URL)
-        elif media_type == 'photos': html = _html(PHOTOS_URL)
+    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/decadaadecada.aspx'.format(lang=LANG))
     
-        uls = html.find_all('ul', class_='cat_list')
-        lis = [ul.find_all('li') for ul in uls]
-        
-        return [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
+    def get_decade_info(decade):
+        link = decade.find('div', class_='main_cont2_list_img').a['href']
+        info = _html(link.encode('utf-8')).find('div', class_='spc_pt17 spc_pb20').find('p').parent
+        return kodi_text(info)
 
-    categories = get_media_categories('videos')
-
-    pprint({'categories': categories})
+    decades = html.find('ul', class_='main_cont2_list').find_all('li')
+    decades_history = {'decades': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
+                                    'img': _full_url(ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                    'text': get_decade_info(decade)}
+                                   for decade in decades]}
+    
+    pprint({'decades_history': decades_history})

@@ -292,17 +292,18 @@ class SLB(object):
 
         return club_structure
 
-    def get_club_history(self):
-
+    def get_club_foundation_history(self):
         # foundation
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=LANG))
         text = html.find('div', id='dnn_ctr664_MLHTML_lblContent')
         h1 = text.find('h1')
         h1.extract() # remove title
-        foundation = {'title': h1.string,
-                      'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
-                      'text': kodi_text(text)}
-    
+        foundation_history = {'title': h1.string,
+                              'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                              'text': kodi_text(text)}
+        return foundation_history
+
+    def get_club_symbols_history(self):
         # symbols
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
         symbols = html.find('ul', class_='main_cont2_list')
@@ -314,12 +315,14 @@ class SLB(object):
         title2.extract()
         title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
     
-        symbol_history = {'title': title, 
-                          'text': kodi_text(intro),
-                          'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
-                                       'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
-                                     for symbol in symbols.find_all('li')]}
-        
+        symbols_history = {'title': title, 
+                           'text': kodi_text(intro),
+                           'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
+                                        'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
+                                      for symbol in symbols.find_all('li')]}
+        return symbols_history
+
+    def get_club_presidents_history(self):
         # presidents
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
     
@@ -331,7 +334,7 @@ class SLB(object):
             block = intro.find(tag) # remove tags from intro
             block.extract()
     
-        def get_president_text(president):
+        def get_president_info(president):
             short = kodi_text(president.find('p', class_='description'))
             link = president.find('p', class_='view_more').a['href']
             view_more = _html(link.encode('utf-8'))
@@ -342,15 +345,17 @@ class SLB(object):
                 text = kodi_text(info)
             return {'short': short, 'long': text}
     
-        presidents = {'title': title.get_text(strip=True),
-                      'text': kodi_text(intro),
-                      'list': [{'num': index + 1,
-                                'thumb': re.search(r"(.*?)\?.*?", _full_url(ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
-                                'period': president.find('p', class_='line_1st').string,
-                                'name': president.find('p', class_='line_2nd').string,
-                                'description': get_president_text(president)}
-                                for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
-        
+        presidents_history = {'title': title.get_text(strip=True),
+                              'text': kodi_text(intro),
+                              'list': [{'num': index + 1,
+                                        'thumb': re.search(r"(.*?)\?.*?", _full_url(ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
+                                        'period': president.find('p', class_='line_1st').string,
+                                        'name': president.find('p', class_='line_2nd').string,
+                                        'description': get_president_info(president)}
+                                        for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
+        return presidents_history
+
+    def get_club_honours_history(self):
         # honours
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
         ul = html.find('ul', class_="pos_ul_generic")
@@ -363,15 +368,57 @@ class SLB(object):
                     continue
                 if tag.name == 'h3':
                     break
-        # image
-        honorary_orders = {'title': ul.parent.find('h1').string,
+        honours_history = {'title': ul.parent.find('h1').string,
                            'img': _full_url(self.ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
                            'honours': honours}
+        return honours_history
+
+    def get_club_decades_history(self):
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/decadaadecada.aspx'.format(lang=LANG))
+        
+        def get_decade_info(decade):
+            link = decade.find('div', class_='main_cont2_list_img').a['href']
+            info = _html(link.encode('utf-8')).find('div', class_='spc_pt17 spc_pb20').find('p').parent
+            return kodi_text(info)
+
+        decades = html.find('ul', class_='main_cont2_list').find_all('li')
+        decades_history = {'decades': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
+                                        'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                        'text': get_decade_info(decade)}
+                                       for decade in decades]}
+        return decades_history
+
+    def get_club_top_players_history(self):
+        pass
+
+    def get_club_founder_history(self):
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=LANG))
     
-        club_history = {'foundation': foundation,
-                        'symbols': symbol_history,
-                        'presidents': presidents,
-                        'honours': honorary_orders}
+        founder = html.find('div', id='dnn_ctr4148_MLHTML_lblContent')
+        title = founder.find('h1')
+        title.extract()
+        author = founder.find('p', class_='txt_10')
+        author.extract()
+        
+        founder_history = {'title': title.string.encode('utf-8'),
+                           'text': kodi_text(founder)}
+        return founder_history
+
+    def get_club_history(self):
+
+        # fundation history
+        foundation_history = get_club_foundation_history()
+        # symbols history
+        symbols_history = get_club_symbols_history()
+        # presidents history
+        presidents_history = get_club_presidents_history()
+        # honours and decorations history
+        honours_history = get_club_honours_history()
+ 
+        club_history = {'foundation': foundation_history,
+                        'symbols': symbols_history,
+                        'presidents': presidents_history,
+                        'honours': honours_history}
             
         return club_history
 
