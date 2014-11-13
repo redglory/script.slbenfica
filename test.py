@@ -1,9 +1,10 @@
 #!/usr/bin/python
 import codecs
+from urllib import quote, unquote
 import urllib2
 from datetime import date, timedelta, datetime
 from itertools import chain
-from urlparse import urljoin
+from urlparse import urljoin, urlsplit, urlunsplit
 import html5lib
 from bs4 import BeautifulSoup
 from pprint import pprint
@@ -27,10 +28,10 @@ def download_page(url, data=None):
     return response
 
 def _full_url(root, url):
-    return urljoin(root, url)
+    return urljoin(root, fixurl(url))
 
 def _html(url):
-    return BeautifulSoup(download_page(url), 'html5lib')
+    return BeautifulSoup(download_page(fixurl(url)), 'html5lib')
 
 def get_sport_id(sport):
 
@@ -169,6 +170,42 @@ def replace_with_newlines(element):
             text += '\n'
     return text
 
+def kodi_text(text):
+    pretty_text = [line for line in text.stripped_strings]
+    return u'\n'.encode('utf-8').join(pretty_text)
+
+def fixurl(url):
+    # turn string into unicode
+    if not isinstance(url,unicode):
+        url = url.decode('utf8')
+
+    # parse it
+    parsed = urlsplit(url)
+
+    # divide the netloc further
+    userpass,at,hostport = parsed.netloc.rpartition('@')
+    user,colon1,pass_ = userpass.partition(':')
+    host,colon2,port = hostport.partition(':')
+
+    # encode each component
+    scheme = parsed.scheme.encode('utf8')
+    user = quote(user.encode('utf8'))
+    colon1 = colon1.encode('utf8')
+    pass_ = quote(pass_.encode('utf8'))
+    at = at.encode('utf8')
+    host = host.encode('idna')
+    colon2 = colon2.encode('utf8')
+    port = port.encode('utf8')
+    path = '/'.join(  # could be encoded slashes!
+        quote(unquote(pce).encode('utf8'),'')
+        for pce in parsed.path.split('/')
+    )
+    query = quote(unquote(parsed.query).encode('utf8'),'=&?/')
+    fragment = quote(unquote(parsed.fragment).encode('utf8'))
+
+    # put it back together
+    netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
+    return urlunsplit((scheme,netloc,path,query,fragment))
 
 if __name__ == '__main__':
 
@@ -179,7 +216,7 @@ if __name__ == '__main__':
     h1.extract() # remove title
     foundation = {'title': h1.string,
                   'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
-                  'text': [line for line in text.stripped_strings]}
+                  'text': kodi_text(text)}
 
     # symbols
     html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
@@ -193,15 +230,16 @@ if __name__ == '__main__':
     title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
 
     symbol_history = {'title': title, 
-                      'text': [line for line in intro.stripped_strings],
+                      'text': kodi_text(intro),
                       'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
-                                   'text': [line for line in symbol.find('div', class_='main_cont2_list_det').stripped_strings]} 
+                                   'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
                                  for symbol in symbols.findAll('li')]}
     
     # presidents
     def get_president_text(president):
-        short = [line for line in president.find('p', class_='description').stripped_strings]
-        view_more = _html(president.find('p', class_='view_more').a['href'].encode('utf-8'))
+        short = kodi_text(president.find('p', class_='description'))
+        link = president.find('p', class_='view_more').a['href']
+        view_more = _html(link.encode('utf-8'))
         text = ''
         if view_more.find('h2'): 
             info = view_more.find('h2').parent
@@ -209,7 +247,7 @@ if __name__ == '__main__':
             for tag in tags:
                 block = info.find(tag) # remove tags from info
                 block.extract()
-            text = [line for line in info.stripped_strings]
+            text = kodi_text(info)
         return {'short': short, 'long': text}
 
     html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
@@ -223,7 +261,7 @@ if __name__ == '__main__':
         block.extract()
 
     presidents = {'title': title.get_text(strip=True),
-                  'text': [line for line in intro.stripped_strings],
+                  'text': kodi_text(intro),
                   'list': [{'num': index + 1,
                             'period': president.find('p', class_='line_1st').string,
                             'name': president.find('p', class_='line_2nd').string,

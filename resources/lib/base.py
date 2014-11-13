@@ -19,10 +19,11 @@
 #  Common Includes
 #-----------------------
 import sys, re, os
-from urlparse import urlparse, parse_qs, urljoin
+from urlparse import urlparse, parse_qs, urljoin, urlsplit, urlunsplit
 from itertools import chain
 from datetime import datetime, date
 import time
+from urllib import quote, unquote
 import urllib2
 import xbmc, xbmcaddon, xbmcplugin
 
@@ -242,9 +243,6 @@ def runPlugin(url):
 #  Web related methods
 #------------------------
 def download_page(url, data=None):
-    proxy = urllib2.ProxyHandler({'http': 'peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'})
-    opener = urllib2.build_opener(proxy)
-    urllib2.install_opener(opener)
     request = urllib2.Request(url, data)
     request.add_header('Accept-Encoding', 'utf-8')
     response = urllib2.urlopen(request)
@@ -314,6 +312,42 @@ def convert_date(date_str, input_format, output_format):
 
         return d.strftime(output_format)
 
+def kodi_text(text):
+    pretty_text = [line for line in text.stripped_strings]
+    return u'\n'.encode('utf-8').join(pretty_text)
+
+def fixurl(url):
+    # turn string into unicode
+    if not isinstance(url,unicode):
+        url = url.decode('utf8')
+
+    # parse it
+    parsed = urlsplit(url)
+
+    # divide the netloc further
+    userpass,at,hostport = parsed.netloc.rpartition('@')
+    user,colon1,pass_ = userpass.partition(':')
+    host,colon2,port = hostport.partition(':')
+
+    # encode each component
+    scheme = parsed.scheme.encode('utf8')
+    user = quote(user.encode('utf8'))
+    colon1 = colon1.encode('utf8')
+    pass_ = quote(pass_.encode('utf8'))
+    at = at.encode('utf8')
+    host = host.encode('idna')
+    colon2 = colon2.encode('utf8')
+    port = port.encode('utf8')
+    path = '/'.join(  # could be encoded slashes!
+        quote(unquote(pce).encode('utf8'),'')
+        for pce in parsed.path.split('/')
+    )
+    query = quote(unquote(parsed.query).encode('utf8'),'=&?/')
+    fragment = quote(unquote(parsed.fragment).encode('utf8'))
+
+    # put it back together
+    netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
+    return urlunsplit((scheme,netloc,path,query,fragment))    
 
 #------------------------
 #     Player methods

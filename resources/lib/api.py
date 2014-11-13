@@ -31,7 +31,7 @@ except:
     import simplejson as json
 
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, BeautifulSoup
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, BeautifulSoup, kodi_text
 
 #-----------------------
 #  Scrapping class
@@ -316,7 +316,7 @@ class SLB(object):
         symbol_history = {'title': title, 
                           'text': [line for line in intro.stripped_strings],
                           'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
-                                       'text': [line for line in symbol.find('div', class_='main_cont2_list_det').stripped_strings]} 
+                                       'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
                                      for symbol in symbols.findAll('li')]}
         
         # presidents
