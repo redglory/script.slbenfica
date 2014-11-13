@@ -8,30 +8,153 @@ from urlparse import urljoin, urlsplit, urlunsplit
 import html5lib
 from bs4 import BeautifulSoup
 from pprint import pprint
+import re, os
 
 try:
     import json
 except:
     import simplejson as json
 
-LANG = 'pt-PT'
-HOME_URL = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=LANG)
-ROOT_URL = 'http://www.slbenfica.pt/'
+LANG       = 'pt-PT'
+HOME_URL   = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=LANG)
+ROOT_URL   = 'http://www.slbenfica.pt/'
+VIDEOS_URL = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=LANG)
+PHOTOS_URL = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=LANG)
 
-#------------------------
-#  Web related methods
-#------------------------
-def download_page(url, data=None):
-    request = urllib2.Request(url, data)
-    request.add_header('Accept-Encoding', 'utf-8')
-    response = urllib2.urlopen(request)
-    return response
+class Addon:
+    __imagespath__ = os.path.join('C:\\Users\\peu141\\AppData\\Roaming\\XBMC\\addons\\script.slbenfica\\resources\\images').decode( "utf-8" )
 
-def _full_url(root, url):
-    return urljoin(root, fixurl(url))
+#-------------------
+#  Script Modes
+#-------------------
+class Mode:
+    UPDATE = 0
+    VIEW = 1
+    PLAY = 2
+    QUEUE = 3
+    DOWNLOAD = 4
+    EXECUTE = 5
+    ADDTOFAVOURITES = 6
+    REMOVEFROMFAVOURITES = 7
+    EDITITEM = 8
+    ADDITEM = 9
+    DOWNLOADCUSTOMMODULE = 10
+    REMOVEFROMCUSTOMMODULES = 11
+    INSTALLADDON = 12
 
-def _html(url):
-    return BeautifulSoup(download_page(fixurl(url)), 'html5lib')
+#-------------------
+#  Controls IDs
+#-------------------
+class Controls:
+    #--------------
+    #   BUTTONS
+    #--------------
+    MAIN_MENU_CLUB_BUTTON                   = 110
+    MAIN_MENU_NEWS_BUTTON                   = 120
+    MAIN_MENU_VIDEOS_BUTTON                 = 130
+    MAIN_MENU_PHOTOS_BUTTON                 = 140
+    MAIN_MENU_STADIUM_BUTTON                = 150
+    MAIN_MENU_TICKETS_BUTTON                = 160
+    MAIN_MENU_CALENDAR_BUTTON               = 170
+    MAIN_MENU_SPORTS_BTN                    = 180 
+    MAIN_MENU_LIVE_MATCH_BTN                = 190
+    MAIN_MENU_EXIT_BTN                      = 200
+    CLUB_MENU_INFO_BTN                      = 111
+    CLUB_MENU_STRUCTURE_BTN                 = 112
+    CLUB_MENU_HISTORY_BTN                   = 113
+    CLUB_MENU_MUSEUM_BTN                    = 114
+    NEWS_MENU_HEADLINES_BTN                 = 121
+    NEWS_MENU_SPORTS_BTN                    = 122
+    VIDEOS_MENU_FOOTBALL_BTN                = 131
+    VIDEOS_FOOTBALL_YOUTH_TEAMS_BTN         = 231
+    VIDEOS_FOOTBALL__B_TEAM_BTN             = 232
+    VIDEOS_MENU_FUTSAL_BTN                  = 132
+    VIDEOS_MENU_HOCKEY_BTN                  = 133
+    VIDEOS_MENU_BASKETBALL_BTN              = 134
+    VIDEOS_MENU_HANDBALL_BTN                = 135
+    VIDEOS_MENU_VOLLEYBALL_BTN              = 136
+    VIDEOS_MENU_ATHLETICS_BTN               = 137
+    VIDEOS_MENU_CLUB_BTN                    = 138
+    VIDEOS_MENU_OLYMPIC_BTN                 = 139
+    VIDEOS_MENU_OTHERS_BTN                  = 230
+    PHOTOS_MENU_FOOTBALL_BTN                = 141
+    PHOTOS_FOOTBALL_FIRST_TEAM_BTN          = 243
+    PHOTOS_FOOTBALL_YOUTH_TEAMS_BTN         = 244
+    PHOTOS_FOOTBALL_B_TEAM_BTN              = 245
+    PHOTOS_FOOTBALL_GENERATIONS_BTN         = 246
+    PHOTOS_MENU_FUTSAL_BTN                  = 142
+    PHOTOS_MENU_HOCKEY_BTN                  = 143
+    PHOTOS_HOCKEY_FEMALE_BTN                = 247
+    PHOTOS_MENU_BASKETBALL_BTN              = 144
+    PHOTOS_MENU_HANDBALL_BTN                = 145
+    PHOTOS_MENU_VOLLEYBALL_BTN              = 146
+    PHOTOS_MENU_ATHLETICS_BTN               = 147
+    PHOTOS_MENU_GOLF_BTN                    = 148
+    PHOTOS_MENU_JUDO_BTN                    = 149
+    PHOTOS_MENU_RUGBY_BTN                   = 240
+    PHOTOS_RUGBY_FEM_BTN                    = 248
+    PHOTOS_MENU_CLUB_BTN                    = 241
+    PHOTOS_CLUB_FAMILY_BTN                  = 249
+    PHOTOS_MENU_OLYMPIC_BTN                 = 242
+    STADIUM_MENU_LIGHT_BTN                  = 151
+    STADIUM_MENU_INFO_BTN                   = 152
+    STADIUM_MENU_TOURS_BTN                  = 153
+    STADIUM_MENU_VIRTUAL_BTN                = 154
+    TICKETS_MENU_MATCHES_BTN                = 161
+    TICKETS_MENU_MATCHES_BTN                = 162
+    CALENDAR_MENU_TODAY_BTN                 = 171
+    CALENDAR_MENU_WEEKLY_BTN                = 172
+    CALENDAR_MENU_MONTHLY_BTN               = 173
+    CALENDAR_NEXT_MATCHES_NEXT_BTN          = 174
+    CALENDAR_NEXT_MATCHES_PREV_BTN          = 175
+    #--------------
+    #   CONTENT
+    #--------------        
+    # CLUB      
+    CONTENT_CLUB_VIEW                       = 9010
+    CONTENT_CLUB_INFO_VIEW                  = 9011
+    CONTENT_CLUB_STRUCTURE_VIEW             = 9012
+    CONTENT_CLUB_HISTORY_VIEW               = 9013
+    CONTENT_CLUB_MUSEUM_VIEW                = 9014
+    # NEWS      
+    CONTENT_NEWS_HEADLINES_VIEW             = 9020
+    CONTENT_NEWS_SPORTS_VIEW                = 9021
+    CONTENT_NEWS_SPORT_VIEW                 = 9022
+    CONTENT_NEWS_ARTICLE_VIEW               = 9023
+    # VIDEOS        
+    CONTENT_VIDEOS_SPORTS_VIEW              = 9031
+    CONTENT_VIDEOS_ALBUMS_VIEW              = 9032
+    CONTENT_ALBUMS_VIDEOS_VIEW              = 9033
+    # PHOTOS        
+    CONTENT_PHOTOS_SPORTS_VIEW              = 9044
+    CONTENT_PHOTOS_ALBUMS_VIEW              = 9045
+    CONTENT_SLIDESHOW_VIEW                  = 9046
+    # STADIUM       
+    CONTENT_STADIUM_LIGHT_VIEW              = 9050
+    CONTENT_STADIUM_INFO_VIEW               = 9051
+    CONTENT_STADIUM_TOURS_VIEW              = 9052
+    CONTENT_STADIUM_VIRTUAL_VIEW            = 9053
+    # TICKETS       
+    CONTENT_TICKETS_MATCHES_VIEW            = 9060
+    CONTENT_TICKETS_MUSEUM_VIEW             = 9061
+    # CALENDAR
+    CONTENT_CALENDAR_NEXT_MATCHES_VIEW      = 9070
+    CONTENT_CALENDAR_TODAY_VIEW             = 9071
+    CONTENT_CALENDAR_WEEKLY_VIEW            = 9072
+    CONTENT_CALENDAR_MONTHLY_VIEW           = 9073
+    CONTENT_CALENDAR_SPORTS_VIEW            = 9074
+    CONTENT_CALENDAR_SPORT_EVENTS_VIEW      = 9075
+    CONTENT_CALENDAR_NEXT_MATCHES_LIST      = 9076
+    # SPORTS
+    CONTENT_SPORTS_VIEW                     = 9080
+    CONTENT_SPORTS_INFO_VIEW                = 9081
+    CONTENT_SPORTS_INFO_DATA_VIEW           = 9082
+    # LIVE MATCHES
+    CONTENT_LIVE_MATCHES_CONTAINER_VIEW     = 9090
+    CONTENT_LIVE_MATCHES_VIEW               = 9091
+    CONTENT_LIVE_MATCHES_LIST_VIEW          = 9092
+    # PANEL
+    CONTENT_PANEL_VIEW                      = 9100
 
 def get_sport_id(sport):
 
@@ -159,20 +282,23 @@ def get_cat_id(url, otype):
     match = re.search(pattern, url)
     return match.group(1)
 
-import types
+#------------------------
+#  Web related methods
+#------------------------
+def download_page(url, data=None):
+    #proxy = urllib2.ProxyHandler({'http': 'peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'})
+    #opener = urllib2.build_opener(proxy)
+    #urllib2.install_opener(opener)
+    request = urllib2.Request(url, data)
+    request.add_header('Accept-Encoding', 'utf-8')
+    response = urllib2.urlopen(request)
+    return response
 
-def replace_with_newlines(element):
-    text = ''
-    for elem in element.recursiveChildGenerator():
-        if isinstance(elem, types.StringTypes):
-            text += elem.strip()
-        elif elem.name == 'br':
-            text += '\n'
-    return text
+def _full_url(root, url):
+    return urljoin(root, url)
 
-def kodi_text(text):
-    pretty_text = [line for line in text.stripped_strings]
-    return u'\n'.encode('utf-8').join(pretty_text)
+def _html(url):
+    return BeautifulSoup(download_page(fixurl(url)), 'html5lib')
 
 def fixurl(url):
     # turn string into unicode
@@ -207,78 +333,34 @@ def fixurl(url):
     netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
     return urlunsplit((scheme,netloc,path,query,fragment))
 
+def kodi_text(text):
+    pretty_text = [line for line in text.stripped_strings]
+    return u'\n'.encode('utf-8').join(pretty_text)
+
 if __name__ == '__main__':
 
-    # foundation
-    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=LANG))
-    text = html.find('div', id='dnn_ctr664_MLHTML_lblContent')
-    h1 = text.find('h1')
-    h1.extract() # remove title
-    foundation = {'title': h1.string,
-                  'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
-                  'text': kodi_text(text)}
+    def get_category_albums():
+        return {'albums': []}
 
-    # symbols
-    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
-    symbols = html.find('ul', class_='main_cont2_list')
-    symbols.extract() # remove list of symbols to get text only
-    intro = html.find('div', id='dnn_ctr670_MLHTML_lblContent')
-    title1 = intro.find('h1')
-    title1.extract()
-    title2 = intro.find('h2')
-    title2.extract()
-    title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
+    def get_category_info(media_type, link):
+        category = _html(link.encode('utf-8'))
 
-    symbol_history = {'title': title, 
-                      'text': kodi_text(intro),
-                      'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
-                                   'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
-                                 for symbol in symbols.findAll('li')]}
+        cat_id     = get_cat_id(link, 'category')
+        sport_info = get_sport_info(int(cat_id))
+
+        return {'name': sport_info[0].encode('utf-8'),
+                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8'),
+                'albums': get_category_albums()}
+
+    def get_media_categories(media_type):
+        if   media_type == 'videos': html = _html(VIDEOS_URL)
+        elif media_type == 'photos': html = _html(PHOTOS_URL)
     
-    # presidents
-    def get_president_text(president):
-        short = kodi_text(president.find('p', class_='description'))
-        link = president.find('p', class_='view_more').a['href']
-        view_more = _html(link.encode('utf-8'))
-        text = ''
-        if view_more.find('h2'): 
-            info = view_more.find('h2').parent
-            tags = ['h1', 'h2', 'a']
-            for tag in tags:
-                block = info.find(tag) # remove tags from info
-                block.extract()
-            text = kodi_text(info)
-        return {'short': short, 'long': text}
+        uls = html.find_all('ul', class_='cat_list')
+        lis = [ul.find_all('li') for ul in uls]
+        
+        return [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
 
-    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
+    categories = get_media_categories('videos')
 
-    intro = html.find('div', id='dnn_ctr2916_MLHTML_lblContent')
-    title = intro.find('h1') # title
-    title.extract()
-    tags = ['div', 'a']
-    for tag in tags:
-        block = intro.find(tag) # remove tags from intro
-        block.extract()
-
-    presidents = {'title': title.get_text(strip=True),
-                  'text': kodi_text(intro),
-                  'list': [{'num': index + 1,
-                            'period': president.find('p', class_='line_1st').string,
-                            'name': president.find('p', class_='line_2nd').string,
-                            'description': get_president_text(president)}
-                            for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').findAll('div', class_='body'))]}
-    
-    # honours
-    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
-    honours = [{'name': honour.find('h3'),
-                'awards': honour.find('p')} for honour in html.findAll('h3')]
-
-    club_history = {'foundation': foundation,
-                    'symbols': symbol_history,
-                    'presidents': presidents,
-                    'honours': honours }
-
-    if club_history:
-        with codecs.open('club_history.json', 'w', encoding='utf-8') as f:
-            f.write(unicode(json.dumps(club_history, ensure_ascii=False)))
-        f.close()
+    pprint({'categories': categories})

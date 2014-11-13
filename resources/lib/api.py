@@ -22,7 +22,6 @@ import time
 import urllib2
 import codecs
 from datetime import date, timedelta, datetime
-
 import unicodedata
 
 try:
@@ -30,8 +29,10 @@ try:
 except:
     import simplejson as json
 
+from bs4 import BeautifulSoup
+
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, BeautifulSoup, kodi_text
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text
 
 #-----------------------
 #  Scrapping class
@@ -228,11 +229,11 @@ class SLB(object):
         html = _html(self.HOME_URL)
         
         # Sports id's list
-        sports_lis  = html.find('ul', class_='next_games_categories_menu clearfix').findAll('li')
+        sports_lis  = html.find('ul', class_='next_games_categories_menu clearfix').find_all('li')
     
         # Sports next matches
-        matches_uls = html.findAll('ul', class_='next_games_competitions')
-        matches_lis = [match_ul.findAll('li')[0] for match_ul in matches_uls]
+        matches_uls = html.find_all('ul', class_='next_games_competitions')
+        matches_lis = [match_ul.find_all('li')[0] for match_ul in matches_uls]
     
         matches = []
         for index, match_li in enumerate(matches_lis):
@@ -281,7 +282,7 @@ class SLB(object):
     
         header.extract() # remove header row from table
     
-        members = [tr.findAll('td') for tr in table.findAll('tr')]
+        members = [tr.find_all('td') for tr in table.find_all('tr')]
     
         for idx, title in enumerate(titles): # for each table column
             club_structure[title] = [{'position': member[idx].find('p', {'class': 'txt_11_red'}).string if member[idx].find('p', {'class': 'txt_11_red'}) else '',
@@ -300,7 +301,7 @@ class SLB(object):
         h1.extract() # remove title
         foundation = {'title': h1.string,
                       'img': _full_url(ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
-                      'text': [line for line in text.stripped_strings]}
+                      'text': kodi_text(text)}
     
         # symbols
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=LANG))
@@ -314,25 +315,12 @@ class SLB(object):
         title = ' - '.join([title1.string.encode('utf-8'), title2.string.encode('utf-8')]).decode('utf-8')
     
         symbol_history = {'title': title, 
-                          'text': [line for line in intro.stripped_strings],
+                          'text': kodi_text(intro),
                           'symbols': [{'img': _full_url(ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
                                        'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
-                                     for symbol in symbols.findAll('li')]}
+                                     for symbol in symbols.find_all('li')]}
         
         # presidents
-        def get_president_text(president):
-            short = [line for line in president.find('p', class_='description').stripped_strings]
-            view_more = _html(president.find('p', class_='view_more').a['href'].encode('utf-8'))
-            text = ''
-            if view_more.find('h2'): 
-                info = view_more.find('h2').parent
-                tags = ['h1', 'h2', 'a']
-                for tag in tags:
-                    block = info.find(tag) # remove tags from info
-                    block.extract()
-                text = [line for line in info.stripped_strings]
-            return {'short': short, 'long': text}
-    
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=LANG))
     
         intro = html.find('div', id='dnn_ctr2916_MLHTML_lblContent')
@@ -343,81 +331,93 @@ class SLB(object):
             block = intro.find(tag) # remove tags from intro
             block.extract()
     
+        def get_president_text(president):
+            short = kodi_text(president.find('p', class_='description'))
+            link = president.find('p', class_='view_more').a['href']
+            view_more = _html(link.encode('utf-8'))
+            if view_more.find('h2'): 
+                info = view_more.find('h2').parent
+                a = info.find('a')
+                a.extract()
+                text = kodi_text(info)
+            return {'short': short, 'long': text}
+    
         presidents = {'title': title.get_text(strip=True),
-                      'text': [line for line in intro.stripped_strings],
+                      'text': kodi_text(intro),
                       'list': [{'num': index + 1,
+                                'thumb': re.search(r"(.*?)\?.*?", _full_url(ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
                                 'period': president.find('p', class_='line_1st').string,
                                 'name': president.find('p', class_='line_2nd').string,
                                 'description': get_president_text(president)}
-                                for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').findAll('div', class_='body'))]}
+                                for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
         
         # honours
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=LANG))
-        honours = [{'name': honour.find('h3'),
-                    'awards': honour.find('p')} for honour in html.findAll('h3')]
+        ul = html.find('ul', class_="pos_ul_generic")
+        honours = []
+        for h3 in ul.find_all('h3'):
+            for tag in h3.next_siblings:
+                if tag.name == 'p':
+                    honour = {'name': h3.string, 'awards': kodi_text(tag)}
+                    honours.append(honour)
+                    continue
+                if tag.name == 'h3':
+                    break
+        # image
+        honorary_orders = {'title': ul.parent.find('h1').string,
+                           'img': _full_url(self.ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                           'honours': honours}
     
         club_history = {'foundation': foundation,
                         'symbols': symbol_history,
                         'presidents': presidents,
-                        'honours': honours }
-        
+                        'honours': honorary_orders}
+            
         return club_history
 
     #---------------------
     #    NEWS METHODS
     #---------------------
+    def get_news_info(self, link):
+        news = _html(link.encode('utf-8'))
+        return {'title': news.find('h1').string.strip(' ').encode('utf-8'),
+                'title2': news.find('h2').string.strip(' ').encode('utf-8'),
+                'text': kodi_text(news.find('div', class_='not_desc')),
+                'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, news.find('div', class_='pos_not_img_det').img['src'])).group(1),
+                'date': news.find('p', class_='txt_10 not_date').string.strip(' ').encode('utf-8')}
+
     def get_headlines(self):
 
         html = _html(self.HOME_URL)
     
-        uls = html.findAll('ul', {'class': 'dest_carr_list'})
-        lis = [ul.findAll('li') for ul in uls]
-        
-        headlines = set()
-        
-        for li in chain(*lis):
-            _news = News(li.a['href'])
-            headlines.add((_news._title(),
-                           _news._thumb(),
-                           _news._text(),
-                           _news._title2(),
-                           _news._date()))
-    
-        items = [
-            {'label': label,
-             'path': '',
-             'thumbnail': thumbnail,
-             'info': {'date': date,
-                      'plot': text,
-                      'plotoutline': text2,
-                     },
-            } for label, thumbnail, text, text2, date in headlines]    
-    
-        return sorted(items, key=lambda item: item['info']['date'], reverse=True)
+        uls = html.find_all('ul', class_='dest_carr_list')
+        lis = [ul.find_all('li') for ul in uls]
+
+        headlines = [get_news_info(li.a['href']) for li in chain(*lis)]
+
+        return {'headlines': headlines}
+
+    def get_category_info(self, media_type, link):
+        category = _html(link.encode('utf-8'))
+
+        cat_id     = get_cat_id(link, 'category')
+        sport_info = get_sport_info(int(cat_id))
+
+        return {'name': sport_info[0].encode('utf-8'),
+                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8'),
+                'albums': get_category_albums(media_type, cat_id)}
 
     def get_media_categories(self, media_type):
     
         if   media_type == 'videos': html = _html(self.VIDEOS_URL)
         elif media_type == 'photos': html = _html(self.PHOTOS_URL)
     
-        uls = html.findAll('ul', {'class': 'cat_list'})
-        lis = [ul.findAll('li') for ul in uls]
+        uls = html.find_all('ul', class_='cat_list')
+        lis = [ul.find_all('li') for ul in uls]
         
-        categories = set()
+        categories = [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
         
-        for li in chain(*lis):
-            _category = Category(media_type=media_type, url=li.a['href'])
-            categories.add((_category._name(),
-                            _category._albums(),
-                            _category._thumb()))
-    
-        items = [
-            {'label': label,
-             'path': path,
-             'thumbnail': thumbnail,
-            } for label, path, thumbnail in categories]
-    
-        return sorted(items, key=lambda item: item['label'])
+        return {'categories': categories}
 
     def get_category_albums(self, media_type, category_id, page=1):
         
@@ -432,8 +432,8 @@ class SLB(object):
                                                            page   = page,
                                                            lang   = self.LANG) 
         html = _html(category_url)
-        uls = html.findAll('ul', {'class': 'pos_biglist_list'})
-        lis = [ul.findAll('li') for ul in uls]
+        uls = html.find_all('ul', class_='pos_biglist_list')
+        lis = [ul.find_all('li') for ul in uls]
         
         albums = set()
     
@@ -441,11 +441,11 @@ class SLB(object):
         (prev_page, next_page) = find_previous_next_page(page_html=html)
         
         for li in chain(*lis):
-            _album = Album(name       = li.find('p', {'class': 'txt_11_dark'}).string, 
+            _album = Album(name       = li.find('p', class_='txt_11_dark').string, 
                            media_type = media_type, 
                            url        = li.a['href'],
                            thumb      = li.a.img['src'],
-                           date       = li.find('p', {'class': 'txt_10'}).string)
+                           date       = li.find('p', class_='txt_10').string)
     
             albums.add((_album._name(),
                         _album._media(),
@@ -488,10 +488,10 @@ class SLB(object):
         video_album_url = self.VIDEOS_ALBUM_URL.format(album_id = album_id, 
                                                        lang     = self.LANG) 
         html = _html(video_album_url)
-        uls  = html.findAll('ul', {'class': 'pos_biglist_vidlist'})
-        lis  = [ul.findAll('li') for ul in uls]
+        uls  = html.find_all('ul', class_='pos_biglist_vidlist')
+        lis  = [ul.find_all('li') for ul in uls]
         
-        videos = set((li.find('p', {'class': 'txt_11'}).string, 
+        videos = set((li.find('p', class_='txt_11').string, 
                       play_video(youtube_url=li.a['href']), 
                       li.a.img['src'])
                  for li in chain(*lis))
@@ -510,69 +510,13 @@ class SLB(object):
         photo_album_url = self.PHOTOS_ALBUM_URL.format(album_id = album_id, 
                                                        lang     = self.LANG)
         html = _html(photo_album_url)
-        uls  = html.findAll('ul', {'class': 'pos_biglist_imglist'})
-        lis  = [ul.findAll('li') for ul in uls]
+        uls  = html.find_all('ul', class_='pos_biglist_imglist')
+        lis  = [ul.find_all('li') for ul in uls]
         
         images = []
         images = [
             {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
-
-
-    #---------------------
-    #      News Class
-    #---------------------
-    class News(object):
-    
-        def __init__(self, url=None):
-            self.url    = url
-            self.html   = _html(url)
-        
-        def _title(self):
-            return self.html.find('h1').string.strip(' ').replace(u'\u2013', '-')
-        
-        def _title2(self):
-            return self.html.find('h2').string.strip(' ').replace(u'\u2013', '-')
-        
-        def _text(self):
-            return self.html.find('div', {'class': 'not_desc'}).get_text().replace(u'\u2013', '-')
-    
-        def _thumb(self):
-            div = self.html.find('div', {'class': 'pos_not_img_det'}) 
-            return _full_url(SLB.ROOT_URL, div.img['src']).strip(' ')
-    
-        def _date(self):
-            return self.html.find('p', {'class': 'txt_10 not_date'}).string.strip(' ').replace(u'\u2013', '-')
-
-    #---------------------
-    #    Category Class
-    #---------------------
-    class Category(object):
-    
-        def __init__(self, media_type=None, url=None):
-            
-            self.media_type = media_type
-            self.url        = url
-            self.cat_id     = get_cat_id(self.url, 'category')
-            sport_info      = get_sport_info(int(self.cat_id))
-            self.name       = sport_info[0]
-            self.thumb      = os.path.join(Addon.__imagespath__ + sport_info[1]).decode( "utf-8" )
-    
-        def _name(self):
-            return self.name.strip(' ').replace(u'\u2013', '-')
-    
-        def _cat_id(self):
-            return self.cat_id.strip(' ')
-    
-        def _media_type(self):
-            return self.media_type.strip(' ')
-        
-        def _thumb(self):
-            return self.thumb
-    
-        def _albums(self):
-            return get_category_albums( media_type  = self.media_type, 
-                                        category_id = self.cat_id)
 
     #---------------------
     #     Album Class
@@ -652,8 +596,8 @@ class SLB(object):
     
             html_soup = BS(download_page(url).read().decode('utf-8', 'ignore'))
             
-            uls = html_soup.findAll('ul', {'class': 'agEvt'})
-            lis = [ul.findAll('li') for ul in uls]
+            uls = html_soup.find_all('ul', {'class': 'agEvt'})
+            lis = [ul.find_all('li') for ul in uls]
     
             for li in chain(*lis):
                 

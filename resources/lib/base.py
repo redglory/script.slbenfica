@@ -252,8 +252,35 @@ def _full_url(root, url):
     return urljoin(root, url)
 
 def _html(url):
-    return BeautifulSoup(download_page(url), 'html5lib')
+    return BeautifulSoup(download_page(fixurl(url)), 'html5lib')
 
+def fixurl(url):
+    # turn string into unicode
+    if not isinstance(url,unicode):
+        url = url.decode('utf8')
+    # parse it
+    parsed = urlsplit(url)
+    # divide the netloc further
+    userpass,at,hostport = parsed.netloc.rpartition('@')
+    user,colon1,pass_ = userpass.partition(':')
+    host,colon2,port = hostport.partition(':')
+    # encode each component
+    scheme = parsed.scheme.encode('utf8')
+    user = quote(user.encode('utf8'))
+    colon1 = colon1.encode('utf8')
+    pass_ = quote(pass_.encode('utf8'))
+    at = at.encode('utf8')
+    host = host.encode('idna')
+    colon2 = colon2.encode('utf8')
+    port = port.encode('utf8')
+    path = '/'.join(  # could be encoded slashes!
+        quote(unquote(pce).encode('utf8'),'')
+        for pce in parsed.path.split('/'))
+    query = quote(unquote(parsed.query).encode('utf8'),'=&?/')
+    fragment = quote(unquote(parsed.fragment).encode('utf8'))
+    # put it back together
+    netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
+    return urlunsplit((scheme,netloc,path,query,fragment))
 
 #---------------------------
 #  Date and String methods
@@ -314,40 +341,7 @@ def convert_date(date_str, input_format, output_format):
 
 def kodi_text(text):
     pretty_text = [line for line in text.stripped_strings]
-    return u'\n'.encode('utf-8').join(pretty_text)
-
-def fixurl(url):
-    # turn string into unicode
-    if not isinstance(url,unicode):
-        url = url.decode('utf8')
-
-    # parse it
-    parsed = urlsplit(url)
-
-    # divide the netloc further
-    userpass,at,hostport = parsed.netloc.rpartition('@')
-    user,colon1,pass_ = userpass.partition(':')
-    host,colon2,port = hostport.partition(':')
-
-    # encode each component
-    scheme = parsed.scheme.encode('utf8')
-    user = quote(user.encode('utf8'))
-    colon1 = colon1.encode('utf8')
-    pass_ = quote(pass_.encode('utf8'))
-    at = at.encode('utf8')
-    host = host.encode('idna')
-    colon2 = colon2.encode('utf8')
-    port = port.encode('utf8')
-    path = '/'.join(  # could be encoded slashes!
-        quote(unquote(pce).encode('utf8'),'')
-        for pce in parsed.path.split('/')
-    )
-    query = quote(unquote(parsed.query).encode('utf8'),'=&?/')
-    fragment = quote(unquote(parsed.fragment).encode('utf8'))
-
-    # put it back together
-    netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
-    return urlunsplit((scheme,netloc,path,query,fragment))    
+    return u'\n'.encode('utf-8').join(pretty_text) 
 
 #------------------------
 #     Player methods
