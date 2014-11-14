@@ -29,7 +29,7 @@ try:
 except:
     import simplejson as json
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 # Common
 from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text
@@ -378,7 +378,7 @@ class SLB(object):
         
         def get_decade_info(decade):
             link = decade.find('div', class_='main_cont2_list_img').a['href']
-            info = _html(link.encode('utf-8')).find('div', class_='spc_pt17 spc_pb20').find('p').parent
+            info = _html(link.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
             return kodi_text(info)
 
         decades = html.find('ul', class_='main_cont2_list').find_all('li')
@@ -389,7 +389,40 @@ class SLB(object):
         return decades_history
 
     def get_club_top_players_history(self):
-        pass
+        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/grandesjogadores.aspx'.format(lang=LANG))
+        
+        def get_top_players_position_info(top_players_position):
+            link = top_players_position.find('div', class_='main_cont2_list_img').a['href']
+            info = _html('http://www.slbenfica.pt/pt-pt/slb/historia/grandesjogadores/defesasdireitos.aspx'.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
+            # remove title
+            title = info.h1 if info.find('h1')
+            title.extract()
+            # clean </br>
+            for br in info.find_all('br'):
+                br.extract()
+            # first extract all images from players
+            images = []
+            for img in info.find_all('img'):
+                images.append(_full_url(ROOT_URL, img.img['src'].encode('utf-8')))
+                img.extract()
+            # now, process only <p> tags. Every <p class="txt_12_dark"> is a new player
+            for tag in info.descendants:
+                if isinstance(tag, Tag):
+                    if tag.name == 'p': 
+                        if unicode('txt_12_dark') in [values for values in chain(*tag.attrs.values())]:
+                            div = tag.new_tag('div', class_='player')
+                            print div
+                            tag.insert_before(div)
+                else: continue
+
+            return kodi_text(info)
+
+        top_players_positions = html.find('ul', class_='main_cont2_list').find_all('li')
+        top_players_history = {'top_players_history': [{'top_players_position': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
+                                                        'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string.encode('utf-8'),  
+                                                        'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
+                                                        'top_players': get_top_players_position_info(top_players_position)}
+                                                      for top_players_position in top_players_positions]}
 
     def get_club_founder_history(self):
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=LANG))
@@ -444,6 +477,9 @@ class SLB(object):
 
         return {'headlines': headlines}
 
+    #---------------------------------
+    #    VIDEOS AND PHOTOS METHODS
+    #---------------------------------
     def get_category_info(self, media_type, link):
         category = _html(link.encode('utf-8'))
 
