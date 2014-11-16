@@ -1,19 +1,21 @@
 #!/usr/bin/python
-import codecs
+import sys, re, os
+from urlparse import urlparse, parse_qs, urljoin, urlsplit, urlunsplit
+from itertools import chain
+import time
 from urllib import quote, unquote
 import urllib2
+import codecs
 from datetime import date, timedelta, datetime
-from itertools import chain
-from urlparse import urljoin, urlsplit, urlunsplit
-import html5lib
-from bs4 import BeautifulSoup
+import unicodedata
 from pprint import pprint
-import re, os
 
 try:
     import json
 except:
     import simplejson as json
+
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 LANG       = 'pt-PT'
 HOME_URL   = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=LANG)
@@ -336,17 +338,27 @@ def kodi_text(text):
 
 if __name__ == '__main__':
 
-    html = _html('http://www.slbenfica.pt/{lang}/slb/historia/decadaadecada.aspx'.format(lang=LANG))
-    
-    def get_decade_info(decade):
-        link = decade.find('div', class_='main_cont2_list_img').a['href']
-        info = _html(link.encode('utf-8')).find('div', class_='spc_pt17 spc_pb20').find('p').parent
-        return kodi_text(info)
+    html = _html('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=LANG))
+    info = html.find('div', id='dnn_ctr1242_MLHTML_lblContent')
+    # title
+    title = info.h1
+    title.extract()
+    # clean </br>
+    for br in info.find_all('br'):
+        br.extract()
+    # table
+    table = info.find('table', class_='pos_tab_generic')
+    table.extract()
+    table_info = []
+    for tr in table.find_all('tr'):
+        table_row = filter(None,[td.string for td in tr.find_all('td')])
+        table_info.append(table_row)
+        
+    stadium_visits = {'text': kodi_text(info),
+                      'table': table_info}
 
-    decades = html.find('ul', class_='main_cont2_list').find_all('li')
-    decades_history = {'decades': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
-                                    'img': _full_url(ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
-                                    'text': get_decade_info(decade)}
-                                   for decade in decades]}
-    
-    pprint({'decades_history': decades_history})
+    if stadium_visits:
+        pprint(stadium_visits)
+        #with codecs.open('stadium_visits.json', "w", encoding='utf-8') as f:
+        #    f.write(unicode(json.dumps(stadium_visits, ensure_ascii=False), 'utf8'))
+        #f.close()#
