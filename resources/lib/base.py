@@ -35,7 +35,7 @@ except:
 # Beautiful Soup
 import html5lib
 import six
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 #-----------------------------------
 #   Utils Methods
@@ -197,6 +197,7 @@ class Controls:
     # PANEL
     CONTENT_PANEL_VIEW                      = 9100
 
+
 #----------------------
 #     LOG CLASS
 #----------------------
@@ -339,9 +340,69 @@ def convert_date(date_str, input_format, output_format):
 
         return d.strftime(output_format)
 
-def kodi_text(text):
-    pretty_text = [line for line in text.stripped_strings]
-    return u'\n'.encode('utf-8').join(pretty_text) 
+#----------------------
+#     COLORS
+#----------------------
+def kodi_color(color):
+    try:
+        return{'white':  'FFFFFFFF',
+               'blue':   'FF0000FF',
+               'cyan':   'FF00FFFF',
+               'violet': 'FFEE82EE',
+               'pink':   'FFFF1493',
+               'red':    'FFFF0000',
+               'green':  'FF00FF00',
+               'yellow': 'FFFFFF00',
+               'orange': 'FFFF4500'
+               }[color]
+    except:
+        return 'FFFFFFFF'
+
+def set_coloring(text, string, color):
+    return text.replace(string, set_color(string, color))
+
+def set_color(string, color):
+    color = kodi_color(color)
+    return '[COLOR=%s]%s[/COLOR]' % (color, string)
+
+def set_cr(text, n=1):
+    return text.replace('\n', '[CR]'*n)
+
+def set_bold(string, replace=False):
+    if replace:
+        for tag in ['<strong>', '<b>']:
+            string = string.replace(tag, '[B]')
+        for tag in ['</strong>', '</b>']:
+            string = string.replace(tag, '[/B]')
+    else: 
+        string = "[B]%s[/B]" % (string)
+    return string
+
+def set_bold_text(text, string, replace=False):
+    return text.replace(string, set_bold(string, replace))
+
+def set_italic(string, replace=False):
+    if replace:
+        italic_string = string.replace('<i>', '[I]').replace('</i>', '[/I]')
+    else:
+        italic_string = "[I]%s[/I]" % (string)
+    return italic_string
+
+def set_italic_text(text, string, replace=False):
+    return text.replace(string, set_italic(string, replace))
+
+def clean_color(text):
+    return re.sub(r'\W+\[*COLOR.*?\]', '', text)
+
+def kodi_text(text, func=None):
+    if isinstance(text, Tag):
+        kodi_text = [line for line in text.stripped_strings]
+    elif type(text) == list:
+        if func:
+            kodi_text = [line for line in filter(func, text)]
+        else:
+            kodi_text = [line for line in text]
+    return u'\n'.encode('utf-8').join(kodi_text)
 
 #------------------------
 #     Player methods

@@ -33,7 +33,7 @@ except:
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text, set_coloring, set_carriage_return, set_bold, set_italic, clean_color, kodi_color
 
 #-----------------------
 #  Scrapping class
@@ -418,19 +418,17 @@ class SLB(object):
                     if tag.name == 'p': 
                         if unicode('txt_12_dark') in [values for values in chain(*tag.attrs.values())]: # found first/next player name
                             if first: # first player, just append to players names table
-                                players_names.append(tag.get_text(strip=True))
+                                players_names.append(tag.string.strip(' '))
                                 first = False
                             else: # process previous player text
-                                players_names.append(tag.get_text(strip=True)) # add new player name
-                                player_text = filter(None, player_text)
-                                players_texts.append(u'\n'.encode('utf-8').join([line for line in player_text]))
+                                players_names.append(tag.string.strip(' ')) # add new player name
+                                players_texts.append(kodi_text(player_text))
                                 player_text = [] # refresh
                         else: # text from same player
-                            player_text.append(tag.get_text(strip=True))
+                            player_text.append(tag.string.strip(' '))
                 else: continue
             # process last player text...
-            player_text = filter(None, player_text)
-            players_texts.append(u'\n'.encode('utf-8').join([line for line in player_text]))
+            players_texts.append(kodi_text(player_text))
 
             top_players = [{'player': players_names[index],
                             'img': players_images[index],
@@ -681,7 +679,18 @@ class SLB(object):
         return {'text': kodi_text(info),
                 'table': table_info}
 
-                        
+    def get_stadium_info:
+        html = _html('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=LANG))
+        info = html.find('div', id='dnn_ctr1226_MLHTML_lblContent')
+        # title
+        title = info.h1
+        title.extract()
+        # sub-title
+        subtitle = info.h2
+        subtitle.extract()
+        # clean </br>
+        for br in info.find_all('br'):
+            br.extract()
 
     #-----------------------
     #  CALENDAR METHODS
