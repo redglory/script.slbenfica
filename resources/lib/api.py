@@ -33,7 +33,7 @@ except:
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, set_coloring, set_carriage_return, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp, replace_nl
+from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp
 
 #-----------------------
 #  Scrapping class
@@ -241,12 +241,12 @@ class SLB(object):
         matches = []
         for index, match_li in enumerate(matches_lis):
             
-            competition = match_li.find('span', {'id': COMPETITION.format(index=str(index))}).string
-            match       = match_li.find('span', {'id': MATCH.format(index=str(index))}).string
+            competition = match_li.find('span', id=COMPETITION.format(index=str(index))).string
+            match       = match_li.find('span', id=MATCH.format(index=str(index))).string
             if match.find('vs.') != -1:
                 home_team, away_team = match.split('vs.')
-            match_date  = match_li.find('span', {'id': MATCH_DATE.format(index=str(index))}).string
-            match_local = match_li.find('span', {'id': MATCH_LOCAL.format(index=str(index))}).string
+            match_date  = match_li.find('span', id=MATCH_DATE.format(index=str(index))).string
+            match_local = match_li.find('span', id=MATCH_LOCAL.format(index=str(index))).string
             matches.append({'competition': competition.strip(' ...'), 
                             'home_team': home_team.strip(' '), 
                             'away_team': away_team.strip(' '), 
@@ -278,9 +278,9 @@ class SLB(object):
     
         club_structure = {}
         
-        table = html.find('table', {'class': 'pos_tab_generic'}) 
+        table = html.find('table', class_='pos_tab_generic') 
         # table headers
-        header = table.find('tr', {'class': 'tab_top_red'})
+        header = table.find('tr', class_='tab_top_red')
         titles = ['board', 'assembly', 'fiscal']
     
         header.extract() # remove header row from table
@@ -288,9 +288,9 @@ class SLB(object):
         members = [tr.find_all('td') for tr in table.find_all('tr')]
     
         for idx, title in enumerate(titles): # for each table column
-            club_structure[title] = [{'position': member[idx].find('p', {'class': 'txt_11_red'}).string if member[idx].find('p', {'class': 'txt_11_red'}) else '',
-                                      'name': member[idx].find('p', {'class': 'txt_11_dark'}).string if member[idx].find('p', {'class': 'txt_11_dark'}) else '',
-                                      'affiliate': member[idx].find('p', {'class': 'txt_10'}).string if member[idx].find('p', {'class': 'txt_10'}) else ''}
+            club_structure[title] = [{'position': member[idx].find('p', class_='txt_11_red').string if member[idx].find('p', class_='txt_11_red') else '',
+                                      'name': member[idx].find('p', class_='txt_11_dark').string if member[idx].find('p', class_='txt_11_dark') else '',
+                                      'affiliate': member[idx].find('p', class_='txt_10').string if member[idx].find('p', class_='txt_10') else ''}
                                       for member in members]
 
         return club_structure
@@ -299,6 +299,13 @@ class SLB(object):
         # foundation
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=self.LANG))
         text = html.find('div', id='dnn_ctr664_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(text)
+            # replace </br> with [CR]
+            replace_br(text)
+            # replace &nbsp; with [CR]
+            replace_nbsp(text)
         h1 = text.find('h1')
         h1.extract() # remove title
         if self.KODI:
@@ -317,6 +324,13 @@ class SLB(object):
         symbols = html.find('ul', class_='main_cont2_list')
         symbols.extract() # remove list of symbols to get text only
         intro = html.find('div', id='dnn_ctr670_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(intro)
+            # replace </br> with [CR]
+            replace_br(intro)
+            # replace &nbsp; with [CR]
+            replace_nbsp(intro)
         title1 = intro.find('h1')
         title1.extract()
         title2 = intro.find('h2')
@@ -330,7 +344,7 @@ class SLB(object):
                                  'text': kodi_text(symbol.find('div', class_='main_cont2_list_det'))} 
                                for symbol in symbols.find_all('li')]}
         else:
-            return {'title': title, 
+            return {'title': title,
                     'text': stringify_text(intro),
                     'symbols': [{'img': _full_url(self.ROOT_URL, symbol.find('div', class_='main_cont2_list_img').img['src']),
                                  'text': stringify_text(symbol.find('div', class_='main_cont2_list_det'))} 
@@ -341,6 +355,13 @@ class SLB(object):
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=self.LANG))
     
         intro = html.find('div', id='dnn_ctr2916_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(intro)
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)
         title = intro.find('h1') # title
         title.extract()
         tags = ['div', 'a']
@@ -351,6 +372,13 @@ class SLB(object):
         def get_president_info(president):
             link = president.find('p', class_='view_more').a['href']
             view_more = _html(link.encode('utf-8'))
+            if self.KODI:
+                # highlight titles in red
+                kodi_titles(view_more)
+                # replace </br> with [CR]
+                replace_br(view_more)
+                # replace &nbsp; with [CR]
+                replace_nbsp(view_more)
             if view_more.find('h2'): 
                 info = view_more.find('h2').parent
                 a = info.find('a')
@@ -369,7 +397,7 @@ class SLB(object):
                     'list': [{'num': index + 1,
                               'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
                               'period': president.find('p', class_='line_1st').string,
-                              'name': president.find('p', class_='line_2nd').string,
+                              'name': set_color(president.find('p', class_='line_2nd').string, 'red'),
                               'description': get_president_info(president)}
                             for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
         else:
@@ -386,6 +414,13 @@ class SLB(object):
         # honours
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=self.LANG))
         ul = html.find('ul', class_="pos_ul_generic")
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(ul)
+            # replace </br> with [CR]
+            replace_br(ul)
+            # replace &nbsp; with [CR]
+            replace_nbsp(ul)
         honours = []
         for h3 in ul.find_all('h3'):
             for tag in h3.next_siblings:
@@ -409,15 +444,27 @@ class SLB(object):
             link = decade.find('div', class_='main_cont2_list_img').a['href']
             info = _html(link.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
             if self.KODI:
+                # highlight titles in red
+                kodi_titles(info)
+                # replace </br> with [CR]
+                replace_br(info)
+                # replace &nbsp; with [CR]
+                replace_nbsp(info)
                 return kodi_text(info)
             else:
                 return stringify_text(info)
 
         decades = html.find('ul', class_='main_cont2_list').find_all('li')
-        return {'decades': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
-                             'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
-                             'text': get_decade_info(decade)}
-                           for decade in decades]}
+        if self.KODI:
+            return {'decades': [{'decade': set_color(decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
+                                 'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                 'text': get_decade_info(decade)}
+                               for decade in decades]}
+        else:
+            return {'decades': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string,
+                                 'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                 'text': get_decade_info(decade)}
+                               for decade in decades]}
 
     def get_club_top_players_history(self):
         
@@ -425,15 +472,17 @@ class SLB(object):
             link = top_players_position.find('div', class_='main_cont2_list_img').a['href']
             original = _html('http://www.slbenfica.pt/pt-pt/slb/historia/grandesjogadores/defesasdireitos.aspx'.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
             info = original
-            # remove title
-            title = info.h1
-            title.extract()
             if self.KODI:
+                # highlight titles in red
+                kodi_titles(info)
                 # replace </br> with [CR]
                 replace_br(info)
                 # replace &nbsp; with [CR]
                 replace_nbsp(info)
-                # first extract all images from players
+            # remove title
+            title = info.h1
+            title.extract()   
+            # first extract all images from players
             players_images = []
             for img in info.find_all('img'):
                 players_images.append(_full_url(self.ROOT_URL, img['src'].encode('utf-8')))
@@ -450,13 +499,17 @@ class SLB(object):
                     if tag.name == 'p': 
                         if unicode('txt_12_dark') in [values for values in chain(*tag.attrs.values())]: # found first/next player name
                             if first: # first player, just append to players names table
-                                players_names.append(tag.string.strip(' '))
+                                if self.KODI:
+                                    players_names.append(set_color(tag.string.strip(' '), 'red')) # add new player name
+                                else:
+                                    players_names.append(tag.string.strip(' ')) # add new player name
                                 first = False
                             else: # process previous player text
-                                players_names.append(tag.string.strip(' ')) # add new player name
                                 if self.KODI:
+                                    players_names.append(set_color(tag.string.strip(' '), 'red')) # add new player name
                                     players_texts.append(kodi_text(player_text))
                                 else:
+                                    players_names.append(tag.string.strip(' ')) # add new player name
                                     players_texts.append(stringify_text(player_text))
                                 player_text = [] # refresh
                         else: # text from same player
@@ -475,17 +528,30 @@ class SLB(object):
             
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/grandesjogadores.aspx'.format(lang=self.LANG))
         top_players_positions = html.find('ul', class_='main_cont2_list').find_all('li')
-        return {'top_players_history': [{'top_players_position': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string.encode('utf-8'),
-                                         'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string.encode('utf-8'),  
-                                         'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
-                                         'top_players': get_top_players_position_info(top_players_position)}
-                                       for top_players_position in top_players_positions]}
-
+        if self.KODI:
+            return {'top_players_history': [{'top_players_position': set_color(top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
+                                             'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
+                                             'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
+                                             'top_players': get_top_players_position_info(top_players_position)}
+                                           for top_players_position in top_players_positions]}
+        else:
+            return {'top_players_history': [{'top_players_position': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string,
+                                             'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
+                                             'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
+                                             'top_players': get_top_players_position_info(top_players_position)}
+                                           for top_players_position in top_players_positions]}
 
     def get_club_founder_history(self):
         html = _html('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=self.LANG))
     
         founder = html.find('div', id='dnn_ctr4148_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(founder)
+            # replace </br> with [CR]
+            replace_br(founder)
+            # replace &nbsp; with [CR]
+            replace_nbsp(founder)
         title = founder.find('h1')
         title.extract()
         author = founder.find('p', class_='txt_10')
@@ -509,12 +575,11 @@ class SLB(object):
         # honours and decorations history
         honours_history = get_club_honours_history()
  
-        club_history = {'foundation': foundation_history,
-                        'symbols': symbols_history,
-                        'presidents': presidents_history,
-                        'honours': honours_history}
-            
-        return club_history
+        return {'club_history': {'foundation': foundation_history,
+                                 'symbols': symbols_history,
+                                 'presidents': presidents_history,
+                                 'honours': honours_history}
+               }
 
     #---------------------
     #    NEWS METHODS
@@ -522,6 +587,12 @@ class SLB(object):
     def get_news_info(self, link):
         news = _html(link.encode('utf-8'))
         if self.KODI:
+            # highlight titles in red
+            kodi_titles(news)
+            # replace </br> with [CR]
+            replace_br(news)
+            # replace &nbsp; with [CR]
+            replace_nbsp(news)
             return {'title': news.find('h1').string.strip(' '),
                     'title2': news.find('h2').string.strip(' '),
                     'text': kodi_text(news.find('div', class_='not_desc')),
@@ -706,6 +777,13 @@ class SLB(object):
     def get_stadium_visits(self):
         html = _html('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=self.LANG))
         info = html.find('div', id='dnn_ctr1242_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(info)
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)
         # title
         title = info.h1
         title.extract()
@@ -718,11 +796,6 @@ class SLB(object):
             table_info.append(table_row)
 
         if self.KODI:
-            # replace </br> with [CR]
-            replace_br(info)
-            # replace &nbsp; with [CR]
-            replace_nbsp(info)
-
             return {'title': title.string,
                     'text': kodi_text(info),
                     'table': table_info}
@@ -730,30 +803,30 @@ class SLB(object):
             return {'title': title.string,
                     'text': stringify_text(info),
                     'table': table_info}
-            
-        
 
     def get_stadium_info(self):
         html = _html('http://www.slbenfica.pt/{lang}/estadio/estadiodaluz.aspx'.format(lang=self.LANG))
         info = html.find('div', id='dnn_ctr1226_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(info)
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)        
         # title
         title = info.h1
         title.extract()
         # sub-title
-        subtitle = info.h2
-        subtitle.extract()
+        title2 = info.h2
+        title2.extract()
         if self.KODI:
-            # replace </br> with [CR]
-            replace_br(info)
-            # replace &nbsp; with [CR]
-            replace_nbsp(info)
-            # text
             return {'title': title.string.strip(' '),
-                    'subtitle': subtitle.string.strip(' '),
+                    'title2': title2.string.strip(' '),
                     'text': kodi_text(info)}
         else:
             return {'title': title.string.strip(' '),
-                    'subtitle': subtitle.string.strip(' '),
+                    'title2': title2.string.strip(' '),
                     'text': stringify_text(info)}
 
 

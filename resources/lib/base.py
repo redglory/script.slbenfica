@@ -408,6 +408,13 @@ def replace_br(text, func=None):
                 br.name = 'p'
     return text
 
+def kodi_titles(text, color):
+    if isinstance(text, Tag) or isinstance(text, BeautifulSoup):
+        tags = ['h1', 'h2', 'h3']
+        for tag in tags:
+            tag.string = set_bold(set_color(tag.string, color))
+    return text
+
 def kodi_text(text, func=None):
     if isinstance(text, Tag):
         kodi_text = [line for line in text.stripped_strings]
