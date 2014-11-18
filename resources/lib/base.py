@@ -365,8 +365,8 @@ def set_color(string, color):
     color = kodi_color(color)
     return '[COLOR=%s]%s[/COLOR]' % (color, string)
 
-def set_cr(text, n=1):
-    return text.replace('\n', '[CR]'*n)
+def clean_color(text):
+    return re.sub(r'\W+\[*COLOR.*?\]', '', text)
 
 def set_bold(string, replace=False):
     if replace:
@@ -391,8 +391,22 @@ def set_italic(string, replace=False):
 def set_italic_text(text, string, replace=False):
     return text.replace(string, set_italic(string, replace))
 
-def clean_color(text):
-    return re.sub(r'\W+\[*COLOR.*?\]', '', text)
+def replace_nbsp(text):
+    if isinstance(text, Tag):
+        for p in text.find_all('p'):
+            if p.string == u'\xa0':
+                p.string = '[CR]'
+    return text
+
+def replace_br(text, func=None):
+    if isinstance(text, Tag):
+        for br in text.find_all('br'):
+            if br.parent.name == 'p': # <br /> enclosed inside p tag. replace only
+                br.parent.string = '[CR]'
+            else:
+                br.string = '[CR]'
+                br.name = 'p'
+    return text
 
 def kodi_text(text, func=None):
     if isinstance(text, Tag):
@@ -402,7 +416,19 @@ def kodi_text(text, func=None):
             kodi_text = [line for line in filter(func, text)]
         else:
             kodi_text = [line for line in text]
-    return u'\n'.encode('utf-8').join(kodi_text)
+    else: return text # string
+    return '[CR]'.join(kodi_text).replace('[CR][CR][CR]', '[CR][CR]')
+
+def stringify_text(text, func=None):
+    if isinstance(text, Tag):
+        stringify_text = [line for line in text.stripped_strings]
+    elif type(text) == list:
+        if func:
+            stringify_text = [line for line in filter(func, text)]
+        else:
+            stringify_text = [line for line in text]
+    else: return text # string
+    return u'\n'.join(stringify_text)
 
 #------------------------
 #     Player methods

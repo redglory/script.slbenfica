@@ -140,7 +140,7 @@ from resources.lib.api import SLB
 class GUI(xbmcgui.WindowXML):
 
     def __init__( self, *args, **kwargs ):
-        self.SLB = SLB()
+        self.SLB = SLB(kodi=True)
 
     def onInit( self ):
         # Next Matches

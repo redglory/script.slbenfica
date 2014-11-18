@@ -332,33 +332,115 @@ def fixurl(url):
     netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
     return urlunsplit((scheme,netloc,path,query,fragment))
 
-def kodi_text(text):
-    pretty_text = [line for line in text.stripped_strings]
-    return u'\n'.encode('utf-8').join(pretty_text)
+def kodi_color(color):
+    try:
+        return{'white':  'FFFFFFFF',
+               'blue':   'FF0000FF',
+               'cyan':   'FF00FFFF',
+               'violet': 'FFEE82EE',
+               'pink':   'FFFF1493',
+               'red':    'FFFF0000',
+               'green':  'FF00FF00',
+               'yellow': 'FFFFFF00',
+               'orange': 'FFFF4500'
+               }[color]
+    except:
+        return 'FFFFFFFF'
+
+def set_coloring(text, string, color):
+    return text.replace(string, set_color(string, color))
+
+def set_color(string, color):
+    color = kodi_color(color)
+    return '[COLOR=%s]%s[/COLOR]' % (color, string)
+
+def clean_color(text):
+    return re.sub(r'\W+\[*COLOR.*?\]', '', text)
+
+def set_bold(string, replace=False):
+    if replace:
+        for tag in ['<strong>', '<b>']:
+            string = string.replace(tag, '[B]')
+        for tag in ['</strong>', '</b>']:
+            string = string.replace(tag, '[/B]')
+    else: 
+        string = "[B]%s[/B]" % (string)
+    return string
+
+def set_bold_text(text, string, replace=False):
+    return text.replace(string, set_bold(string, replace))
+
+def set_italic(string, replace=False):
+    if replace:
+        italic_string = string.replace('<i>', '[I]').replace('</i>', '[/I]')
+    else:
+        italic_string = "[I]%s[/I]" % (string)
+    return italic_string
+
+def set_italic_text(text, string, replace=False):
+    return text.replace(string, set_italic(string, replace))
+
+def replace_nbsp(text):
+    if isinstance(text, Tag):
+        for p in text.find_all('p'):
+            if p.string == u'\xa0':
+                p.string = '[CR]'
+    return text
+
+def replace_br(text, func=None):
+    if isinstance(text, Tag):
+        for br in text.find_all('br'):
+            if br.parent.name == 'p': # <br /> enclosed inside p tag. replace only
+                br.parent.string = '[CR]'
+            else:
+                br.string = '[CR]'
+                br.name = 'p'
+    return text
+
+def kodi_text(text, func=None):
+    if isinstance(text, Tag):
+        kodi_text = [line for line in text.stripped_strings]
+    elif type(text) == list:
+        if func:
+            kodi_text = [line for line in filter(func, text)]
+        else:
+            kodi_text = [line for line in text]
+    else: return text # string
+    return '[CR]'.join(kodi_text).replace('[CR][CR][CR]', '[CR][CR]')
+
+def stringify_text(text, func=None):
+    if isinstance(text, Tag):
+        stringify_text = [line for line in text.stripped_strings]
+    elif type(text) == list:
+        if func:
+            stringify_text = [line for line in filter(func, text)]
+        else:
+            stringify_text = [line for line in text]
+    else: return text # string
+    return u'\n'.join(stringify_text)
 
 if __name__ == '__main__':
 
-    html = _html('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=LANG))
-    info = html.find('div', id='dnn_ctr1242_MLHTML_lblContent')
+    kodi = False
+
+    html = _html('http://www.slbenfica.pt/{lang}/estadio/estadiodaluz.aspx'.format(lang=LANG))
+    info = html.find('div', id='dnn_ctr1226_MLHTML_lblContent')
     # title
     title = info.h1
     title.extract()
-    # clean </br>
-    for br in info.find_all('br'):
-        br.extract()
-    # table
-    table = info.find('table', class_='pos_tab_generic')
-    table.extract()
-    table_info = []
-    for tr in table.find_all('tr'):
-        table_row = filter(None,[td.string for td in tr.find_all('td')])
-        table_info.append(table_row)
-        
-    stadium_visits = {'text': kodi_text(info),
-                      'table': table_info}
-
-    if stadium_visits:
-        pprint(stadium_visits)
-        #with codecs.open('stadium_visits.json', "w", encoding='utf-8') as f:
-        #    f.write(unicode(json.dumps(stadium_visits, ensure_ascii=False), 'utf8'))
-        #f.close()#
+    # sub-title
+    subtitle = info.h2
+    subtitle.extract()
+    if kodi:
+        # replace </br> with [CR]
+        replace_br(info)
+        # replace &nbsp; with [CR]
+        replace_nbsp(info)
+        # text
+        print {'title': title.string.strip(' '),
+               'subtitle': subtitle.string.strip(' '),
+               'text': kodi_text(info)}
+    else:
+        print {'title': title.string.strip(' '),
+               'subtitle': subtitle.string.strip(' '),
+               'text': stringify_text(info)}
