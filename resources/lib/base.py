@@ -23,7 +23,7 @@ from urlparse import urlparse, parse_qs, urljoin, urlsplit, urlunsplit
 from itertools import chain
 from datetime import datetime, date
 import time
-from urllib import quote, unquote
+from urllib import quote, unquote, urlencode
 import urllib2
 import xbmc, xbmcaddon, xbmcplugin
 
@@ -243,17 +243,25 @@ def runPlugin(url):
 #------------------------
 #  Web related methods
 #------------------------
-def download_page(url, data=None):
-    request = urllib2.Request(url, data)
-    request.add_header('Accept-Encoding', 'utf-8')
+def BS(url, data=None, headers=None):
+    ''' data: {'user': 'redglory',
+               'password': 'yeahright'}
+    '''
+    if data: data = urlencode(data)
+    if not headers:
+        headers = {'Host': "www.slbenfica.pt",
+                   'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
+                   'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                   'Accept-Language': "pt-pt,pt;q=0.8,en;q=0.5,en-us;q=0.3",
+                   'Accept-Encoding': "gzip, deflate",
+                   'Referer': "http://www.slbenfica.pt/default.aspx",
+                   'Connection': "keep-alive"}
+    request  = urllib2.Request(fixurl(url), data, headers)
     response = urllib2.urlopen(request)
-    return response
+    return BeautifulSoup(response, 'html5lib')
 
 def _full_url(root, url):
-    return urljoin(root, url)
-
-def _html(url):
-    return BeautifulSoup(download_page(fixurl(url)), 'html5lib')
+    return fixurl(urljoin(root, url))
 
 def fixurl(url):
     # turn string into unicode
@@ -340,6 +348,13 @@ def convert_date(date_str, input_format, output_format):
 
         return d.strftime(output_format)
 
+def raw_string(s):
+    if isinstance(s, str):
+        s = s.encode('string-escape')
+    elif isinstance(s, unicode):
+        s = s.encode('unicode-escape')
+    return s
+
 #----------------------
 #     COLORS
 #----------------------
@@ -371,9 +386,9 @@ def clean_color(text):
 def set_bold(string, replace=False):
     if replace:
         for tag in ['<strong>', '<b>']:
-            string = string.replace(tag, '[B]')
+            string = string.replace(tag, r'[B]')
         for tag in ['</strong>', '</b>']:
-            string = string.replace(tag, '[/B]')
+            string = string.replace(tag, r'[/B]')
     else: 
         string = "[B]%s[/B]" % (string)
     return string
@@ -383,7 +398,7 @@ def set_bold_text(text, string, replace=False):
 
 def set_italic(string, replace=False):
     if replace:
-        italic_string = string.replace('<i>', '[I]').replace('</i>', '[/I]')
+        italic_string = string.replace('<i>', '[I]').replace('</i>', r'[/I]')
     else:
         italic_string = "[I]%s[/I]" % (string)
     return italic_string
@@ -395,16 +410,16 @@ def replace_nbsp(text):
     if isinstance(text, Tag):
         for p in text.find_all('p'):
             if p.string == u'\xa0':
-                p.string = '[CR]'
+                p.string = r'[CR]'
     return text
 
 def replace_br(text, func=None):
     if isinstance(text, Tag):
         for br in text.find_all('br'):
             if br.parent.name == 'p': # <br /> enclosed inside p tag. replace only
-                br.parent.string = '[CR]'
+                br.parent.string = r'[CR]'
             else:
-                br.string = '[CR]'
+                br.string = r'[CR]'
                 br.name = 'p'
     return text
 
@@ -412,7 +427,8 @@ def kodi_titles(text, color):
     if isinstance(text, Tag) or isinstance(text, BeautifulSoup):
         tags = ['h1', 'h2', 'h3']
         for tag in tags:
-            tag.string = set_bold(set_color(tag.string, color))
+            for tag_ in text.find_all(tag):
+                tag_.string = set_bold(set_color(tag_.string, color))
     return text
 
 def kodi_text(text, func=None):
@@ -424,16 +440,28 @@ def kodi_text(text, func=None):
         else:
             kodi_text = [line for line in text]
     else: return text # string
-    return '[CR]'.join(kodi_text).replace('[CR][CR][CR]', '[CR][CR]')
+    text = r'[CR]'.join(kodi_text).encode('utf-8')
+    patterns = []
+    iter = re.finditer('(\[CR\]){3,}', text)
+    if iter:
+        for match in iter:
+            pattern = raw_string(text[match.start():match.end()])
+            patterns.append(pattern)
+        if patterns:
+            patterns.sort(key = lambda s: len(s))
+            for p in patterns:
+                final_text = text.replace(raw_string(p), r'[CR][CR]')
+            return final_text.decode('utf-8')
+    return text.decode('utf-8')
 
 def stringify_text(text, func=None):
     if isinstance(text, Tag):
-        stringify_text = [line for line in text.stripped_strings]
+        stringify_text = [line.strip() for line in text.stripped_strings]
     elif type(text) == list:
         if func:
-            stringify_text = [line for line in filter(func, text)]
+            stringify_text = [line.strip() for line in filter(func, text)]
         else:
-            stringify_text = [line for line in text]
+            stringify_text = [line.strip() for line in text]
     else: return text # string
     return u'\n'.join(stringify_text)
 

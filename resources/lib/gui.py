@@ -139,17 +139,17 @@ from resources.lib.api import SLB
 
 class GUI(xbmcgui.WindowXML):
 
-    def __init__( self, *args, **kwargs ):
+    def __init__(self, *args, **kwargs):
         self.SLB = SLB(kodi=True)
 
-    def onInit( self ):
+    def onInit(self):
         # Next Matches
         self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
         self.next_matches = self.SLB.get_next_matches()
         self.poulate_next_matches()
         
 
-    def onClick( self, controlID ):
+    def onClick(self, controlID):
         # EXIT BUTTON
         if controlID == Controls.MAIN_MENU_EXIT_BTN:
             self.close()
@@ -157,10 +157,10 @@ class GUI(xbmcgui.WindowXML):
         elif controlID == Controls.CLUB_MENU_STRUCTURE_BTN:
             self.club_structure = self.SLB.get_club_structure()
 
-    def onAction( self, action ):
+    def onAction(self, action):
         pass
 
-    def onFocus( self, controlID ):
+    def onFocus(self, controlID):
         pass
 
     def next_game(self):

@@ -21,6 +21,7 @@ from itertools import chain
 import time
 from urllib import quote, unquote
 import urllib2
+import cookielib
 import codecs
 from datetime import date, timedelta, datetime
 import unicodedata
@@ -33,7 +34,7 @@ except:
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 # Common
-from resources.lib.base import _html, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp
+from resources.lib.base import BS, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp
 
 #-----------------------
 #  Scrapping class
@@ -50,6 +51,7 @@ class SLB(object):
     def __init__(self, lang='pt-PT', kodi=False):
         
         self.LANG                = lang
+        self.LOGIN_URL           = 'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http://www.slbenfica.pt/Default.aspx?TabID=385&language={lang}'.format(lang=lang)
         self.ROOT_URL            = 'http://www.slbenfica.pt/'
         self.HOME_URL            = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=lang)
         self.NEWS_URL            = 'http://www.slbenfica.pt/{lang}/noticias.aspx'.format(lang=lang)
@@ -63,6 +65,16 @@ class SLB(object):
         self.YOUTUBE_URL         = 'plugin://plugin.video.youtube?path=/root/video&action=play_video&videoid={id}'
 
         self.KODI = kodi
+
+    def login(self):
+        soup = BS(self.LOGIN_URL)
+        # get hidden fields
+        inputs = []
+        for hidden in soup.find_all('div', class_='aspNetHidden'):
+            for input_ in hidden.find_all('input'):
+                inputs.append((input_['id'], input_['value']))
+        params = dict(inputs)
+        
 
     def get_sport_id(self, sport):
     
@@ -229,13 +241,13 @@ class SLB(object):
         MATCH_DATE  = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameDateDesc_0'
         MATCH_LOCAL = 'dnn_ctr8809_SLBSportsAgendaWidget_RepeaterGames_RepeaterGamesByMainSport_{index}_AgendaWidgetEvent_0_LabelGameLocalDesc_0'
     
-        html = _html(self.HOME_URL)
+        soup = BS(self.HOME_URL)
         
         # Sports id's list
-        sports_lis  = html.find('ul', class_='next_games_categories_menu clearfix').find_all('li')
+        sports_lis  = soup.find('ul', class_='next_games_categories_menu clearfix').find_all('li')
     
         # Sports next matches
-        matches_uls = html.find_all('ul', class_='next_games_competitions')
+        matches_uls = soup.find_all('ul', class_='next_games_competitions')
         matches_lis = [match_ul.find_all('li')[0] for match_ul in matches_uls]
     
         matches = []
@@ -274,11 +286,11 @@ class SLB(object):
     #---------------------    
     def get_club_structure(self):
 
-        html = _html('http://www.slbenfica.pt/{lang}/clube/org%C3%A3ossociais.aspx'.format(lang=self.LANG))
+        soup = BS('http://www.slbenfica.pt/{lang}/clube/org%C3%A3ossociais.aspx'.format(lang=self.LANG))
     
         club_structure = {}
         
-        table = html.find('table', class_='pos_tab_generic') 
+        table = soup.find('table', class_='pos_tab_generic') 
         # table headers
         header = table.find('tr', class_='tab_top_red')
         titles = ['board', 'assembly', 'fiscal']
@@ -297,8 +309,8 @@ class SLB(object):
 
     def get_club_foundation_history(self):
         # foundation
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=self.LANG))
-        text = html.find('div', id='dnn_ctr664_MLHTML_lblContent')
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/fundacao.aspx'.format(lang=self.LANG))
+        text = soup.find('div', id='dnn_ctr664_MLHTML_lblContent')
         if self.KODI:
             # highlight titles in red
             kodi_titles(text)
@@ -310,20 +322,20 @@ class SLB(object):
         h1.extract() # remove title
         if self.KODI:
             return {'title': h1.string,
-                    'img': _full_url(self.ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                    'img': _full_url(self.ROOT_URL, soup.find('div', class_='main_cont2_bannertop').img['src']),
                     'text': kodi_text(text)}
         else:
             return {'title': h1.string,
-                    'img': _full_url(self.ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                    'img': _full_url(self.ROOT_URL, soup.find('div', class_='main_cont2_bannertop').img['src']),
                     'text': stringify_text(text)}            
 
 
     def get_club_symbols_history(self):
         # symbols
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=self.LANG))
-        symbols = html.find('ul', class_='main_cont2_list')
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/simbolos.aspx'.format(lang=self.LANG))
+        symbols = soup.find('ul', class_='main_cont2_list')
         symbols.extract() # remove list of symbols to get text only
-        intro = html.find('div', id='dnn_ctr670_MLHTML_lblContent')
+        intro = soup.find('div', id='dnn_ctr670_MLHTML_lblContent')
         if self.KODI:
             # highlight titles in red
             kodi_titles(intro)
@@ -352,9 +364,8 @@ class SLB(object):
 
     def get_club_presidents_history(self):
         # presidents
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=self.LANG))
-    
-        intro = html.find('div', id='dnn_ctr2916_MLHTML_lblContent')
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/presidentes.aspx'.format(lang=self.LANG))
+        intro = soup.find('div', id='dnn_ctr2916_MLHTML_lblContent')
         if self.KODI:
             # highlight titles in red
             kodi_titles(intro)
@@ -371,7 +382,7 @@ class SLB(object):
     
         def get_president_info(president):
             link = president.find('p', class_='view_more').a['href']
-            view_more = _html(link.encode('utf-8'))
+            view_more = BS(link.encode('utf-8'))
             if self.KODI:
                 # highlight titles in red
                 kodi_titles(view_more)
@@ -395,25 +406,25 @@ class SLB(object):
             return {'title': title.get_text(strip=True),
                     'text': kodi_text(intro),
                     'list': [{'num': index + 1,
-                              'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
+                              'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, soup.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
                               'period': president.find('p', class_='line_1st').string,
                               'name': set_color(president.find('p', class_='line_2nd').string, 'red'),
                               'description': get_president_info(president)}
-                            for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
+                            for index, president in enumerate(soup.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
         else:
             return {'title': title.get_text(strip=True),
                     'text': stringify_text(intro),
                     'list': [{'num': index + 1,
-                              'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, html.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
+                              'thumb': re.search(r"(.*?)\?.*?", _full_url(self.ROOT_URL, soup.find('a', id='dnn_ctr2917_Presidentes_presidentRepeater_presidentLink_{index}'.format(index=index)).img['src'])).group(1),
                               'period': president.find('p', class_='line_1st').string,
                               'name': president.find('p', class_='line_2nd').string,
                               'description': get_president_info(president)}
-                            for index, president in enumerate(html.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
+                            for index, president in enumerate(soup.find('div', class_='modal_window_content clearfix').find_all('div', class_='body'))]}
 
     def get_club_honours_history(self):
         # honours
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=self.LANG))
-        ul = html.find('ul', class_="pos_ul_generic")
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/condecoracoes.aspx'.format(lang=self.LANG))
+        ul = soup.find('ul', class_="pos_ul_generic")
         if self.KODI:
             # highlight titles in red
             kodi_titles(ul)
@@ -434,18 +445,18 @@ class SLB(object):
                 if tag.name == 'h3':
                     break
         return {'title': ul.parent.find('h1').string,
-                'img': _full_url(self.ROOT_URL, html.find('div', class_='main_cont2_bannertop').img['src']),
+                'img': _full_url(self.ROOT_URL, soup.find('div', class_='main_cont2_bannertop').img['src']),
                 'honours': honours}
 
     def get_club_decades_history(self):
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/decadaadecada.aspx'.format(lang=self.LANG))
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/decadaadecada.aspx'.format(lang=self.LANG))
         
         def get_decade_info(decade):
             link = decade.find('div', class_='main_cont2_list_img').a['href']
-            info = _html(link.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
+            info = BS(link.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
             if self.KODI:
                 # highlight titles in red
-                kodi_titles(info)
+                kodi_titles(info, 'red')
                 # replace </br> with [CR]
                 replace_br(info)
                 # replace &nbsp; with [CR]
@@ -454,7 +465,7 @@ class SLB(object):
             else:
                 return stringify_text(info)
 
-        decades = html.find('ul', class_='main_cont2_list').find_all('li')
+        decades = soup.find('ul', class_='main_cont2_list').find_all('li')
         if self.KODI:
             return {'decades': [{'decade': set_color(decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
                                  'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
@@ -470,11 +481,11 @@ class SLB(object):
         
         def get_top_players_position_info(top_players_position):
             link = top_players_position.find('div', class_='main_cont2_list_img').a['href']
-            original = _html('http://www.slbenfica.pt/pt-pt/slb/historia/grandesjogadores/defesasdireitos.aspx'.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
+            original = BS('http://www.slbenfica.pt/pt-pt/slb/historia/grandesjogadores/defesasdireitos.aspx'.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
             info = original
             if self.KODI:
                 # highlight titles in red
-                kodi_titles(info)
+                kodi_titles(info, 'red')
                 # replace </br> with [CR]
                 replace_br(info)
                 # replace &nbsp; with [CR]
@@ -526,8 +537,8 @@ class SLB(object):
                      'text': players_texts[index]}
                    for index in range(len(players_names))]
             
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/grandesjogadores.aspx'.format(lang=self.LANG))
-        top_players_positions = html.find('ul', class_='main_cont2_list').find_all('li')
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/grandesjogadores.aspx'.format(lang=self.LANG))
+        top_players_positions = soup.find('ul', class_='main_cont2_list').find_all('li')
         if self.KODI:
             return {'top_players_history': [{'top_players_position': set_color(top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
                                              'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
@@ -542,9 +553,9 @@ class SLB(object):
                                            for top_players_position in top_players_positions]}
 
     def get_club_founder_history(self):
-        html = _html('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=self.LANG))
+        soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=self.LANG))
     
-        founder = html.find('div', id='dnn_ctr4148_MLHTML_lblContent')
+        founder = soup.find('div', id='dnn_ctr4148_MLHTML_lblContent')
         if self.KODI:
             # highlight titles in red
             kodi_titles(founder)
@@ -578,14 +589,13 @@ class SLB(object):
         return {'club_history': {'foundation': foundation_history,
                                  'symbols': symbols_history,
                                  'presidents': presidents_history,
-                                 'honours': honours_history}
-               }
+                                 'honours': honours_history}}
 
     #---------------------
     #    NEWS METHODS
     #---------------------
     def get_news_info(self, link):
-        news = _html(link.encode('utf-8'))
+        news = BS(link.encode('utf-8'))
         if self.KODI:
             # highlight titles in red
             kodi_titles(news)
@@ -607,9 +617,9 @@ class SLB(object):
 
     def get_headlines(self):
 
-        html = _html(self.HOME_URL)
+        soup = BS(self.HOME_URL)
     
-        uls = html.find_all('ul', class_='dest_carr_list')
+        uls = soup.find_all('ul', class_='dest_carr_list')
         lis = [ul.find_all('li') for ul in uls]
 
         return {'headlines': [get_news_info(li.a['href']) for li in chain(*lis)]}
@@ -619,7 +629,7 @@ class SLB(object):
     #    VIDEOS AND PHOTOS METHODS
     #---------------------------------
     def get_category_info(self, media_type, link):
-        category = _html(link.encode('utf-8'))
+        category = BS(link.encode('utf-8'))
 
         cat_id     = get_cat_id(link, 'category')
         sport_info = get_sport_info(int(cat_id))
@@ -630,10 +640,10 @@ class SLB(object):
 
     def get_media_categories(self, media_type):
     
-        if   media_type == 'videos': html = _html(self.VIDEOS_URL)
-        elif media_type == 'photos': html = _html(self.PHOTOS_URL)
+        if   media_type == 'videos': soup = BS(self.VIDEOS_URL)
+        elif media_type == 'photos': soup = BS(self.PHOTOS_URL)
     
-        uls = html.find_all('ul', class_='cat_list')
+        uls = soup.find_all('ul', class_='cat_list')
         lis = [ul.find_all('li') for ul in uls]
         
         categories = [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
@@ -652,8 +662,8 @@ class SLB(object):
             category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id,
                                                            page   = page,
                                                            lang   = self.LANG) 
-        html = _html(category_url)
-        uls = html.find_all('ul', class_='pos_biglist_list')
+        soup = BS(category_url)
+        uls = soup.find_all('ul', class_='pos_biglist_list')
         lis = [ul.find_all('li') for ul in uls]
         
         albums = set()
@@ -708,8 +718,8 @@ class SLB(object):
         
         video_album_url = self.VIDEOS_ALBUM_URL.format(album_id = album_id, 
                                                        lang     = self.LANG) 
-        html = _html(video_album_url)
-        uls  = html.find_all('ul', class_='pos_biglist_vidlist')
+        soup = BS(video_album_url)
+        uls  = soup.find_all('ul', class_='pos_biglist_vidlist')
         lis  = [ul.find_all('li') for ul in uls]
         
         videos = set((li.find('p', class_='txt_11').string, 
@@ -730,14 +740,144 @@ class SLB(object):
         
         photo_album_url = self.PHOTOS_ALBUM_URL.format(album_id = album_id, 
                                                        lang     = self.LANG)
-        html = _html(photo_album_url)
-        uls  = html.find_all('ul', class_='pos_biglist_imglist')
+        soup = BS(photo_album_url)
+        uls  = soup.find_all('ul', class_='pos_biglist_imglist')
         lis  = [ul.find_all('li') for ul in uls]
         
         images = []
         images = [
             {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
+
+    
+    #-----------------------
+    #   STADIUM METHODS
+    #-----------------------
+    def get_stadium_visits(self):
+        soup = BS('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=self.LANG))
+        info = soup.find('div', id='dnn_ctr1242_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(info, 'red')
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)
+        # title
+        title = info.h1
+        title.extract()
+        # table
+        table = info.find('table', class_='pos_tab_generic')
+        table.extract()
+        table_info = []
+        for tr in table.find_all('tr'):
+            table_row = filter(None,[td.string for td in tr.find_all('td')])
+            table_info.append(table_row)
+
+        if self.KODI:
+            return {'title': title.string,
+                    'text': kodi_text(info),
+                    'table': table_info}
+        else:
+            return {'title': title.string,
+                    'text': stringify_text(info),
+                    'table': table_info}
+
+    def get_stadium_info(self):
+        soup = BS('http://www.slbenfica.pt/{lang}/estadio/estadiodaluz.aspx'.format(lang=self.LANG))
+        info = soup.find('div', id='dnn_ctr1226_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(info, 'red')
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)        
+        # title
+        title = info.h1
+        title.extract()
+        # sub-title
+        title2 = info.h2
+        title2.extract()
+        if self.KODI:
+            return {'title': title.string.strip(' '),
+                    'title2': title2.string.strip(' '),
+                    'text': kodi_text(info)}
+        else:
+            return {'title': title.string.strip(' '),
+                    'title2': title2.string.strip(' '),
+                    'text': stringify_text(info)}
+
+    def get_stadium_zones(self):
+        soup = BS('http://www.slbenfica.pt/{lang}/estadio/estadiodaluz/caracteristicasezonas.aspx'.format(lang=self.LANG))
+        info = soup.find('div', id='dnn_ctr1238_MLHTML_lblContent')
+        if self.KODI:
+            # highlight titles in red
+            kodi_titles(info, 'red')
+            # replace </br> with [CR]
+            replace_br(info)
+            # replace &nbsp; with [CR]
+            replace_nbsp(info)
+        # table
+        table = info.table
+        table.extract()
+        # title
+        title = info.h1
+        title.extract()
+        # zones
+        zones = info.find('ul', class_='pos_ul_generic')
+        zones.extract()
+        if self.KODI:
+            intro = kodi_text(info)
+            zone_desc = kodi_text(zones)
+        else:
+            intro = stringify_text(info)
+            zone_desc = stringify_text(zones)
+        # text
+        if self.KODI:
+            text = kodi_text([intro, zone_desc])
+        else:
+            text = stringify_text([intro, zone_desc])
+
+        zones_details = []
+        for tr in table.find_all('tr'):
+            if self.KODI:
+                zones_details.append({'img': _full_url(self.ROOT_URL, tr.td.img['src']),
+                                      'desc': '[CR]'.join([tr.td.h3.string.strip(' '), kodi_text(tr.td.ul)])})
+            else:
+                zones_details.append({'img': _full_url(self.ROOT_URL, tr.td.img['src']),
+                                      'desc': '\n'.join([tr.td.h3.string.strip(' '), stringify_text(tr.td.ul)])})
+        
+        return {'title': title.string.strip(' '), 'text': text, 'zones_details': zones_details}
+
+    def get_past_stadiums(self):
+        soup = BS('http://www.slbenfica.pt/{lang}/estadio/estadiosanteriores.aspx'.format(lang=self.LANG))
+        
+        def get_past_stadium_info(past_stadium):
+            link = past_stadium.find('div', class_='main_cont2_list_img').a['href']
+            info = BS(link.encode('utf-8')).find('div', class_=re.compile('spc_pt17')).find('p').parent
+            if self.KODI:
+                # highlight titles in red
+                kodi_titles(info, 'red')
+                # replace </br> with [CR]
+                replace_br(info)
+                # replace &nbsp; with [CR]
+                replace_nbsp(info)
+                return kodi_text(info)
+            else:
+                return stringify_text(info)
+
+        past_stadiums = soup.find('ul', class_='main_cont2_list').find_all('li')
+        if self.KODI:
+            return {'past_stadiums': [{'decade': set_color(decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
+                                       'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                       'text': get_past_stadium_info(past_stadium)}
+                                     for past_stadium in past_stadiums]}
+        else:
+            return {'past_stadiums': [{'decade': decade.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string,
+                                       'img': _full_url(self.ROOT_URL, decade.find('div', class_='main_cont2_list_img').a.img['src']),
+                                       'text': get_past_stadium_info(past_stadium)}
+                                     for past_stadium in past_stadiums]}
 
     #---------------------
     #     Album Class
@@ -770,64 +910,6 @@ class SLB(object):
         def _media(self):
             if   self.media_type == 'videos': return get_album_videos(album_id = self.album_id)
             elif self.media_type == 'photos': return play_slideshow(album_id = self.album_id)
-    
-    #-----------------------
-    #   STADIUM METHODS
-    #-----------------------
-    def get_stadium_visits(self):
-        html = _html('http://www.slbenfica.pt/{lang}/estadio/visitas.aspx'.format(lang=self.LANG))
-        info = html.find('div', id='dnn_ctr1242_MLHTML_lblContent')
-        if self.KODI:
-            # highlight titles in red
-            kodi_titles(info)
-            # replace </br> with [CR]
-            replace_br(info)
-            # replace &nbsp; with [CR]
-            replace_nbsp(info)
-        # title
-        title = info.h1
-        title.extract()
-        # table
-        table = info.find('table', class_='pos_tab_generic')
-        table.extract()
-        table_info = []
-        for tr in table.find_all('tr'):
-            table_row = filter(None,[td.string for td in tr.find_all('td')])
-            table_info.append(table_row)
-
-        if self.KODI:
-            return {'title': title.string,
-                    'text': kodi_text(info),
-                    'table': table_info}
-        else:
-            return {'title': title.string,
-                    'text': stringify_text(info),
-                    'table': table_info}
-
-    def get_stadium_info(self):
-        html = _html('http://www.slbenfica.pt/{lang}/estadio/estadiodaluz.aspx'.format(lang=self.LANG))
-        info = html.find('div', id='dnn_ctr1226_MLHTML_lblContent')
-        if self.KODI:
-            # highlight titles in red
-            kodi_titles(info)
-            # replace </br> with [CR]
-            replace_br(info)
-            # replace &nbsp; with [CR]
-            replace_nbsp(info)        
-        # title
-        title = info.h1
-        title.extract()
-        # sub-title
-        title2 = info.h2
-        title2.extract()
-        if self.KODI:
-            return {'title': title.string.strip(' '),
-                    'title2': title2.string.strip(' '),
-                    'text': kodi_text(info)}
-        else:
-            return {'title': title.string.strip(' '),
-                    'title2': title2.string.strip(' '),
-                    'text': stringify_text(info)}
 
 
     #-----------------------
@@ -900,10 +982,10 @@ class SLB(object):
                 event["local"]          = li.find('p', {'class': 'agLoc t12lt2B'}).string
                 event["description"]    = li.find('span', {'class': 't12lt'}).string if li.find('span', {'class': 't12lt'}) else ""
                 img_home                = li.find('div', {'class': 'eHo'})
-                event["home_team_img"]  = _full_url(img_home.img['src']) if img_home else ""
+                event["home_team_img"]  = _full_url(self.ROOT_URL, img_home.img['src']) if img_home else ""
                 event["home_team_name"] = img_home.img['alt'] if img_home else ""
                 img_away                = li.find('div', {'class': 'eVi'})
-                event["away_team_img"]  = _full_url(img_away.img['src']) if img_away else ""
+                event["away_team_img"]  = _full_url(self.ROOT_URL, img_away.img['src']) if img_away else ""
                 event["away_team_name"] = img_away.img['alt'] if img_away else ""
                 event["buy_ticket"]     = li.find('a', {'class': 'agBt btDark'}).href if li.find('a', {'class': 'agBt btDark'}) else ""
     
