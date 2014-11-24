@@ -25,6 +25,7 @@ from datetime import datetime, date
 import time
 from urllib import quote, unquote, urlencode
 import urllib2
+import requests
 import xbmc, xbmcaddon, xbmcplugin
 
 try:
@@ -36,6 +37,7 @@ except:
 import html5lib
 import six
 from bs4 import BeautifulSoup, NavigableString, Tag
+from cookielib import CookieJar
 
 #-----------------------------------
 #   Utils Methods
@@ -243,22 +245,9 @@ def runPlugin(url):
 #------------------------
 #  Web related methods
 #------------------------
-def BS(url, data=None, headers=None):
-    ''' data: {'user': 'redglory',
-               'password': 'yeahright'}
-    '''
-    if data: data = urlencode(data)
-    if not headers:
-        headers = {'Host': "www.slbenfica.pt",
-                   'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
-                   'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                   'Accept-Language': "pt-pt,pt;q=0.8,en;q=0.5,en-us;q=0.3",
-                   'Accept-Encoding': "gzip, deflate",
-                   'Referer': "http://www.slbenfica.pt/default.aspx",
-                   'Connection': "keep-alive"}
-    request  = urllib2.Request(fixurl(url), data, headers)
-    response = urllib2.urlopen(request)
-    return BeautifulSoup(response, 'html5lib')
+def BS(url):
+    r = requests.get(url)
+    return BeautifulSoup(r.text, 'html5lib')
 
 def _full_url(root, url):
     return fixurl(urljoin(root, url))
@@ -349,9 +338,9 @@ def convert_date(date_str, input_format, output_format):
         return d.strftime(output_format)
 
 def raw_string(s):
-    if isinstance(s, str):
+    if isinstance(s, str): 
         s = s.encode('string-escape')
-    elif isinstance(s, unicode):
+    elif isinstance(s, unicode): 
         s = s.encode('unicode-escape')
     return s
 

@@ -32,6 +32,7 @@ except:
     import simplejson as json
 
 from bs4 import BeautifulSoup, NavigableString, Tag
+from cookielib import CookieJar
 
 # Common
 from resources.lib.base import BS, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp
@@ -46,12 +47,12 @@ class SLB(object):
     #   TYPES:
     #------------------------------------------
     #   {media_type} = videos | photos
-    #   {lang}       = pt-pt  | es-es | en-us
+    #   {lang}       = pt-pt  | es-es | pt-PT
     #------------------------------------------
     def __init__(self, lang='pt-PT', kodi=False):
         
         self.LANG                = lang
-        self.LOGIN_URL           = 'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http://www.slbenfica.pt/Default.aspx?TabID=385&language={lang}'.format(lang=lang)
+        self.LOGIN_URL           = 'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http%3a%2f%2fwww.slbenfica.pt%2fdefault.aspx'
         self.ROOT_URL            = 'http://www.slbenfica.pt/'
         self.HOME_URL            = 'http://www.slbenfica.pt/{lang}/home.aspx'.format(lang=lang)
         self.NEWS_URL            = 'http://www.slbenfica.pt/{lang}/noticias.aspx'.format(lang=lang)
@@ -67,14 +68,49 @@ class SLB(object):
         self.KODI = kodi
 
     def login(self):
-        soup = BS(self.LOGIN_URL)
-        # get hidden fields
-        inputs = []
-        for hidden in soup.find_all('div', class_='aspNetHidden'):
-            for input_ in hidden.find_all('input'):
-                inputs.append((input_['id'], input_['value']))
-        params = dict(inputs)
+
+        LOGIN_URL = self.LOGIN_URL
+        LOGIN_URL = 'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http://www.slbenfica.pt/default.aspx'
+
+        # save session for future requests
+        self.session = requests.session()
         
+        # first get hidden params
+        soup = BS(LOGIN_URL)
+
+        params = dict([(hidden.get('id'), hidden.get('value')) for hidden in soup.find_all('input', type='hidden')])
+
+        headers = {'Accept':'*/*',
+                   'Accept-Encoding':'gzip, deflate',
+                   'Accept-Language':'pt-PT,en;q=0.8,pt-PT;q=0.6,pt;q=0.4,es;q=0.2',
+                   'Cache-Control':'no-cache',
+                   'Connection':'keep-alive',
+                   'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+                   'Host':'mybenfica.slbenfica.pt',
+                   'Origin':'https://mybenfica.slbenfica.pt',
+                   'Pragma':'no-cache',
+                   'Referer':'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http%3a%2f%2fwww.slbenfica.pt%2fdefault.aspx',
+                   'User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.65 Safari/537.36',
+                   'X-MicrosoftAjax':'Delta=true',
+                   'X-Requested-With':'XMLHttpRequest'}
+
+        payload = {'ScriptManager': 'dnn$ctr3133$Login$Login_DNN$updatePanel|dnn$ctr3133$Login$Login_DNN$loginLinkButton',
+                   'StylesheetManager_TSSM': ';Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4:pt-PT:b7b69463-0a06-4063-8ab0-8d180e49bc39:45085116:27c5704c',
+                   'ScriptManager_TSM': ';;System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35:pt:fa6755fd-da1a-49d3-9eb4-1e473e780ecd:ea597d4b:b25378d2;Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4:pt:b7b69463-0a06-4063-8ab0-8d180e49bc39:16e4e7cd:f7645509:ed16cbdc',
+                   #'__EVENTTARGET': 'dnn$ctr3133$Login$Login_DNN$loginLinkButton',
+                   #'__VIEWSTATE': params['__VIEWSTATE'].encode('utf-8'),
+                   'dnn$ctr3133$Login$Login_DNN$usernameTextBox': 'Jason',
+                   'dnn$ctr3133$Login$Login_DNN$passwordTextBox': 'Glorioso1904',
+                   '__EVENTVALIDATION': params['__EVENTVALIDATION'].encode('utf-8'),
+                   '__ASYNCPOST': 'true',
+                   'RadAJAXControlID': 'dnn_ctr3133_Login_UP'}
+
+        r = session.post(LOGIN_URL, data=payload, headers=headers)
+
+        f = codecs.open('requests.json', "w", encoding='utf-8')
+        f.write(unicode(json.dumps(r.text, ensure_ascii=False)))
+        f.close()
+        login_soup = BS(LOGIN_URL, form_data, login_header)
 
     def get_sport_id(self, sport):
     
@@ -939,7 +975,7 @@ class SLB(object):
             
             if language.lower() == 'pt-pt':
                 return (beginning_of_week.strftime("%d-%m-%Y"), end_of_week.strftime("%d-%m-%Y"))
-            elif language.lower() == 'en-us':
+            elif language.lower() == 'pt-PT':
                 return (beginning_of_week.strftime("%m/%d/%Y"), end_of_week.strftime("%m/%d/%Y"))
             elif language.lower() == 'es-es':
                 return (beginning_of_week.strftime("%d/%m/%Y"), end_of_week.strftime("%d/%m/%Y"))

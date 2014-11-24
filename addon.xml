@@ -3,6 +3,7 @@
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
     <import addon="script.module.beautifulsoup" version="4.3.2"/>
+    <import addon="script.module.requests"/>
     <import addon="script.module.html5lib" version="0.999.0"/>
     <import addon="script.module.six" version="1.5.2"/>
     <import addon="plugin.video.youtube" version="2.1.2"/>
