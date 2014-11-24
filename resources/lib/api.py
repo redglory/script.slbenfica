@@ -69,48 +69,53 @@ class SLB(object):
 
     def login(self):
 
-        LOGIN_URL = self.LOGIN_URL
-        LOGIN_URL = 'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http://www.slbenfica.pt/default.aspx'
-
         # save session for future requests
         self.session = requests.session()
         
         # first get hidden params
-        soup = BS(LOGIN_URL)
+        soup = BS(self.LOGIN_URL)
 
         params = dict([(hidden.get('id'), hidden.get('value')) for hidden in soup.find_all('input', type='hidden')])
 
-        headers = {'Accept':'*/*',
-                   'Accept-Encoding':'gzip, deflate',
-                   'Accept-Language':'pt-PT,en;q=0.8,pt-PT;q=0.6,pt;q=0.4,es;q=0.2',
-                   'Cache-Control':'no-cache',
-                   'Connection':'keep-alive',
-                   'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
-                   'Host':'mybenfica.slbenfica.pt',
-                   'Origin':'https://mybenfica.slbenfica.pt',
-                   'Pragma':'no-cache',
-                   'Referer':'https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http%3a%2f%2fwww.slbenfica.pt%2fdefault.aspx',
-                   'User-Agent':'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.65 Safari/537.36',
-                   'X-MicrosoftAjax':'Delta=true',
-                   'X-Requested-With':'XMLHttpRequest'}
-
+        # request headers
+        headers = {"Host": "mybenfica.slbenfica.pt", 
+                   "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
+                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                   "Accept-Language": "pt-pt,pt;q=0.8,en;q=0.5,en-us;q=0.3",
+                   "Accept-Encoding": "gzip, deflate",
+                   "X-Requested-With": "XMLHttpRequest",
+                   "X-MicrosoftAjax": "Delta=true",
+                   "Cache-Control": "no-cache",
+                   "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+                   "Referer": "https://mybenfica.slbenfica.pt/Login.aspx?returnurl=http%3a%2f%2fwww.slbenfica.pt%2fdefault.aspx",
+                   "Connection": "keep-alive",
+                   "Pragma": "no-cache"}
+        # request data
         payload = {'ScriptManager': 'dnn$ctr3133$Login$Login_DNN$updatePanel|dnn$ctr3133$Login$Login_DNN$loginLinkButton',
-                   'StylesheetManager_TSSM': ';Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4:pt-PT:b7b69463-0a06-4063-8ab0-8d180e49bc39:45085116:27c5704c',
-                   'ScriptManager_TSM': ';;System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35:pt:fa6755fd-da1a-49d3-9eb4-1e473e780ecd:ea597d4b:b25378d2;Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4:pt:b7b69463-0a06-4063-8ab0-8d180e49bc39:16e4e7cd:f7645509:ed16cbdc',
-                   #'__EVENTTARGET': 'dnn$ctr3133$Login$Login_DNN$loginLinkButton',
-                   #'__VIEWSTATE': params['__VIEWSTATE'].encode('utf-8'),
+                   'StylesheetManager_TSSM': '%3BTelerik.Web.UI%2C%20Version%3D2011.1.519.35%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3D121fae78165ba3d4%3Apt-PT%3Ab7b69463-0a06-4063-8ab0-8d180e49bc39%3A45085116%3A27c5704c',
+                   'ScriptManager_TSM': '%3B%3BSystem.Web.Extensions%2C%20Version%3D4.0.0.0%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3D31bf3856ad364e35%3Apt%3Afa6755fd-da1a-49d3-9eb4-1e473e780ecd%3Aea597d4b%3Ab25378d2%3BTelerik.Web.UI%2C%20Version%3D2011.1.519.35%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3D121fae78165ba3d4%3Apt%3Ab7b69463-0a06-4063-8ab0-8d180e49bc39%3A16e4e7cd%3Af7645509%3Aed16cbdc',
+                   '__EVENTTARGET': 'dnn$ctr3133$Login$Login_DNN$loginLinkButton',
+                   '__VIEWSTATE': params['__VIEWSTATE'],
                    'dnn$ctr3133$Login$Login_DNN$usernameTextBox': 'Jason',
                    'dnn$ctr3133$Login$Login_DNN$passwordTextBox': 'Glorioso1904',
-                   '__EVENTVALIDATION': params['__EVENTVALIDATION'].encode('utf-8'),
+                   '__EVENTVALIDATION': params['__EVENTVALIDATION'],
+                   'ScrollTop': '',
+                   '__dnnVariable': '',
+                   '__VIEWSTATEENCRYPTED': '',
+                   '__EVENTARGUMENT': '',
                    '__ASYNCPOST': 'true',
                    'RadAJAXControlID': 'dnn_ctr3133_Login_UP'}
-
-        r = session.post(LOGIN_URL, data=payload, headers=headers)
-
-        f = codecs.open('requests.json', "w", encoding='utf-8')
-        f.write(unicode(json.dumps(r.text, ensure_ascii=False)))
-        f.close()
-        login_soup = BS(LOGIN_URL, form_data, login_header)
+        # urlencode data params
+        data = urlencode(payload)
+        # Authenticate
+        r = session.post(self.LOGIN_URL, data=data, headers=headers)
+        if r.status_code and r.text.encode('utf-8').find('pageRedirect'):
+            # Now, we are logged in...
+            lw.log(['Authentication was successful! Logged in as: %s' % payload['dnn$ctr3133$Login$Login_DNN$usernameTextBox']])
+            return self.session
+        else: # could not loggin
+            lw.log(['Authentication failed! Please verify your username/password settings.'])
+            return False
 
     def get_sport_id(self, sport):
     

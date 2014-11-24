@@ -245,8 +245,8 @@ def runPlugin(url):
 #------------------------
 #  Web related methods
 #------------------------
-def BS(url):
-    r = requests.get(url)
+def BS(url, proxies={}):
+    r = requests.get(url, proxies=proxies)
     return BeautifulSoup(r.text, 'html5lib')
 
 def _full_url(root, url):
