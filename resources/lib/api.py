@@ -581,17 +581,17 @@ class SLB(object):
         soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/grandesjogadores.aspx'.format(lang=self.LANG))
         top_players_positions = soup.find('ul', class_='main_cont2_list').find_all('li')
         if self.KODI:
-            return {'top_players_history': [{'top_players_position': set_color(top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
-                                             'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
-                                             'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
-                                             'top_players': get_top_players_position_info(top_players_position)}
-                                           for top_players_position in top_players_positions]}
+            return [{'top_players_position': set_color(top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string, 'red'),
+                     'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
+                     'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
+                     'top_players': get_top_players_position_info(top_players_position)}
+                   for top_players_position in top_players_positions]
         else:
-            return {'top_players_history': [{'top_players_position': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string,
-                                             'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
-                                             'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
-                                             'top_players': get_top_players_position_info(top_players_position)}
-                                           for top_players_position in top_players_positions]}
+            return [{'top_players_position': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_title').string,
+                     'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
+                     'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
+                     'top_players': get_top_players_position_info(top_players_position)}
+                   for top_players_position in top_players_positions]}
 
     def get_club_founder_history(self):
         soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=self.LANG))
@@ -627,10 +627,10 @@ class SLB(object):
         # honours and decorations history
         honours_history = get_club_honours_history()
  
-        return {'club_history': {'foundation': foundation_history,
-                                 'symbols': symbols_history,
-                                 'presidents': presidents_history,
-                                 'honours': honours_history}}
+        return {'foundation': foundation_history,
+                'symbols': symbols_history,
+                'presidents': presidents_history,
+                'honours': honours_history}
 
     #---------------------
     #    NEWS METHODS
@@ -663,7 +663,7 @@ class SLB(object):
         uls = soup.find_all('ul', class_='dest_carr_list')
         lis = [ul.find_all('li') for ul in uls]
 
-        return {'headlines': [get_news_info(li.a['href']) for li in chain(*lis)]}
+        return [get_news_info(li.a['href']) for li in chain(*lis)]
 
 
     #---------------------------------
@@ -675,10 +675,11 @@ class SLB(object):
         cat_id     = get_cat_id(link, 'category')
         sport_info = get_sport_info(int(cat_id))
 
-        return {'name': sport_info[0].encode('utf-8'),
+        return {'id': cat_id,
+                'name': sport_info[0].encode('utf-8'),
                 'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8'),
                 'albums': get_category_albums(media_type, cat_id)}
-
+               
     def get_media_categories(self, media_type):
     
         if   media_type == 'videos': soup = BS(self.VIDEOS_URL)
@@ -689,7 +690,7 @@ class SLB(object):
         
         categories = [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
         
-        return {'categories': categories}
+        return categories
 
     def get_category_albums(self, media_type, category_id, page=1):
         
@@ -706,12 +707,10 @@ class SLB(object):
         soup = BS(category_url)
         uls = soup.find_all('ul', class_='pos_biglist_list')
         lis = [ul.find_all('li') for ul in uls]
+            
+
         
-        albums = set()
-    
-        # find <previous page> | <next page> entries. add them if present
-        (prev_page, next_page) = find_previous_next_page(page_html=html)
-        
+            
         for li in chain(*lis):
             _album = Album(name       = li.find('p', class_='txt_11_dark').string, 
                            media_type = media_type, 
@@ -719,11 +718,7 @@ class SLB(object):
                            thumb      = li.a.img['src'],
                            date       = li.find('p', class_='txt_10').string)
     
-            albums.add((_album._name(),
-                        _album._media(),
-                        _album._thumb(),
-                        _album._date()))
-    
+            
         items = [
             {'label': label,
              'path': path,
@@ -785,9 +780,8 @@ class SLB(object):
         uls  = soup.find_all('ul', class_='pos_biglist_imglist')
         lis  = [ul.find_all('li') for ul in uls]
         
-        images = []
         images = [
-            {'path': str('http://www.slbenfica.pt' + li.a['href']).encode('utf-8'),
+            {'path': _full_url(self.ROOT_URL, li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
 
     
