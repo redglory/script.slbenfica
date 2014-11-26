@@ -365,7 +365,6 @@
 
             <!-- CONTENT PANEL -->
             <control type="group" id="9100">
-                <zorder>1</zorder>
                 <posx>255</posx>
                 <posy>35</posy>
                 <onleft>9000</onleft>
@@ -395,7 +394,6 @@
                  200 - Main Menu - Exit Button 
             -->
             <control type="group" id="9000">
-                <zorder>10</zorder>
                 <posx>0</posx>
                 <posy>260</posy>
                 <control type="image">
@@ -712,7 +710,6 @@
                  114 - Club Menu - Museum button 
             -->
             <control type="group" id="9001">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>260</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(110)">conditional</animation>
@@ -819,7 +816,6 @@
                  122 - News Menu - Sports News button 
             -->
             <control type="group" id="9002">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>300</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9002).HasFocus + !Control.HasFocus(120)">conditional</animation>
@@ -892,7 +888,6 @@
                  230 - Videos Menu - Others button 
             -->
             <control type="group" id="9003">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9003).HasFocus + !Control.HasFocus(130) + !ControlGroup(9030).HasFocus">conditional</animation>
@@ -1135,7 +1130,6 @@
                  232 - Football Sub-Menu - B Team button 
             -->
             <control type="group" id="9030">
-                <zorder>3</zorder>
                 <posx>0</posx>
                 <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9030).HasFocus + !Control.HasFocus(131)">conditional</animation>
@@ -1210,7 +1204,6 @@
                  242 - Photos Menu - Olympic button
             -->
             <control type="group" id="9004">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>170</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9004).HasFocus + !Control.HasFocus(140) + !ControlGroup(9040).HasFocus + !ControlGroup(9041).HasFocus + !ControlGroup(9042).HasFocus + !ControlGroup(9043).HasFocus">conditional</animation>
@@ -1527,7 +1520,6 @@
                  246 - Football Sub-Menu - Benfica Generation Schools 
             -->
             <control type="group" id="9040">
-                <zorder>3</zorder>
                 <posx>0</posx>
                 <posy>170</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9040).HasFocus + !Control.HasFocus(141)">conditional</animation>
@@ -1632,7 +1624,6 @@
             <!-- 143 - Photos Hockey Sub-Menu Button -->
             <!-- 247 - Hockey Sub-Menu - Female Hockey button -->
             <control type="group" id="9041">
-                <zorder>3</zorder>
                 <posx>0</posx>
                 <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9041).HasFocus + !Control.HasFocus(143)">conditional</animation>
@@ -1674,7 +1665,6 @@
             <!-- 240 - Photos Rugby Sub-Menu Button -->
             <!-- 248 - Rugby Sub-Menu - Female Rugby button -->
             <control type="group" id="9042">
-                <zorder>3</zorder>
                 <posx>0</posx>
                 <posy>530</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9042).HasFocus + !Control.HasFocus(240)">conditional</animation>
@@ -1716,7 +1706,6 @@
             <!-- 241 - Photos Club Sub-Menu Button -->
             <!-- 249 - Club Sub-Menu - Family Stand button -->
             <control type="group" id="9043">
-                <zorder>3</zorder>
                 <posx>0</posx>
                 <posy>570</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9043).HasFocus + !Control.HasFocus(241)">conditional</animation>
@@ -1762,7 +1751,6 @@
                  154 - Stadium Menu - Virtual Stadium Button 
             -->
             <control type="group" id="9005">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>420</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9005).HasFocus + !Control.HasFocus(150)">conditional</animation>
@@ -1868,7 +1856,6 @@
             <!-- 161 - Tickets Menu - Matches Button
                  162 - Tickets Menu - Museum Button -->                 
             <control type="group" id="9006">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>460</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9006).HasFocus + !Control.HasFocus(160)">conditional</animation>
@@ -1933,7 +1920,6 @@
                  172 - Calendar Menu - Weekly Calendar Button
                  173 - Calendar Menu - Monthly Calendar Button-->
             <control type="group" id="9007">
-                <zorder>2</zorder>
                 <posx>0</posx>
                 <posy>500</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9007).HasFocus + !Control.HasFocus(170)">conditional</animation>
@@ -2013,7 +1999,108 @@
                 </control>
             </control>
 
-            <!-- weather Info -->
+
+<!-- ######################################################################################### -->
+<!--                                         CONTENT PANELS                                    -->
+<!-- ######################################################################################### -->    
+            
+            <control type="group" id="9100">
+                <posx>255</posx>
+                <posy>35</posy>
+                <onleft>9000</onleft>
+                <onright>9000</onright>
+                <onup>9000</onup>
+                <ondown>9000</ondown>
+                <control type="image">
+                    <description>Content Panel</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+            </control>
+
+            <control type="group" id="9032"> <!-- Sport Albums List -->
+                <posx>255</posx>
+                <posy>35</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9032).HasFocus + !Control.HasFocus(233)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <visible>Control.HasFocus(122) | Control.HasFocus(122) | Control.HasFocus(123)</visible>
+                <control type="image">
+                    <description>Sport Albums Content Panel</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+                <control type="panel" id="233">
+                    <description>Sport Albums List</description>
+                    <posx>10</posx>
+                    <posy>25</posy>
+                    <width>980</width>
+                    <height>600</height>
+                    <onleft>9000</onleft>
+                    <onright>233</onright>
+                    <onup>233</onup>
+                    <ondown>233</ondown>
+                    <viewtype label="Sport Albums List">list</viewtype>
+                    <scrolltime>200</scrolltime>
+                    <itemlayout width="320" height="320">
+                        <control type="image">
+                            <posx>10</posx>
+                            <posy>10</posy>
+                            <width>250</width>
+                            <height>250</height>
+                            <aspectratio scalediffuse="false">keep</aspectratio>
+                            <info>Listitem.Thumb</info>
+                        </control>
+                        <control type="label">
+                            <posx>10</posx>
+                            <posy>300</posy>
+                            <width>300</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <focusedcolor>FFFFFFFF</focusedcolor>
+                            <selectedcolor>green</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout width="320" height="320">
+                        <control type="image">
+                            <posx>10</posx>
+                            <posy>10</posy>
+                            <width>250</width>
+                            <height>250</height>
+                            <info>Listitem.Thumb</info>
+                            <aspectratio scalediffuse="false">keep</aspectratio>
+                            <animation effect="zoom" end="0,0,300,300" time="100">focus</animation>
+                            <visible>Control.HasFocus(122)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>10</posx>
+                            <posy>300</posy>
+                            <width>300</width>
+                            <height>20</height>
+                            <font>font13</font>
+                            <aligny>center</aligny>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <focusedcolor>FFFFFFFF</focusedcolor>
+                            <selectedcolor>green</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                    </focusedlayout>
+                </control>
+            </control>
+
+<!--                                            HEATHER AND FOOTER                                    -->            
+
+            <!-- Weather Info -->
             <control type="group">
                 <description>Weather group</description>
                 <posx>400r</posx>
