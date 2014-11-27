@@ -58,9 +58,9 @@ class SLB(object):
         self.NEWS_URL            = 'http://www.slbenfica.pt/{lang}/noticias.aspx'.format(lang=lang)
         self.VIDEOS_URL          = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=lang)
         self.PHOTOS_URL          = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=lang)
-        self.NEWS_CATEGORY_URL   = 'http://www.slbenfica.pt/noticias/listagemdenoticia/tabid/2790/cat/{album_id}/language/{lang}/Default.aspx'
-        self.VIDEOS_CATEGORY_URL = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
-        self.PHOTOS_CATEGORY_URL = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.NEWS_SPORT_URL      = 'http://www.slbenfica.pt/noticias/listagemdenoticia/tabid/2790/cat/{album_id}/language/{lang}/Default.aspx'
+        self.VIDEOS_SPORT_URL    = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.PHOTOS_SPORT_URL    = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
         self.VIDEOS_ALBUM_URL    = 'http://www.slbenfica.pt/video/detalhealbum/tabid/2806/cat/{album_id}/language/{lang}/Default.aspx'
         self.PHOTOS_ALBUM_URL    = 'http://www.slbenfica.pt/fotos/detalhealbum/tabid/2803/cat/{album_id}/language/{lang}/Default.aspx'
         self.YOUTUBE_URL         = 'plugin://plugin.video.youtube?path=/root/video&action=play_video&videoid={id}'
@@ -193,7 +193,7 @@ class SLB(object):
         except: # are the same
             return sport
     
-    def get_sport_info(self, sport_id):
+    def get_sport_data(self, sport_id):
     
         # [id]: (sport_name, img)
         return{
@@ -306,7 +306,7 @@ class SLB(object):
         for index, sport_li in enumerate(sports_lis):
             _id = int(sport_li.find('a')['id'])
             if _id != 1707: # remove funzone events
-                _sport, _thumb = self.get_sport_info(_id)
+                _sport, _thumb = self.get_sport_data(_id)
                 next_matches.append({'id': _id,
                                      'sport': _sport,
                                      'thumbnail': _thumb,
@@ -665,18 +665,17 @@ class SLB(object):
     #---------------------------------
     #    VIDEOS AND PHOTOS METHODS
     #---------------------------------
-    def get_category_info(self, media_type, link):
-        category = BS(link.encode('utf-8'))
+    def get_sport_info(self, media_type, link):
+        sport = BS(link.encode('utf-8'))
 
-        cat_id     = get_cat_id(link)
-        sport_info = get_sport_info(int(cat_id))
+        sport_id   = get_cat_id(link)
+        sport_info = get_sport_data(int(sport_id))
 
-        return {'id': cat_id,
+        return {'id': sport_id,
                 'name': sport_info[0].encode('utf-8'),
-                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8'),
-                'albums': get_category_albums(media_type, cat_id)}
+                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8')}
                
-    def get_media_categories(self, media_type):
+    def get_sports(self, media_type):
     
         if   media_type == 'videos': soup = BS(self.VIDEOS_URL)
         elif media_type == 'photos': soup = BS(self.PHOTOS_URL)
@@ -684,34 +683,32 @@ class SLB(object):
         uls = soup.find_all('ul', class_='cat_list')
         lis = [ul.find_all('li') for ul in uls]
         
-        categories = [get_category_info(media_type, li.a['href']) for li in chain(*lis)]
-        
-        return categories
+        return [get_sport_info(media_type, li.a['href']) for li in chain(*lis)]
 
-    def get_category_albums(self, media_type, category_id):
-        category_albums = []
+    def get_sport_albums(self, media_type, sport_id):
+        sport_albums = []
         if media_type == 'videos':
-            category_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = 1, lang = self.LANG)
-            category_page_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = '{page}', lang = self.LANG)
+            sport_url = self.VIDEOS_SPORT_URL.format(sport_id = sport_id, page = 1, lang = self.LANG)
+            sport_page_url = self.VIDEOS_SPORT_URL.format(sport_id = sport_id, page = '{page}', lang = self.LANG)
         elif media_type == 'photos':
-            category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id, page = 1, lang = self.LANG)
-            category_page_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = '{page}', lang = self.LANG)
-        # first get category albums number of pages
-        soup = BS(category_url)
+            sport_url = self.PHOTOS_SPORT_URL.format(sport_id = sport_id, page = 1, lang = self.LANG)
+            sport_page_url = self.VIDEOS_SPORT_URL.format(sport_id = sport_id, page = '{page}', lang = self.LANG)
+        # first get sport albums number of pages
+        soup = BS(sport_url)
         num_pages = max([int(li.a.string) for li in soup.find('div', class_='pos_num_pag clearfix').find('ul').find_all('li')])
         # get all sport video albums
         for i in range(1, num_pages + 1):
-            soup = BS(category_page_url.format(page = i))
+            soup = BS(sport_page_url.format(page = i))
             uls = soup.find_all('ul', class_='pos_biglist_list')
             lis = [ul.find_all('li') for ul in uls]
-            category_albums.extend([{'name': li.a.img['title'],
+            sport_albums.extend([{'name': li.a.img['title'],
                                      'competition': li.a.img['alt'],
                                      'media_type': media_type,
                                      'album_id': get_cat_id(li.a['href']),
                                      'img': _full_url(self.ROOT_URL, li.a.img['src']).encode('utf-8'),
                                      'date': convert_date(li.find('p', class_='txt_10').string, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')}
                                   for li in chain(*lis)])
-        return category_albums
+        return sport_albums
 
     def get_album_videos(self, album_id):
         
@@ -1006,7 +1003,7 @@ class SLB(object):
     
             for k, v in sports_events.iteritems():
                 _id   = get_sport_id(k)
-                _name = get_sport_info(_id)[0]
+                _name = get_sport_data(_id)[0]
                 sports.append({"id": _id, "name": _name, "events": v})
     
             calendar["calendar"]["sports"] = sports

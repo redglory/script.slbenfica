@@ -16,22 +16,29 @@
 9002    - News Menu ( Headlines | Sports News)
   # Content
   9020    - News Headlines View
-  9021    - News Sports View
+  9021    - News Sports View (Football | Football - Youth Teams | Football - SL Benfica B | Football - Prospecting | Futsal | 
+                              Hockey | Basketball | Handball | Volleyball | Xadrez | Automobilismo | Athletics | Martial Arts | Billiards | Canoeing | Combat | Sports | Gymnastics |Golf | Judo | Sport | Fishing | Rugby | Table Tennis | Triathlon | Paintball | Swimming | Club | Olympic Games | Others | Geral)
   9022    - Sport News                            
   9023    - News Article View
-# Videos
+9003    - Videos Menu (Football | Futsal | Hockey | Basketball | Handball | Volleyball | Athletics | Club | Olympic | Others)
+  # Sub-Menu
+  9030    - Videos Football Sub-Menu (Youth Team | B Team)
   # Content
-  9003    - Video Sports View
-  9030    - Video Sports List 
-  9031    - Video Sports Albums View
-  9032    - Video Sports Albums List
-  9033    - Album Videos View
-  9034    - Album Videos List                             
-9004    - Photos Menu
+  9031    - Video Sports View (Football | Football - Youth Team | Football - B Team | Futsal | Hockey | Basketball | Handball 
+                               Volleyball | Athletics | Club | Olympic Games | Others)
+  9032    - Sport Video Album View
+  9033    - Album Videos View                             
+9004    - Photos Menu (Football | Futsal | Hockey | Basketball | Handball | Volleyball | Athletics | Golf | Judo | Rugby | 
+                       Club | Olympic Games)
+  # Sub-Menu
+  9040    - Photos Football Sub-Menu (First Team | Youth Teams | SL Benfica B | Benfica Generation Schools)
+  9041    - Photos Hockey Sub-Menu (Female Hockey)
+  9042    - Photos Rugby Sub-Menu (Female Rugby)
+  9043    - Photos Club Sub-Menu (Family Stand)
   # Content
-  9040    - Photos Sport View
-  9041    - Sports Photos Album View
-  9042    - Photos Slideshow
+  9044    - Photos Sport View
+  9045    - Sports Photos Album View
+  9046    - Photos Slideshow
 9005    - Stadium Menu (Estádio da Luz | Info | Tours | Virtual Stadium)
   # Content
   9050    - Estádio da Luz View
@@ -90,7 +97,39 @@
   121     - News Menu - Headlines button
   122     - News Menu - Sports News button
 130     - Main Menu - Videos button
-140     - Main Menu - Photos button
+  131     - Videos Menu - Football button
+    231     - Football Sub-Menu - Youth Team button
+    232     - Football Sub-Menu - B Team button
+  132     - Videos Menu - Futsal button
+  133     - Videos Menu - Hockey button
+  134     - Videos Menu - Basketball button
+  135     - Videos Menu - Handball button
+  136     - Videos Menu - Volleyball button
+  137     - Videos Menu - Athletics button
+  138     - Videos Menu - Club button
+  139     - Videos Menu - Olympic button
+  230     - Videos Menu - Others button
+140     - Main Menu - Photos button (Football | Futsal | Hockey | Basketball | Handball | Volleyball | Athletics | Golf | Judo 
+                                     Rugby | Club | Olympic Games)
+  141     - Photos Menu - Football button  (First Team | Youth Teams | SL Benfica B | Benfica Generation Schools)
+    243     Football Sub-Menu - First Team
+    244     Football Sub-Menu - Youth Teams
+    245     Football Sub-Menu - SL Benfica B
+    246     Football Sub-Menu - Benfica Generation Schools
+  142     - Photos Menu - Futsal button
+  143     - Photos Menu - Hockey button (Female Hockey)
+    247     - Hockey Sub-Menu - Female Hockey button
+  144     - Photos Menu - Basketball button
+  145     - Photos Menu - Handball button
+  146     - Photos Menu - Volleyball button
+  147     - Photos Menu - Athletics button
+  148     - Photos Menu - Golf button
+  149     - Photos Menu - Judo button
+  240     - Photos Menu - Rugby button (Female Rugby)
+    248     - Rugby Sub-Menu - Female Rugby button
+  241     - Photos Menu - Club button (Family Stand)
+    249     - Club Sub-Menu - Family Stand button
+  242     - Photos Menu - Olympic Games button
 150     - Main Menu - Stadium Button (Estádio da Luz | Info | Tours | Virtual Stadium)
   151     - Stadium Menu - Estádio da Luz Button
   152     - Stadium Menu - Info Button
@@ -345,24 +384,24 @@
                 </control>
             </control>
 
-            <control type="group" id="9031"> <!-- Video Sports Albums View -->
+            <control type="group" id="9032"> <!-- Sport Albums List -->
                 <posx>255</posx>
                 <posy>35</posy>
-                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9031).HasFocus + !Control.HasFocus(130)">conditional</animation>
-                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(130) | ControlGroup(9031).HasFocus">conditional</animation>
-                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(130) | ControlGroup(9031).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(130) | ControlGroup(9031).HasFocus">conditional</animation>
-                <visible>Control.HasFocus(130)</visible>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9032).HasFocus + !Control.HasFocus(233)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <visible>Control.HasFocus(122) | Control.HasFocus(122) | Control.HasFocus(123)</visible>
                 <control type="image">
-                    <description>Video Sports Albums Content Panel</description>
+                    <description>Sport Albums Content Panel</description>
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>1025</width>
                     <height>650</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-                <control type="panel" id="9032">
-                    <description>Video Sports Albums List</description>
+                <control type="panel" id="233">
+                    <description>Sport Albums List</description>
                     <posx>45</posx>
                     <posy>15</posy>
                     <width>980</width>
@@ -465,6 +504,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32110]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -474,6 +514,10 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
                     <onclick>9001</onclick>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -494,6 +538,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32120]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -503,6 +548,10 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
                     <onclick>9002</onclick>
                     <onleft>9000</onleft>
                     <onright>9002</onright>
@@ -523,6 +572,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32130]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -532,6 +582,10 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onfocus>-</onfocus>
+                    <onunfocus>-</onunfocus>
                     <onclick>9003</onclick>
                     <onleft>9000</onleft>
                     <onright>9003</onright>
@@ -552,6 +606,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32140]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -561,6 +616,8 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onclick>9004</onclick>
                     <onleft>9000</onleft>
                     <onright>9004</onright>
@@ -581,6 +638,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32150]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -590,6 +648,8 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onclick>9005</onclick>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -610,6 +670,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32160]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -619,6 +680,8 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onclick>9006</onclick>
                     <onleft>9000</onleft>
                     <onright>9006</onright>
@@ -639,6 +702,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32170]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioposx>215</radioposx>
                     <radioposy>10</radioposy>
@@ -648,6 +712,8 @@
                     <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
                     <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
                     <onclick>9007</onclick>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
@@ -668,6 +734,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32180]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9080</onclick>
                     <onleft>9000</onleft>
@@ -689,6 +756,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32190]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9090</onclick>
                     <onleft>9000</onleft>
@@ -710,6 +778,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32200]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>200</onright>
@@ -754,6 +823,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32111]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -774,6 +844,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32112]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -794,6 +865,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32113]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -814,6 +886,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32114]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -856,6 +929,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32121]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9002</onright>
@@ -876,6 +950,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32122]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9002</onright>
@@ -884,77 +959,344 @@
                 </control>
             </control>
             
-            <!-- 9003 - Video Sports View -->
+            <!-- 9003 - Videos Menu -->
             <!-- 130 - Main Menu - Videos Menu Button -->
+            <!-- 131 - Videos Menu - Football button
+                 132 - Videos Menu - Futsal button
+                 133 - Videos Menu - Hockey button
+                 134 - Videos Menu - Basketball button
+                 135 - Videos Menu - Handball button
+                 136 - Videos Menu - Volleyball button
+                 137 - Videos Menu - Athletics button
+                 138 - Videos Menu - Club button
+                 139 - Videos Menu - Olympic button
+                 230 - Videos Menu - Others button 
+            -->
             <control type="group" id="9003">
-                <posx>255</posx>
-                <posy>35</posy>
+                <posx>0</posx>
+                <posy>250</posy>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9003).HasFocus + !Control.HasFocus(130) + !ControlGroup(9030).HasFocus">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(130) | ControlGroup(9003).HasFocus | ControlGroup(9030).HasFocus">conditional</animation>
                 <visible>true</visible>
-                <control type="image"> <!-- Video Sports Panel -->
+                <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
                     <posy>0</posy>
-                    <width>1025</width>
-                    <height>650</height>
+                    <width>260</width>
+                    <height>420</height>
                     <texture>default-menu.png</texture>
                 </control>
-                <control type="list" id="9030"> <!-- Video Sports List -->
-                    <description>Sports List</description>
-                    <posx>45</posx>
-                    <posy>15</posy>
-                    <width>980</width>
-                    <height>610</height>
-                    <visible>true</visible>
-                    <pagecontrol>25</pagecontrol>
-                    <scrolltime>200</scrolltime>
-                    <autoscroll>false</autoscroll>
-                    <itemlayout width="128" height="128">
-                        <control type="button"> <!-- Sport Label -->
-                            <description>Sport Label</description> 
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <height>40</height>
-                            <width>240</width>
-                            <textoffsetx>10</textoffsetx>
-                            <textwidth>210</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <label>Listitem.Label</label>
-                        </control>
-                    </itemlayout>
-                    <focusedlayout width="128" height="128">
-                        <control type="button"> <!-- Sport Label Focused -->
-                            <description>Sport Label Focused</description> 
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <height>40</height>
-                            <width>240</width>
-                            <textoffsetx>10</textoffsetx>
-                            <textwidth>210</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <label>Listitem.Label</label>
-                        </control>
-                    </focusedlayout>
+                <control type="radiobutton" id="131"> <!-- Football -->
+                    <description>Football</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32131]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <radioposx>215</radioposx>
+                    <radioposy>10</radioposy>
+                    <radiowidth>18</radiowidth>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9032</onclick>
+                    <onfocus>SetPropery(sport_id, '12', xbmcgui.Window(xbmcgui.getCurrentWindowId()))</onfocus>
+                    <onleft>9000</onleft>
+                    <onright>9030</onright>
+                    <onup>138</onup>
+                    <ondown>132</ondown>
                 </control>
+                <control type="button" id="132"> <!-- Futsal -->
+                    <description>Futsal</description>
+                    <posx>10</posx>
+                    <posy>50</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32132]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>131</onup>
+                    <ondown>133</ondown>
+                </control>
+                <control type="button" id="133"> <!-- Hockey -->
+                    <description>Hockey</description>
+                    <posx>10</posx>
+                    <posy>90</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32133]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>132</onup>
+                    <ondown>134</ondown>
+                </control>
+                <control type="button" id="134"> <!-- Basketball -->
+                    <description>Basketball</description>
+                    <posx>10</posx>
+                    <posy>130</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32134]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>133</onup>
+                    <ondown>135</ondown>
+                </control>        
+                <control type="button" id="135"> <!-- Handball -->
+                    <description>Handball</description>
+                    <posx>10</posx>
+                    <posy>170</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32135]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>134</onup>
+                    <ondown>136</ondown>
+                </control>
+                <control type="button" id="136"> <!-- Volleyball -->
+                    <description>Volleyball</description>
+                    <posx>10</posx>
+                    <posy>210</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32136]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>135</onup>
+                    <ondown>137</ondown>
+                </control>
+                <control type="button" id="137"> <!-- Athletics -->
+                    <description>Athletics</description>
+                    <posx>10</posx>
+                    <posy>250</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32137]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>136</onup>
+                    <ondown>138</ondown>
+                </control>
+                <control type="button" id="138"> <!-- Club -->
+                    <description>Club</description>
+                    <posx>10</posx>
+                    <posy>290</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32138]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>137</onup>
+                    <ondown>139</ondown>
+                </control>
+                <control type="button" id="139"> <!-- Olympics -->
+                    <description>Olympics</description>
+                    <posx>10</posx>
+                    <posy>330</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32139]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>138</onup>
+                    <ondown>230</ondown>
+                </control>
+                <control type="button" id="230"> <!-- Others -->
+                    <description>Others</description>
+                    <posx>10</posx>
+                    <posy>370</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32230]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9003</onright>
+                    <onup>139</onup>
+                    <ondown>131</ondown>
+                </control>                         
+            </control>
+
+            <!-- 9030 - Videos Football Sub-Menu -->
+            <!-- 131 - Videos Football Sub-Menu Button -->
+            <!-- 231 - Football Sub-Menu - Youth Team button
+                 232 - Football Sub-Menu - B Team button 
+            -->
+            <control type="group" id="9030">
+                <posx>0</posx>
+                <posy>250</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9030).HasFocus + !Control.HasFocus(131)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(131) | ControlGroup(9030).HasFocus">conditional</animation>
+                <visible>true</visible>
+                <control type="image"> <!-- Football Sub-Menu Container -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>100</height>
+                    <texture>default-menu.png</texture>
+                </control>
+                <control type="button" id="231"> <!-- Youth Team -->
+                    <description>Youth Team</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32231]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9003</onleft>
+                    <onright>9030</onright>
+                    <onup>232</onup>
+                    <ondown>232</ondown>
+                </control>
+                <control type="button" id="232"> <!-- B Team -->
+                    <description>B Team</description>
+                    <posx>10</posx>
+                    <posy>50</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32232]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9003</onleft>
+                    <onright>9030</onright>
+                    <onup>231</onup>
+                    <ondown>231</ondown>
+                </control>                         
             </control>
             
             <!-- 9004 - Photos Menu -->
             <!-- 140 - Main Menu - Photos Menu Button -->
+            <!-- 141 - Photos Menu - Football button
+                 142 - Photos Menu - Futsal button
+                 143 - Photos Menu - Hockey button
+                 144 - Photos Menu - Basketball button
+                 145 - Photos Menu - Handball button
+                 146 - Photos Menu - Volleyball button
+                 147 - Photos Menu - Athletics button
+                 148 - Photos Menu - Golf button
+                 149 - Photos Menu - Judo button
+                 240 - Photos Menu - Rugby button
+                 241 - Photos Menu - Club button
+                 242 - Photos Menu - Olympic button
+            -->
             <control type="group" id="9004">
                 <posx>0</posx>
                 <posy>170</posy>
-                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9004).HasFocus + !Control.HasFocus(140) + !ControlGroup(9040).HasFocus">conditional</animation>
-                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus">conditional</animation>
-                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9004).HasFocus + !Control.HasFocus(140) + !ControlGroup(9040).HasFocus + !ControlGroup(9041).HasFocus + !ControlGroup(9042).HasFocus + !ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(140) | ControlGroup(9004).HasFocus | ControlGroup(9040).HasFocus | ControlGroup(9041).HasFocus | ControlGroup(9042).HasFocus | ControlGroup(9043).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
                     <posx>0</posx>
@@ -963,50 +1305,530 @@
                     <height>500</height>
                     <texture>default-menu.png</texture>
                 </control>
-                <control type="list" id="9040"> <!-- Sports List -->
-                    <description>Sports List</description>
-                    <width>260</width>
-                    <height>500</height>
-                    <visible>true</visible>
-                    <pagecontrol>25</pagecontrol>
-                    <scrolltime>200</scrolltime>
-                    <autoscroll>false</autoscroll>
-                    <itemlayout width="260" height="40">
-                        <control type="button"> <!-- Sport Label -->
-                            <description>Sport Label</description> 
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <height>40</height>
-                            <width>240</width>
-                            <textoffsetx>10</textoffsetx>
-                            <textwidth>210</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <label>Listitem.Label</label>
-                            <texturefocus border="5">slb-button-focus.png</texturefocus>
-                        </control>
-                    </itemlayout>
-                    <focusedlayout width="260" height="40">
-                        <control type="button"> <!-- Sport Label Focused -->
-                            <description>Sport Label Focused</description> 
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <height>40</height>
-                            <width>240</width>
-                            <textoffsetx>10</textoffsetx>
-                            <textwidth>210</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <label>Listitem.Label</label>
-                            <texturefocus border="5">slb-button-focus.png</texturefocus>
-                        </control>
-                    </focusedlayout>
+                <control type="radiobutton" id="141"> <!-- Football -->
+                    <description>Football</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32141]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <radioposx>215</radioposx>
+                    <radioposy>10</radioposy>
+                    <radiowidth>18</radiowidth>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>242</onup>
+                    <ondown>142</ondown>
                 </control>
+                <control type="button" id="142"> <!-- Futsal -->
+                    <description>Futsal</description>
+                    <posx>10</posx>
+                    <posy>50</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32142]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>141</onup>
+                    <ondown>143</ondown>
+                </control>
+                <control type="radiobutton" id="143"> <!-- Hockey -->
+                    <description>Hockey</description>
+                    <posx>10</posx>
+                    <posy>90</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32143]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <radioposx>215</radioposx>
+                    <radioposy>10</radioposy>
+                    <radiowidth>18</radiowidth>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>142</onup>
+                    <ondown>144</ondown>
+                </control>
+                <control type="button" id="144"> <!-- Basketball -->
+                    <description>Basketball</description>
+                    <posx>10</posx>
+                    <posy>130</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32144]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>143</onup>
+                    <ondown>145</ondown>
+                </control>        
+                <control type="button" id="145"> <!-- Handball -->
+                    <description>Handball</description>
+                    <posx>10</posx>
+                    <posy>170</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32145]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>144</onup>
+                    <ondown>146</ondown>
+                </control>
+                <control type="button" id="146"> <!-- Volleyball -->
+                    <description>Volleyball</description>
+                    <posx>10</posx>
+                    <posy>210</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32146]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>145</onup>
+                    <ondown>147</ondown>
+                </control>
+                <control type="button" id="147"> <!-- Athletics -->
+                    <description>Athletics</description>
+                    <posx>10</posx>
+                    <posy>250</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32147]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>146</onup>
+                    <ondown>148</ondown>
+                </control>
+                <control type="button" id="148"> <!-- Golf -->
+                    <description>Golf</description>
+                    <posx>10</posx>
+                    <posy>290</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32148]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>147</onup>
+                    <ondown>149</ondown>
+                </control>
+                <control type="button" id="149"> <!-- Judo -->
+                    <description>Judo</description>
+                    <posx>10</posx>
+                    <posy>330</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32149]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>148</onup>
+                    <ondown>240</ondown>
+                </control>
+                <control type="radiobutton" id="240"> <!-- Rugby -->
+                    <description>Rugby</description>
+                    <posx>10</posx>
+                    <posy>370</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32240]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <radioposx>215</radioposx>
+                    <radioposy>10</radioposy>
+                    <radiowidth>18</radiowidth>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>149</onup>
+                    <ondown>241</ondown>
+                </control>
+                 <control type="radiobutton" id="241"> <!-- Club -->
+                    <description>Club</description>
+                    <posx>10</posx>
+                    <posy>410</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32241]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <radioposx>215</radioposx>
+                    <radioposy>10</radioposy>
+                    <radiowidth>18</radiowidth>
+                    <radioheight>18</radioheight>
+                    <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
+                    <textureradioonnofocus>sub-menu-arrow.png</textureradioonnofocus>
+                    <textureradioofffocus>sub-menu-arrow.png</textureradioofffocus>
+                    <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
+                    <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
+                    <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>240</onup>
+                    <ondown>242</ondown>
+                </control>
+                <control type="button" id="242"> <!-- Olympics -->
+                    <description>Olympics</description>
+                    <posx>10</posx>
+                    <posy>450</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32242]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9000</onleft>
+                    <onright>9004</onright>
+                    <onup>241</onup>
+                    <ondown>141</ondown>
+                </control>                       
             </control>
+
+            <!-- 9040 - Photos Football Sub-Menu -->
+            <!-- 141 - Photos Football Sub-Menu Button -->
+            <!-- 243 - Football Sub-Menu - First Team
+                 244 - Football Sub-Menu - Youth Teams
+                 245 - Football Sub-Menu - SL Benfica B
+                 246 - Football Sub-Menu - Benfica Generation Schools 
+            -->
+            <control type="group" id="9040">
+                <posx>0</posx>
+                <posy>170</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9040).HasFocus + !Control.HasFocus(141)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(141) | ControlGroup(9040).HasFocus">conditional</animation>
+                <visible>true</visible>
+                <control type="image"> <!-- Football Sub-Menu Container -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>180</height>
+                    <texture>default-menu.png</texture>
+                </control>
+                <control type="button" id="243"> <!-- First Team -->
+                    <description>First Team</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32243]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9040</onright>
+                    <onup>246</onup>
+                    <ondown>244</ondown>
+                </control>
+                <control type="button" id="244"> <!-- B Team -->
+                    <description>B Team</description>
+                    <posx>10</posx>
+                    <posy>50</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32244]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9040</onright>
+                    <onup>243</onup>
+                    <ondown>245</ondown>
+                </control>     
+                <control type="button" id="245"> <!-- SL Benfica B -->
+                    <description>SL Benfica B</description>
+                    <posx>10</posx>
+                    <posy>90</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32245]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9040</onright>
+                    <onup>244</onup>
+                    <ondown>246</ondown>
+                </control>
+                <control type="button" id="246"> <!-- Generation Schools -->
+                    <description>Generation Schools</description>
+                    <posx>10</posx>
+                    <posy>130</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32246]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9040</onright>
+                    <onup>245</onup>
+                    <ondown>243</ondown>
+                </control>                    
+            </control>
+
+            <!-- 9041 - Photos Hockey Sub-Menu -->
+            <!-- 143 - Photos Hockey Sub-Menu Button -->
+            <!-- 247 - Hockey Sub-Menu - Female Hockey button -->
+            <control type="group" id="9041">
+                <posx>0</posx>
+                <posy>250</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9041).HasFocus + !Control.HasFocus(143)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(143) | ControlGroup(9041).HasFocus">conditional</animation>
+                <visible>true</visible>
+                <control type="image"> <!-- Hockey Sub-Menu Container -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>60</height>
+                    <texture>default-menu.png</texture>
+                </control>
+                <control type="button" id="247"> <!-- Female Hockey -->
+                    <description>Female Hockey</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32247]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9041</onright>
+                    <onup>247</onup>
+                    <ondown>247</ondown>
+                </control>                  
+            </control>
+
+            <!-- 9042 - Photos Rugby Sub-Menu -->
+            <!-- 240 - Photos Rugby Sub-Menu Button -->
+            <!-- 248 - Rugby Sub-Menu - Female Rugby button -->
+            <control type="group" id="9042">
+                <posx>0</posx>
+                <posy>530</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9042).HasFocus + !Control.HasFocus(240)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(240) | ControlGroup(9042).HasFocus">conditional</animation>
+                <visible>true</visible>
+                <control type="image"> <!-- Rugby Sub-Menu Container -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>60</height>
+                    <texture>default-menu.png</texture>
+                </control>
+                <control type="button" id="248"> <!-- Female Rugby -->
+                    <description>Female Rugby</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32248]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9042</onright>
+                    <onup>248</onup>
+                    <ondown>248</ondown>
+                </control>                  
+            </control>
+
+            <!-- 9043 - Photos Club Sub-Menu -->
+            <!-- 241 - Photos Club Sub-Menu Button -->
+            <!-- 249 - Club Sub-Menu - Family Stand button -->
+            <control type="group" id="9043">
+                <posx>0</posx>
+                <posy>570</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9043).HasFocus + !Control.HasFocus(241)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="540,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(241) | ControlGroup(9043).HasFocus">conditional</animation>
+                <visible>true</visible>
+                <control type="image"> <!-- Club Sub-Menu Container -->
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>260</width>
+                    <height>60</height>
+                    <texture>default-menu.png</texture>
+                </control>
+                <control type="button" id="249"> <!-- Family Stand -->
+                    <description>Family Stand</description>
+                    <posx>10</posx>
+                    <posy>10</posy>
+                    <height>40</height>
+                    <width>240</width>
+                    <textoffsetx>10</textoffsetx>
+                    <textwidth>210</textwidth>
+                    <aligny>center</aligny>
+                    <font>font13_title</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <focusedcolor>FFFFFFFF</focusedcolor>
+                    <label>$ADDON[script.slbenfica 32249]</label>
+                    <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <pulseonselect>false</pulseonselect>
+                    <onleft>9004</onleft>
+                    <onright>9043</onright>
+                    <onup>249</onup>
+                    <ondown>249</ondown>
+                </control>                  
+            </control>           
 
             <!-- 9005 - Stadium Menu -->
             <!-- 150 - Main Menu - Stadium Button -->
@@ -1044,6 +1866,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32151]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1064,6 +1887,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32152]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1084,6 +1908,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32153]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1104,6 +1929,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32154]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1145,6 +1971,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32161]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9006</onright>
@@ -1165,6 +1992,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32162]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9006</onright>
@@ -1207,6 +2035,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32171]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
@@ -1227,6 +2056,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32172]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
@@ -1247,6 +2077,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32173]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>

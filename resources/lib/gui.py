@@ -46,37 +46,6 @@ from resources.lib.api import SLB
 #    CLUB_MENU_MUSEUM_BTN                    = 114
 #    NEWS_MENU_HEADLINES_BTN                 = 121
 #    NEWS_MENU_SPORTS_BTN                    = 122
-#    VIDEOS_MENU_FOOTBALL_BTN                = 131
-#    VIDEOS_FOOTBALL_YOUTH_TEAMS_BTN         = 231
-#    VIDEOS_FOOTBALL__B_TEAM_BTN             = 232
-#    VIDEOS_MENU_FUTSAL_BTN                  = 132
-#    VIDEOS_MENU_HOCKEY_BTN                  = 133
-#    VIDEOS_MENU_BASKETBALL_BTN              = 134
-#    VIDEOS_MENU_HANDBALL_BTN                = 135
-#    VIDEOS_MENU_VOLLEYBALL_BTN              = 136
-#    VIDEOS_MENU_ATHLETICS_BTN               = 137
-#    VIDEOS_MENU_CLUB_BTN                    = 138
-#    VIDEOS_MENU_OLYMPIC_BTN                 = 139
-#    VIDEOS_MENU_OTHERS_BTN                  = 230
-#    PHOTOS_MENU_FOOTBALL_BTN                = 141
-#    PHOTOS_FOOTBALL_FIRST_TEAM_BTN          = 243
-#    PHOTOS_FOOTBALL_YOUTH_TEAMS_BTN         = 244
-#    PHOTOS_FOOTBALL_B_TEAM_BTN              = 245
-#    PHOTOS_FOOTBALL_GENERATIONS_BTN         = 246
-#    PHOTOS_MENU_FUTSAL_BTN                  = 142
-#    PHOTOS_MENU_HOCKEY_BTN                  = 143
-#    PHOTOS_HOCKEY_FEMALE_BTN                = 247
-#    PHOTOS_MENU_BASKETBALL_BTN              = 144
-#    PHOTOS_MENU_HANDBALL_BTN                = 145
-#    PHOTOS_MENU_VOLLEYBALL_BTN              = 146
-#    PHOTOS_MENU_ATHLETICS_BTN               = 147
-#    PHOTOS_MENU_GOLF_BTN                    = 148
-#    PHOTOS_MENU_JUDO_BTN                    = 149
-#    PHOTOS_MENU_RUGBY_BTN                   = 240
-#    PHOTOS_RUGBY_FEM_BTN                    = 248
-#    PHOTOS_MENU_CLUB_BTN                    = 241
-#    PHOTOS_CLUB_FAMILY_BTN                  = 249
-#    PHOTOS_MENU_OLYMPIC_BTN                 = 242
 #    STADIUM_MENU_LIGHT_BTN                  = 151
 #    STADIUM_MENU_INFO_BTN                   = 152
 #    STADIUM_MENU_TOURS_BTN                  = 153
@@ -148,7 +117,10 @@ class GUI(xbmcgui.WindowXML):
         self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
         self.next_matches = self.SLB.get_next_matches()
         self.poulate_next_matches()
-        
+        # video sports initialization
+        self.video_sports_menu_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
+        self.video_sports = self.SLB.get_sports('videos')
+        self.populate_video_sports_menu_list
 
     def onClick(self, controlID):
         # EXIT BUTTON
@@ -191,6 +163,10 @@ class GUI(xbmcgui.WindowXML):
             match_item.setThumbnailImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
             #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)
+
+    def populate_video_sports_menu_list(self):
+
+        for sport in self.video_sports:
 
     def populate_sport_albums_list(self):
 
