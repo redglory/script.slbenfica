@@ -198,6 +198,7 @@ class Controls:
     CONTENT_LIVE_MATCHES_LIST_VIEW          = 9092
     # PANEL
     CONTENT_PANEL_VIEW                      = 9100
+    CONTENT_SPORT_ALBUMS_LIST               = 9032
 
 
 #----------------------
@@ -246,6 +247,10 @@ def runPlugin(url):
 #  Web related methods
 #------------------------
 def BS(url, proxies={}):
+
+    proxies = {'http': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080', 
+               'https': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'}
+
     r = requests.get(url, proxies=proxies)
     return BeautifulSoup(r.text, 'html5lib')
 
@@ -334,8 +339,7 @@ def convert_date(date_str, input_format, output_format):
         d = datetime.strptime(date_str, input_format)
     except TypeError:
         d = datetime(*(time.strptime(date_str, input_format)[0:6]))
-
-        return d.strftime(output_format)
+    return d.strftime(output_format)
 
 def raw_string(s):
     if isinstance(s, str): 

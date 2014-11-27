@@ -363,7 +363,10 @@
                 </control>
             </control>
 
-            <!-- CONTENT PANEL -->
+<!-- ######################################################################################### -->
+<!--                                         CONTENT PANELS                                    -->
+<!-- ######################################################################################### -->    
+            
             <control type="group" id="9100">
                 <posx>255</posx>
                 <posy>35</posy>
@@ -380,6 +383,88 @@
                     <texture border="20">content_panel.png</texture>
                 </control>
             </control>
+
+            <control type="group" id="9032"> <!-- Sport Albums List -->
+                <posx>255</posx>
+                <posy>35</posy>
+                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9032).HasFocus + !Control.HasFocus(233)">conditional</animation>
+                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">WindowClose</animation>
+                <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
+                <visible>Control.HasFocus(122) | Control.HasFocus(122) | Control.HasFocus(123)</visible>
+                <control type="image">
+                    <description>Sport Albums Content Panel</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+                <control type="panel" id="233">
+                    <description>Sport Albums List</description>
+                    <posx>45</posx>
+                    <posy>15</posy>
+                    <width>980</width>
+                    <height>610</height>
+                    <onleft>9000</onleft>
+                    <onright>233</onright>
+                    <onup>233</onup>
+                    <ondown>233</ondown>
+                    <viewtype label="Sport Albums List">list</viewtype>
+                    <scrolltime>200</scrolltime>
+                    <itemlayout width="200" height="150">
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>200</width>
+                            <height>100</height>
+                            <aspectratio scalediffuse="false">keep</aspectratio>
+                            <info>Listitem.Thumb</info>
+                        </control>
+                        <control type="label">
+                            <posx>10</posx>
+                            <posy>105</posy>
+                            <width>180</width>
+                            <height>45</height>
+                            <font>font10</font>
+                            <aligny>center</aligny>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <focusedcolor>FFFFFFFF</focusedcolor>
+                            <selectedcolor>green</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout width="200" height="150">
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>200</width>
+                            <height>100</height>
+                            <info>Listitem.Thumb</info>
+                            <aspectratio scalediffuse="false">keep</aspectratio>
+                            <animation effect="zoom" end="0,0,300,300" time="100">focus</animation>
+                            <visible>Control.HasFocus(233)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>10</posx>
+                            <posy>105</posy>
+                            <width>180</width>
+                            <height>45</height>
+                            <font>font10</font>
+                            <aligny>center</aligny>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <focusedcolor>FFFFFFFF</focusedcolor>
+                            <selectedcolor>green</selectedcolor>
+                            <info>ListItem.Label</info>
+                        </control>
+                    </focusedlayout>
+                </control>
+            </control>
+
+
+<!-- ######################################################################################### -->
+<!--                                        MENU PANELS                                        -->
+<!-- ######################################################################################### -->    
 
             <!-- 9000 - Main Menu -->
             <!-- 110 - Main Menu - Club button
@@ -928,6 +1013,8 @@
                     <textureradiooffnofocus>sub-menu-arrow.png</textureradiooffnofocus>
                     <!-- <textureradioon>sub-menu-arrow.png</textureradioon>
                     <textureradiooff>sub-menu-arrow.png</textureradiooff> -->
+                    <onclick>9032</onclick>
+                    <onfocus>SetPropery(sport_id, '12', xbmcgui.Window(xbmcgui.getCurrentWindowId()))</onfocus>
                     <onleft>9000</onleft>
                     <onright>9030</onright>
                     <onup>138</onup>
@@ -1999,106 +2086,9 @@
                 </control>
             </control>
 
-
 <!-- ######################################################################################### -->
-<!--                                         CONTENT PANELS                                    -->
-<!-- ######################################################################################### -->    
-            
-            <control type="group" id="9100">
-                <posx>255</posx>
-                <posy>35</posy>
-                <onleft>9000</onleft>
-                <onright>9000</onright>
-                <onup>9000</onup>
-                <ondown>9000</ondown>
-                <control type="image">
-                    <description>Content Panel</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
-                    <width>1025</width>
-                    <height>650</height>
-                    <texture border="20">content_panel.png</texture>
-                </control>
-            </control>
-
-            <control type="group" id="9032"> <!-- Sport Albums List -->
-                <posx>255</posx>
-                <posy>35</posy>
-                <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9032).HasFocus + !Control.HasFocus(233)">conditional</animation>
-                <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
-                <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">WindowClose</animation>
-                <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(233) | ControlGroup(9032).HasFocus">conditional</animation>
-                <visible>Control.HasFocus(122) | Control.HasFocus(122) | Control.HasFocus(123)</visible>
-                <control type="image">
-                    <description>Sport Albums Content Panel</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
-                    <width>1025</width>
-                    <height>650</height>
-                    <texture border="20">content_panel.png</texture>
-                </control>
-                <control type="panel" id="233">
-                    <description>Sport Albums List</description>
-                    <posx>10</posx>
-                    <posy>25</posy>
-                    <width>980</width>
-                    <height>600</height>
-                    <onleft>9000</onleft>
-                    <onright>233</onright>
-                    <onup>233</onup>
-                    <ondown>233</ondown>
-                    <viewtype label="Sport Albums List">list</viewtype>
-                    <scrolltime>200</scrolltime>
-                    <itemlayout width="320" height="320">
-                        <control type="image">
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <width>250</width>
-                            <height>250</height>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <info>Listitem.Thumb</info>
-                        </control>
-                        <control type="label">
-                            <posx>10</posx>
-                            <posy>300</posy>
-                            <width>300</width>
-                            <height>20</height>
-                            <font>font13</font>
-                            <aligny>center</aligny>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <selectedcolor>green</selectedcolor>
-                            <info>ListItem.Label</info>
-                        </control>
-                    </itemlayout>
-                    <focusedlayout width="320" height="320">
-                        <control type="image">
-                            <posx>10</posx>
-                            <posy>10</posy>
-                            <width>250</width>
-                            <height>250</height>
-                            <info>Listitem.Thumb</info>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <animation effect="zoom" end="0,0,300,300" time="100">focus</animation>
-                            <visible>Control.HasFocus(122)</visible>
-                        </control>
-                        <control type="label">
-                            <posx>10</posx>
-                            <posy>300</posy>
-                            <width>300</width>
-                            <height>20</height>
-                            <font>font13</font>
-                            <aligny>center</aligny>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <selectedcolor>green</selectedcolor>
-                            <info>ListItem.Label</info>
-                        </control>
-                    </focusedlayout>
-                </control>
-            </control>
-
-<!--                                            HEATHER AND FOOTER                                    -->            
+<!--                                     HEATHER AND FOOTER                                    -->            
+<!-- ######################################################################################### -->
 
             <!-- Weather Info -->
             <control type="group">

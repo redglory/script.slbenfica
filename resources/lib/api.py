@@ -118,9 +118,7 @@ class SLB(object):
             return False
 
     def get_sport_id(self, sport):
-    
         _sport = translate_sport(sport)
-    
         return{
             'futebol'              : 12,
             'formacao'             : 38,
@@ -237,11 +235,9 @@ class SLB(object):
         }[sport_id]
     
     
-    def get_cat_id(self, url, otype):
-    
+    def get_cat_id(self, url):
         pattern = '/cat/(.*?)/'
         match = re.search(pattern, url)
-
         return match.group(1)
     
     def find_previous_next_page(self, page_html):
@@ -591,7 +587,7 @@ class SLB(object):
                      'short': top_players_position.find('div', class_='main_cont2_list_det').find('p', class_='txt_list_desc').string,  
                      'img': _full_url(self.ROOT_URL, top_players_position.find('div', class_='main_cont2_list_img').a.img['src']),
                      'top_players': get_top_players_position_info(top_players_position)}
-                   for top_players_position in top_players_positions]}
+                   for top_players_position in top_players_positions]
 
     def get_club_founder_history(self):
         soup = BS('http://www.slbenfica.pt/{lang}/slb/historia/cosmedamiao.aspx'.format(lang=self.LANG))
@@ -672,7 +668,7 @@ class SLB(object):
     def get_category_info(self, media_type, link):
         category = BS(link.encode('utf-8'))
 
-        cat_id     = get_cat_id(link, 'category')
+        cat_id     = get_cat_id(link)
         sport_info = get_sport_info(int(cat_id))
 
         return {'id': cat_id,
@@ -692,63 +688,30 @@ class SLB(object):
         
         return categories
 
-    def get_category_albums(self, media_type, category_id, page=1):
-        
-        page = int(page)
-        
+    def get_category_albums(self, media_type, category_id):
+        category_albums = []
         if media_type == 'videos':
-            category_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id,
-                                                           page   = page,
-                                                           lang   = self.LANG) 
+            category_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = 1, lang = self.LANG)
+            category_page_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = '{page}', lang = self.LANG)
         elif media_type == 'photos':
-            category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id,
-                                                           page   = page,
-                                                           lang   = self.LANG) 
+            category_url = self.PHOTOS_CATEGORY_URL.format(cat_id = category_id, page = 1, lang = self.LANG)
+            category_page_url = self.VIDEOS_CATEGORY_URL.format(cat_id = category_id, page = '{page}', lang = self.LANG)
+        # first get category albums number of pages
         soup = BS(category_url)
-        uls = soup.find_all('ul', class_='pos_biglist_list')
-        lis = [ul.find_all('li') for ul in uls]
-            
-
-        
-            
-        for li in chain(*lis):
-            _album = Album(name       = li.find('p', class_='txt_11_dark').string, 
-                           media_type = media_type, 
-                           url        = li.a['href'],
-                           thumb      = li.a.img['src'],
-                           date       = li.find('p', class_='txt_10').string)
-    
-            
-        items = [
-            {'label': label,
-             'path': path,
-             'thumbnail': thumbnail,
-             'info': {'date': date},
-            } for label, path, thumbnail, date in albums]
-        
-        sorted_items = []
-        for d in items:
-            if d['label'] not in (s['label'] for s in sorted_items):
-                sorted_items.append(d)
-    
-        sorted_items = sorted(sorted_items, key=lambda item: item['info']['date'], reverse=True) # sort by date descending
-    
-        if next_page:
-            sorted_items.insert(int(len(sorted_items) + 1), 
-                                {'label': Addon.__translate__(30201),
-                                 'path': get_category_albums(media_type  = media_type, 
-                                                             category_id = category_id, 
-                                                             page        = str(page + 1)),
-                                })
-        if page > 1:
-            sorted_items.insert(0, 
-                                {'label': Addon.__translate__(30200),
-                                  'path': get_category_albums(media_type  = media_type, 
-                                                              category_id = category_id, 
-                                                              page        = str(page - 1)),
-                                })
-    
-        return sorted_items
+        num_pages = max([int(li.a.string) for li in soup.find('div', class_='pos_num_pag clearfix').find('ul').find_all('li')])
+        # get all sport video albums
+        for i in range(1, num_pages + 1):
+            soup = BS(category_page_url.format(page = i))
+            uls = soup.find_all('ul', class_='pos_biglist_list')
+            lis = [ul.find_all('li') for ul in uls]
+            category_albums.extend([{'name': li.a.img['title'],
+                                     'competition': li.a.img['alt'],
+                                     'media_type': media_type,
+                                     'album_id': get_cat_id(li.a['href']),
+                                     'img': _full_url(self.ROOT_URL, li.a.img['src']).encode('utf-8'),
+                                     'date': convert_date(li.find('p', class_='txt_10').string, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')}
+                                  for li in chain(*lis)])
+        return category_albums
 
     def get_album_videos(self, album_id):
         
@@ -757,20 +720,11 @@ class SLB(object):
         soup = BS(video_album_url)
         uls  = soup.find_all('ul', class_='pos_biglist_vidlist')
         lis  = [ul.find_all('li') for ul in uls]
-        
-        videos = set((li.find('p', class_='txt_11').string, 
-                      play_video(youtube_url=li.a['href']), 
-                      li.a.img['src'])
-                 for li in chain(*lis))
     
-        items = [
-            {'label': label,
-             'path': path,
-             'is_playable': True,
-             'thumbnail': thumbnail,
-            } for label, path, thumbnail in videos]
-    
-        return sorted(items, key=lambda item: item['label'])
+        return [{'name': li.find('p', class_='txt_11').string, 
+                 'link': li.a['href'], 
+                 'img': li.a.img['src']} 
+               for li in chain(*lis)]
 
     def get_album_photos(self, album_id):
         

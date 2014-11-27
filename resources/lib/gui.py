@@ -136,6 +136,7 @@ from resources.lib.api import SLB
 #    CONTENT_LIVE_MATCHES_LIST_VIEW          = 9092
 #    # PANEL
 #    CONTENT_PANEL_VIEW                      = 9100
+#    CONTENT_SPORT_ALBUMS_LIST               = 9032
 
 class GUI(xbmcgui.WindowXML):
 
@@ -156,17 +157,16 @@ class GUI(xbmcgui.WindowXML):
         # Club Navigation
         elif controlID == Controls.CLUB_MENU_STRUCTURE_BTN:
             self.club_structure = self.SLB.get_club_structure()
+        # Videos Navigation
+        elif controlID in [131, 231, 232, 132, 133, 134, 135, 136, 137, 138, 139, 230]:
+            sport_id = self.getControl(Controls.CONTENT_PANEL_VIEW).getProperty(sport_id)
+            lw.log([sport_id])
+            self.sport_video_albums = self.SLB.get_category_albums(media_type='videos', category_id=sport_id)
 
     def onAction(self, action):
         pass
 
     def onFocus(self, controlID):
-        pass
-
-    def next_game(self):
-        pass
-
-    def previous_game(self):
         pass
 
     def poulate_next_matches(self):
@@ -191,3 +191,14 @@ class GUI(xbmcgui.WindowXML):
             match_item.setThumbnailImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
             #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)
+
+    def populate_sport_albums_list(self):
+
+        self.sport_albums_list = self.getControl(Controls.CONTENT_SPORT_ALBUMS_LIST)
+
+        for album in self.sport_video_albums:
+            album_item = xbmcgui.ListItem()
+            album_item.setLabel(set_color(album['name'], 'red'))
+            album_item.setLabel2(album['competition'])
+            album_item.setThumbnailImage(album['img'])
+            self.sport_albums_list.addItem(album_item)
