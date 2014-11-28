@@ -61,66 +61,69 @@ from resources.lib.api import SLB
 #    #   CONTENT
 #    #--------------        
 #    # CLUB      
-#    CONTENT_CLUB_VIEW                       = 9010
-#    CONTENT_CLUB_INFO_VIEW                  = 9011
-#    CONTENT_CLUB_STRUCTURE_VIEW             = 9012
-#    CONTENT_CLUB_HISTORY_VIEW               = 9013
-#    CONTENT_CLUB_MUSEUM_VIEW                = 9014
+#    CONTENT_CLUB_PANEL                      = 9010
+#    CONTENT_CLUB_INFO_PANEL                 = 9011
+#    CONTENT_CLUB_STRUCTURE_PANEL            = 9012
+#    CONTENT_CLUB_HISTORY_PANEL              = 9013
+#    CONTENT_CLUB_MUSEUM_PANEL               = 9014
 #    # NEWS      
-#    CONTENT_NEWS_HEADLINES_VIEW             = 9020
-#    CONTENT_NEWS_SPORTS_VIEW                = 9021
-#    CONTENT_NEWS_SPORT_VIEW                 = 9022
-#    CONTENT_NEWS_ARTICLE_VIEW               = 9023
+#    CONTENT_NEWS_HEADLINES_PANEL            = 9020
+#    CONTENT_NEWS_SPORTS_PANEL               = 9021
+#    CONTENT_NEWS_SPORT_PANEL                = 9022
+#    CONTENT_NEWS_ARTICLE_PANEL              = 9023
 #    # VIDEOS        
-#    CONTENT_VIDEOS_SPORTS_VIEW              = 9031
-#    CONTENT_VIDEOS_ALBUMS_VIEW              = 9032
-#    CONTENT_ALBUMS_VIDEOS_VIEW              = 9033
+#    CONTENT_VIDEOS_SPORTS_PANEL             = 9030
+#    CONTENT_VIDEOS_SPORTS_LIST              = 9031
+#    CONTENT_VIDEOS_SPORT_ALBUMS_PANEL       = 9032
+#    CONTENT_VIDEOS_SPORT_ALBUMS_LIST        = 9033
+#    CONTENT_ALBUMS_VIDEOS_PANEL             = 9034
+#    CONTENT_ALBUMS_VIDEOS_LIST              = 9035
 #    # PHOTOS        
-#    CONTENT_PHOTOS_SPORTS_VIEW              = 9044
-#    CONTENT_PHOTOS_ALBUMS_VIEW              = 9045
-#    CONTENT_SLIDESHOW_VIEW                  = 9046
+#    CONTENT_PHOTOS_SPORTS_PANEL             = 9040
+#    CONTENT_PHOTOS_SPORTS_LIST              = 9041
+#    CONTENT_PHOTOS_SPORT_ALBUMS_PANEL       = 9042
+#    CONTENT_PHOTOS_SPORT_ALBUMS_LIST        = 9043
+#    CONTENT_SLIDESHOW_PANEL                 = 9044
+#    CONTENT_SLIDESHOW_LIST                  = 9045
 #    # STADIUM       
-#    CONTENT_STADIUM_LIGHT_VIEW              = 9050
-#    CONTENT_STADIUM_INFO_VIEW               = 9051
-#    CONTENT_STADIUM_TOURS_VIEW              = 9052
-#    CONTENT_STADIUM_VIRTUAL_VIEW            = 9053
+#    CONTENT_STADIUM_LIGHT_PANEL             = 9050
+#    CONTENT_STADIUM_INFO_PANEL              = 9051
+#    CONTENT_STADIUM_TOURS_PANEL             = 9052
+#    CONTENT_STADIUM_VIRTUAL_PANEL           = 9053
 #    # TICKETS       
-#    CONTENT_TICKETS_MATCHES_VIEW            = 9060
-#    CONTENT_TICKETS_MUSEUM_VIEW             = 9061
+#    CONTENT_TICKETS_MATCHES_PANEL           = 9060
+#    CONTENT_TICKETS_MUSEUM_PANEL            = 9061
 #    # CALENDAR
-#    CONTENT_CALENDAR_NEXT_MATCHES_VIEW      = 9070
-#    CONTENT_CALENDAR_TODAY_VIEW             = 9071
-#    CONTENT_CALENDAR_WEEKLY_VIEW            = 9072
-#    CONTENT_CALENDAR_MONTHLY_VIEW           = 9073
-#    CONTENT_CALENDAR_SPORTS_VIEW            = 9074
-#    CONTENT_CALENDAR_SPORT_EVENTS_VIEW      = 9075
+#    CONTENT_CALENDAR_NEXT_MATCHES_PANEL     = 9070
+#    CONTENT_CALENDAR_TODAY_PANEL            = 9071
+#    CONTENT_CALENDAR_WEEKLY_PANEL           = 9072
+#    CONTENT_CALENDAR_MONTHLY_PANEL          = 9073
+#    CONTENT_CALENDAR_SPORTS_PANEL           = 9074
+#    CONTENT_CALENDAR_SPORT_EVENTS_PANEL     = 9075
 #    CONTENT_CALENDAR_NEXT_MATCHES_LIST      = 9076
 #    # SPORTS
-#    CONTENT_SPORTS_VIEW                     = 9080
-#    CONTENT_SPORTS_INFO_VIEW                = 9081
-#    CONTENT_SPORTS_INFO_DATA_VIEW           = 9082
+#    CONTENT_SPORTS_PANEL                    = 9080
+#    CONTENT_SPORTS_INFO_PANEL               = 9081
+#    CONTENT_SPORTS_INFO_DATA_PANEL          = 9082
 #    # LIVE MATCHES
-#    CONTENT_LIVE_MATCHES_CONTAINER_VIEW     = 9090
-#    CONTENT_LIVE_MATCHES_VIEW               = 9091
-#    CONTENT_LIVE_MATCHES_LIST_VIEW          = 9092
+#    CONTENT_LIVE_MATCHES_CONTAINER_PANEL    = 9090
+#    CONTENT_LIVE_MATCHES_PANEL              = 9091
+#    CONTENT_LIVE_MATCHES_LIST_PANEL         = 9092
 #    # PANEL
-#    CONTENT_PANEL_VIEW                      = 9100
-#    CONTENT_SPORT_ALBUMS_LIST               = 9032
-
+#    CONTENT_PANEL_PANEL                     = 9100
 class GUI(xbmcgui.WindowXML):
 
     def __init__(self, *args, **kwargs):
         self.SLB = SLB(kodi=True)
 
     def onInit(self):
+        pass
         # Next Matches
-        self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
-        self.next_matches = self.SLB.get_next_matches()
-        self.poulate_next_matches()
+        #self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
+        #self.next_matches = self.SLB.get_next_matches()
+        #self.poulate_next_matches()
         # video sports initialization
-        self.video_sports_menu_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
-        self.video_sports = self.SLB.get_sports('videos')
-        self.populate_video_sports_menu_list
+
 
     def onClick(self, controlID):
         # EXIT BUTTON
@@ -131,9 +134,18 @@ class GUI(xbmcgui.WindowXML):
             self.club_structure = self.SLB.get_club_structure()
         # Videos Navigation
         elif controlID in [131, 231, 232, 132, 133, 134, 135, 136, 137, 138, 139, 230]:
-            sport_id = self.getControl(Controls.CONTENT_PANEL_VIEW).getProperty(sport_id)
+            sport_id = self.getControl(Controls.CONTENT_PANEL_PANEL).getProperty(sport_id)
             lw.log([sport_id])
-            self.sport_video_albums = self.SLB.get_category_albums(media_type='videos', category_id=sport_id)
+            self.sport_albums_list = self.getControl(Controls.CONTENT_VIDEOS_SPORT_ALBUMS_LIST)
+            self.sport_albums_list.reset()
+            self.sport_video_albums = self.SLB.get_sport_albums(media_type='videos', sport_id=sport_id)
+            self.populate_sport_albums_list(sport_video_albums)
+        elif controlID == Controls.MAIN_MENU_VIDEOS_BUTTON:        
+            self.videos_sports_list = self.getControl(Controls.CONTENT_VIDEOS_SPORTS_LIST)
+            #self.videos_sports_list.reset()
+            videos_sports = self.SLB.get_sports('videos')
+            lw.log(['Sports list:', videos_sports])
+            self.populate_videos_sports_list(videos_sports)
 
     def onAction(self, action):
         pass
@@ -164,15 +176,19 @@ class GUI(xbmcgui.WindowXML):
             #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)
 
-    def populate_video_sports_menu_list(self):
+    def populate_videos_sports_list(self, videos_sports):
 
-        for sport in self.video_sports:
+        for sport in videos_sports:
+            lw.log([sport])
+            sport_item = xbmcgui.ListItem()
+            sport_item.setLabel(sport['name'])
+            sport_item.setIconImage(sport['img'])
+            sport_item.setThumbnailImage(sport['img'])
+            self.videos_sports_list.addItem(sport_item)
 
-    def populate_sport_albums_list(self):
+    def populate_sport_albums_list(self, sport_video_albums):
 
-        self.sport_albums_list = self.getControl(Controls.CONTENT_SPORT_ALBUMS_LIST)
-
-        for album in self.sport_video_albums:
+        for album in sport_video_albums:
             album_item = xbmcgui.ListItem()
             album_item.setLabel(set_color(album['name'], 'red'))
             album_item.setLabel2(album['competition'])

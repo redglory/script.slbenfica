@@ -59,8 +59,8 @@ class Addon:
     __author__        = __addon__.getAddonInfo('author')
     __version__       = __addon__.getAddonInfo('version')
     __resource__      = xbmc.translatePath(os.path.join(__path__, 'resources').encode('utf-8')).decode('utf-8')
-    __libs__          = os.path.join(__resource__, 'lib').decode( 'utf-8' )
-    __mediapath__     = os.path.join(__resource__,'skins', 'Default', 'media').decode( "utf-8" )
+    __libs__          = os.path.join(__resource__, 'lib/').decode( 'utf-8' )
+    __mediapath__     = os.path.join(__resource__,'skins/', 'Default', 'media').decode( "utf-8" )
     __imagespath__    = os.path.join(__resource__,'images').decode( "utf-8" )
     __datapath__      = os.path.join(xbmc.translatePath('special://masterprofile/addon_data/').decode('utf-8'), __id__)
     __profilepath__   = os.path.join(xbmc.translatePath('special://profile/addon_data/').decode('utf-8'), __id__)
@@ -108,37 +108,6 @@ class Controls:
     CLUB_MENU_MUSEUM_BTN                    = 114
     NEWS_MENU_HEADLINES_BTN                 = 121
     NEWS_MENU_SPORTS_BTN                    = 122
-    VIDEOS_MENU_FOOTBALL_BTN                = 131
-    VIDEOS_FOOTBALL_YOUTH_TEAMS_BTN         = 231
-    VIDEOS_FOOTBALL__B_TEAM_BTN             = 232
-    VIDEOS_MENU_FUTSAL_BTN                  = 132
-    VIDEOS_MENU_HOCKEY_BTN                  = 133
-    VIDEOS_MENU_BASKETBALL_BTN              = 134
-    VIDEOS_MENU_HANDBALL_BTN                = 135
-    VIDEOS_MENU_VOLLEYBALL_BTN              = 136
-    VIDEOS_MENU_ATHLETICS_BTN               = 137
-    VIDEOS_MENU_CLUB_BTN                    = 138
-    VIDEOS_MENU_OLYMPIC_BTN                 = 139
-    VIDEOS_MENU_OTHERS_BTN                  = 230
-    PHOTOS_MENU_FOOTBALL_BTN                = 141
-    PHOTOS_FOOTBALL_FIRST_TEAM_BTN          = 243
-    PHOTOS_FOOTBALL_YOUTH_TEAMS_BTN         = 244
-    PHOTOS_FOOTBALL_B_TEAM_BTN              = 245
-    PHOTOS_FOOTBALL_GENERATIONS_BTN         = 246
-    PHOTOS_MENU_FUTSAL_BTN                  = 142
-    PHOTOS_MENU_HOCKEY_BTN                  = 143
-    PHOTOS_HOCKEY_FEMALE_BTN                = 247
-    PHOTOS_MENU_BASKETBALL_BTN              = 144
-    PHOTOS_MENU_HANDBALL_BTN                = 145
-    PHOTOS_MENU_VOLLEYBALL_BTN              = 146
-    PHOTOS_MENU_ATHLETICS_BTN               = 147
-    PHOTOS_MENU_GOLF_BTN                    = 148
-    PHOTOS_MENU_JUDO_BTN                    = 149
-    PHOTOS_MENU_RUGBY_BTN                   = 240
-    PHOTOS_RUGBY_FEM_BTN                    = 248
-    PHOTOS_MENU_CLUB_BTN                    = 241
-    PHOTOS_CLUB_FAMILY_BTN                  = 249
-    PHOTOS_MENU_OLYMPIC_BTN                 = 242
     STADIUM_MENU_LIGHT_BTN                  = 151
     STADIUM_MENU_INFO_BTN                   = 152
     STADIUM_MENU_TOURS_BTN                  = 153
@@ -154,51 +123,56 @@ class Controls:
     #   CONTENT
     #--------------        
     # CLUB      
-    CONTENT_CLUB_VIEW                       = 9010
-    CONTENT_CLUB_INFO_VIEW                  = 9011
-    CONTENT_CLUB_STRUCTURE_VIEW             = 9012
-    CONTENT_CLUB_HISTORY_VIEW               = 9013
-    CONTENT_CLUB_MUSEUM_VIEW                = 9014
+    CONTENT_CLUB_PANEL                      = 9010
+    CONTENT_CLUB_INFO_PANEL                 = 9011
+    CONTENT_CLUB_STRUCTURE_PANEL            = 9012
+    CONTENT_CLUB_HISTORY_PANEL              = 9013
+    CONTENT_CLUB_MUSEUM_PANEL               = 9014
     # NEWS      
-    CONTENT_NEWS_HEADLINES_VIEW             = 9020
-    CONTENT_NEWS_SPORTS_VIEW                = 9021
-    CONTENT_NEWS_SPORT_VIEW                 = 9022
-    CONTENT_NEWS_ARTICLE_VIEW               = 9023
+    CONTENT_NEWS_HEADLINES_PANEL            = 9020
+    CONTENT_NEWS_SPORTS_PANEL               = 9021
+    CONTENT_NEWS_SPORT_PANEL                = 9022
+    CONTENT_NEWS_ARTICLE_PANEL              = 9023
     # VIDEOS        
-    CONTENT_VIDEOS_SPORTS_VIEW              = 9031
-    CONTENT_VIDEOS_ALBUMS_VIEW              = 9032
-    CONTENT_ALBUMS_VIDEOS_VIEW              = 9033
+    CONTENT_VIDEOS_SPORTS_PANEL             = 9030
+    CONTENT_VIDEOS_SPORTS_LIST              = 9031
+    CONTENT_VIDEOS_SPORT_ALBUMS_PANEL       = 9032
+    CONTENT_VIDEOS_SPORT_ALBUMS_LIST        = 9033
+    CONTENT_ALBUMS_VIDEOS_PANEL             = 9034
+    CONTENT_ALBUMS_VIDEOS_LIST              = 9035
     # PHOTOS        
-    CONTENT_PHOTOS_SPORTS_VIEW              = 9044
-    CONTENT_PHOTOS_ALBUMS_VIEW              = 9045
-    CONTENT_SLIDESHOW_VIEW                  = 9046
+    CONTENT_PHOTOS_SPORTS_PANEL             = 9040
+    CONTENT_PHOTOS_SPORTS_LIST              = 9041
+    CONTENT_PHOTOS_SPORT_ALBUMS_PANEL       = 9042
+    CONTENT_PHOTOS_SPORT_ALBUMS_LIST        = 9043
+    CONTENT_SLIDESHOW_PANEL                 = 9044
+    CONTENT_SLIDESHOW_LIST                  = 9045
     # STADIUM       
-    CONTENT_STADIUM_LIGHT_VIEW              = 9050
-    CONTENT_STADIUM_INFO_VIEW               = 9051
-    CONTENT_STADIUM_TOURS_VIEW              = 9052
-    CONTENT_STADIUM_VIRTUAL_VIEW            = 9053
+    CONTENT_STADIUM_PANEL                   = 9050
+    CONTENT_STADIUM_INFO_PANEL              = 9051
+    CONTENT_STADIUM_TOURS_PANEL             = 9052
+    CONTENT_STADIUM_VIRTUAL_PANEL           = 9053
     # TICKETS       
-    CONTENT_TICKETS_MATCHES_VIEW            = 9060
-    CONTENT_TICKETS_MUSEUM_VIEW             = 9061
+    CONTENT_TICKETS_MATCHES_PANEL           = 9060
+    CONTENT_TICKETS_MUSEUM_PANEL            = 9061
     # CALENDAR
-    CONTENT_CALENDAR_NEXT_MATCHES_VIEW      = 9070
-    CONTENT_CALENDAR_TODAY_VIEW             = 9071
-    CONTENT_CALENDAR_WEEKLY_VIEW            = 9072
-    CONTENT_CALENDAR_MONTHLY_VIEW           = 9073
-    CONTENT_CALENDAR_SPORTS_VIEW            = 9074
-    CONTENT_CALENDAR_SPORT_EVENTS_VIEW      = 9075
+    CONTENT_CALENDAR_NEXT_MATCHES_PANEL     = 9070
+    CONTENT_CALENDAR_TODAY_PANEL            = 9071
+    CONTENT_CALENDAR_WEEKLY_PANEL           = 9072
+    CONTENT_CALENDAR_MONTHLY_PANEL          = 9073
+    CONTENT_CALENDAR_SPORTS_PANEL           = 9074
+    CONTENT_CALENDAR_SPORT_EVENTS_PANEL     = 9075
     CONTENT_CALENDAR_NEXT_MATCHES_LIST      = 9076
     # SPORTS
-    CONTENT_SPORTS_VIEW                     = 9080
-    CONTENT_SPORTS_INFO_VIEW                = 9081
-    CONTENT_SPORTS_INFO_DATA_VIEW           = 9082
+    CONTENT_SPORTS_PANEL                    = 9080
+    CONTENT_SPORTS_INFO_PANEL               = 9081
+    CONTENT_SPORTS_INFO_DATA_PANEL          = 9082
     # LIVE MATCHES
-    CONTENT_LIVE_MATCHES_CONTAINER_VIEW     = 9090
-    CONTENT_LIVE_MATCHES_VIEW               = 9091
-    CONTENT_LIVE_MATCHES_LIST_VIEW          = 9092
+    CONTENT_LIVE_MATCHES_CONTAINER_PANEL    = 9090
+    CONTENT_LIVE_MATCHES_PANEL              = 9091
+    CONTENT_LIVE_MATCHES_LIST_PANEL         = 9092
     # PANEL
-    CONTENT_PANEL_VIEW                      = 9100
-    CONTENT_SPORT_ALBUMS_LIST               = 9032
+    CONTENT_PANEL_PANEL                     = 9100
 
 
 #----------------------

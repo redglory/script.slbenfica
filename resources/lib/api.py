@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys, re
+import sys, re, os
 from urlparse import urlparse, parse_qs, urljoin, urlsplit, urlunsplit
 from itertools import chain
 import time
@@ -668,12 +668,12 @@ class SLB(object):
     def get_sport_info(self, media_type, link):
         sport = BS(link.encode('utf-8'))
 
-        sport_id   = get_cat_id(link)
-        sport_info = get_sport_data(int(sport_id))
+        sport_id   = self.get_cat_id(link)
+        sport_info = self.get_sport_data(int(sport_id))
 
         return {'id': sport_id,
                 'name': sport_info[0].encode('utf-8'),
-                'thumb': os.path.join(Addon.__imagespath__ + sport_info[1]).encode('utf-8')}
+                'img': os.path.join(Addon.__imagespath__, sport_info[1]).encode('utf-8')}
                
     def get_sports(self, media_type):
     
@@ -683,7 +683,7 @@ class SLB(object):
         uls = soup.find_all('ul', class_='cat_list')
         lis = [ul.find_all('li') for ul in uls]
         
-        return [get_sport_info(media_type, li.a['href']) for li in chain(*lis)]
+        return [self.get_sport_info(media_type, li.a['href']) for li in chain(*lis)]
 
     def get_sport_albums(self, media_type, sport_id):
         sport_albums = []
@@ -704,7 +704,7 @@ class SLB(object):
             sport_albums.extend([{'name': li.a.img['title'],
                                      'competition': li.a.img['alt'],
                                      'media_type': media_type,
-                                     'album_id': get_cat_id(li.a['href']),
+                                     'album_id': self.get_cat_id(li.a['href']),
                                      'img': _full_url(self.ROOT_URL, li.a.img['src']).encode('utf-8'),
                                      'date': convert_date(li.find('p', class_='txt_10').string, '%d-%m-%Y %H:%M', '%Y-%m-%d').replace(u'\u2013', '-')}
                                   for li in chain(*lis)])
@@ -1002,8 +1002,8 @@ class SLB(object):
             calendar["calendar"] = {"type": "list", "start_date" : self.first_day, "end_date": self.last_day}
     
             for k, v in sports_events.iteritems():
-                _id   = get_sport_id(k)
-                _name = get_sport_data(_id)[0]
+                _id   = self.get_sport_id(k)
+                _name = self.get_sport_data(_id)[0]
                 sports.append({"id": _id, "name": _name, "events": v})
     
             calendar["calendar"]["sports"] = sports
