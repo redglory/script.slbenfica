@@ -117,11 +117,10 @@ class GUI(xbmcgui.WindowXML):
         self.SLB = SLB(kodi=True)
 
     def onInit(self):
-        pass
         # Next Matches
-        #self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
-        #self.next_matches = self.SLB.get_next_matches()
-        #self.poulate_next_matches()
+        self.next_matches_list = self.getControl(Controls.CONTENT_CALENDAR_NEXT_MATCHES_LIST)
+        self.next_matches = self.SLB.get_next_matches()
+        self.set_next_matches()
         # video sports initialization
 
 
@@ -132,20 +131,23 @@ class GUI(xbmcgui.WindowXML):
         # Club Navigation
         elif controlID == Controls.CLUB_MENU_STRUCTURE_BTN:
             self.club_structure = self.SLB.get_club_structure()
-        # Videos Navigation
-        elif controlID in [131, 231, 232, 132, 133, 134, 135, 136, 137, 138, 139, 230]:
-            sport_id = self.getControl(Controls.CONTENT_PANEL_PANEL).getProperty(sport_id)
-            lw.log([sport_id])
-            self.sport_albums_list = self.getControl(Controls.CONTENT_VIDEOS_SPORT_ALBUMS_LIST)
-            self.sport_albums_list.reset()
-            self.sport_video_albums = self.SLB.get_sport_albums(media_type='videos', sport_id=sport_id)
-            self.populate_sport_albums_list(sport_video_albums)
+        # Video Sports
         elif controlID == Controls.MAIN_MENU_VIDEOS_BUTTON:        
             self.videos_sports_list = self.getControl(Controls.CONTENT_VIDEOS_SPORTS_LIST)
-            #self.videos_sports_list.reset()
-            videos_sports = self.SLB.get_sports('videos')
-            lw.log(['Sports list:', videos_sports])
-            self.populate_videos_sports_list(videos_sports)
+            self.videos_sports_list.reset()
+            self.videos_sports = self.SLB.get_sports('videos')
+            self.set_videos_sports_list(self.videos_sports)
+            self.setFocus(self.videos_sports_list)
+            self.videos_sports_list.selectItem(0)
+        # Videos Sport Albums Navigation
+        elif controlID == Controls.CONTENT_VIDEOS_SPORTS_LIST:
+            sport_id = self.getControl(controlID).getSelectedItem().getProperty('sport_id')
+            self.sport_albums_list = self.getControl(Controls.CONTENT_VIDEOS_SPORT_ALBUMS_LIST)
+            self.sport_video_albums = self.SLB.get_sport_albums(media_type='videos', sport_id=sport_id)
+            self.set_sport_albums_list(self.sport_video_albums)
+            self.setFocus(self.sport_albums_list)
+            self.sport_albums_list.selectItem(0)
+
 
     def onAction(self, action):
         pass
@@ -153,7 +155,7 @@ class GUI(xbmcgui.WindowXML):
     def onFocus(self, controlID):
         pass
 
-    def poulate_next_matches(self):
+    def set_next_matches(self):
         
         for index, next_match in enumerate(self.next_matches):
             
@@ -172,25 +174,27 @@ class GUI(xbmcgui.WindowXML):
             # sport local
             match_item.setProperty('competition_local', next_match['match_info']['competition_local'])
             # sport image as thumbnail
+            match_item.setIconImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
             match_item.setThumbnailImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
             #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)
 
-    def populate_videos_sports_list(self, videos_sports):
+    def set_videos_sports_list(self, videos_sports):
 
         for sport in videos_sports:
-            lw.log([sport])
             sport_item = xbmcgui.ListItem()
+            sport_item.setProperty('sport_id', sport['id'])
             sport_item.setLabel(sport['name'])
             sport_item.setIconImage(sport['img'])
             sport_item.setThumbnailImage(sport['img'])
             self.videos_sports_list.addItem(sport_item)
 
-    def populate_sport_albums_list(self, sport_video_albums):
+    def set_sport_albums_list(self, sport_video_albums):
 
         for album in sport_video_albums:
             album_item = xbmcgui.ListItem()
             album_item.setLabel(set_color(album['name'], 'red'))
             album_item.setLabel2(album['competition'])
+            album_item.setIconImage(album['img'])
             album_item.setThumbnailImage(album['img'])
             self.sport_albums_list.addItem(album_item)

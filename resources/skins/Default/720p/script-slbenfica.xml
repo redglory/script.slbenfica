@@ -118,13 +118,13 @@
 
     <controls>
         <control type="group">
-            <posx>0</posx>
-            <posy>0</posy>
+            <left>0</left>
+            <top>0</top>
             <!-- BACKGROUND -->
             <control type="image">
                 <description>background</description>
-                <posx>0</posx>
-                <posy>0</posy>
+                <left>0</left>
+                <top>0</top>
                 <width>1280</width>
                 <height>720</height>
                 <texture>background.jpg</texture>
@@ -133,8 +133,8 @@
             <!-- LOGO -->
             <control type="image" id="100">
                 <description>LOGO</description>
-                <posx>0</posx>
-                <posy>15</posy>
+                <left>0</left>
+                <top>15</top>
                 <width>250</width>
                 <height>165</height>
                 <aspectratio aligny="top" align="left">keep</aspectratio>
@@ -144,15 +144,15 @@
             <!-- NEXT MATCHES -->
             <control type="group" id="9070">
                 <description>Next Matches Panel</description>
-                <posx>0</posx>
-                <posy>130</posy>
+                <left>0</left>
+                <top>130</top>
                 <width>260</width>
                 <height>135</height>
                 <visible>true</visible>
                 <control type="image">
                     <description>Content Panel</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>135</height>
                     <texture border="20">content_panel.png</texture>
@@ -171,17 +171,17 @@
                     <itemlayout width="260" height="135">
                         <control type="image" id="101"> <!-- Next Match Sport Image -->
                             <description>Sport Image</description> 
-                            <posx>130</posx>
-                            <posy>5</posy>
+                            <left>110</left>
+                            <top>18</top>
                             <width>40</width>
                             <height>40</height>
-                            <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Listitem.Thumb</texture>
+                            <aspectratio aligny="center" align="center">keep</aspectratio>
+                            <texture>$INFO[Listitem.Icon]</texture>
                         </control>
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
-                            <posx>50</posx>
-                            <posy>25</posy>
+                            <left>50</left>
+                            <top>25</top>
                             <width>60</width>
                             <height>60</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
@@ -189,16 +189,16 @@
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
-                            <posx>150</posx>
-                            <posy>25</posy>
+                            <left>150</left>
+                            <top>25</top>
                             <width>60</width>
                             <height>60</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>Wrestling.png</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
-                            <posx>130</posx>
-                            <posy>5</posy>
+                            <left>130</left>
+                            <top>5</top>
                             <width>220</width>
                             <height>15</height>
                             <font>font10</font>
@@ -207,8 +207,8 @@
                             <info>ListItem.Property(competition_name)</info>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
-                            <posx>75</posx>
-                            <posy>75</posy>
+                            <left>75</left>
+                            <top>75</top>
                             <width>100</width>
                             <height>20</height>
                             <font>font12_title</font>
@@ -217,8 +217,8 @@
                             <info>ListItem.Property(competition_home_team)</info>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
-                            <posx>180</posx>
-                            <posy>75</posy>
+                            <left>180</left>
+                            <top>75</top>
                             <width>100</width>
                             <height>20</height>
                             <font>font12_title</font>
@@ -227,8 +227,8 @@
                             <info>ListItem.Property(competition_away_team)</info>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
-                            <posx>130</posx>
-                            <posy>96</posy>
+                            <left>130</left>
+                            <top>96</top>
                             <width>220</width>
                             <height>15</height>
                             <font>font10</font>
@@ -237,8 +237,8 @@
                             <info>ListItem.Property(competition_date)</info>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
-                            <posx>130</posx>
-                            <posy>113</posy>
+                            <left>130</left>
+                            <top>113</top>
                             <width>220</width>
                             <height>10</height>
                             <font>font10</font>
@@ -250,17 +250,17 @@
                     <focusedlayout width="260" height="135">
                         <control type="image" id="101"> <!-- Next Match Sport Image -->
                             <description>Sport Image</description> 
-                            <posx>130</posx>
-                            <posy>5</posy>
+                            <left>110</left>
+                            <top>18</top>
                             <width>40</width>
                             <height>40</height>
-                            <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Listitem.Thumb</texture>
+                            <aspectratio aligny="center" align="center">keep</aspectratio>
+                            <texture>$INFO[Listitem.Icon]</texture>
                         </control>
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
-                            <posx>50</posx>
-                            <posy>25</posy>
+                            <left>50</left>
+                            <top>25</top>
                             <width>60</width>
                             <height>60</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
@@ -268,16 +268,16 @@
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
-                            <posx>150</posx>
-                            <posy>25</posy>
+                            <left>150</left>
+                            <top>25</top>
                             <width>60</width>
                             <height>60</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>Wrestling.png</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
-                            <posx>130</posx>
-                            <posy>5</posy>
+                            <left>130</left>
+                            <top>5</top>
                             <width>220</width>
                             <height>15</height>
                             <font>font10</font>
@@ -286,8 +286,8 @@
                             <info>ListItem.Property(competition_name)</info>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
-                            <posx>75</posx>
-                            <posy>75</posy>
+                            <left>75</left>
+                            <top>75</top>
                             <width>100</width>
                             <height>20</height>
                             <font>font12_title</font>
@@ -296,8 +296,8 @@
                             <info>ListItem.Property(competition_home_team)</info>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
-                            <posx>180</posx>
-                            <posy>75</posy>
+                            <left>180</left>
+                            <top>75</top>
                             <width>100</width>
                             <height>20</height>
                             <font>font12_title</font>
@@ -306,8 +306,8 @@
                             <info>ListItem.Property(competition_away_team)</info>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
-                            <posx>130</posx>
-                            <posy>96</posy>
+                            <left>130</left>
+                            <top>96</top>
                             <width>220</width>
                             <height>15</height>
                             <font>font10</font>
@@ -316,8 +316,8 @@
                             <info>ListItem.Property(competition_date)</info>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
-                            <posx>130</posx>
-                            <posy>113</posy>
+                            <left>130</left>
+                            <top>113</top>
                             <width>220</width>
                             <height>10</height>
                             <font>font10</font>
@@ -334,16 +334,18 @@
 <!-- ######################################################################################### -->    
             
             <control type="group" id="9100">
-                <posx>255</posx>
-                <posy>35</posy>
+                <left>255</left>
+                <top>35</top>
                 <onleft>9000</onleft>
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
+                <!--<visible>!ControlGroup(9030).HasFocus + !ControlGroup(9032).HasFocus + !ControlGroup(9040).HasFocus</visible>-->
+                <visible>false</visible>
                 <control type="image">
                     <description>Content Panel</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>1025</width>
                     <height>650</height>
                     <texture border="20">content_panel.png</texture>
@@ -351,240 +353,229 @@
             </control>
 
             <!-- 9030 - Video Sports Panel -->
-            <!-- 130 - Main Menu - Videos Menu Button -->
+            <!-- 9031 - Video Sports List -->
             <control type="group" id="9030">
-                <posx>255</posx>
-                <posy>35</posy>
+                <left>255</left>
+                <top>35</top>
                 <onleft>9000</onleft>
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
-                <visible>true</visible>
+                <visible>!ControlGroup(9032).HasFocus + !ControlGroup(9040).HasFocus</visible>
                 <control type="image"> <!-- Video Sports Background -->
-                    <posx>0</posx>
-                    <posy>0</posy>
                     <width>1025</width>
                     <height>650</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-                <control type="panel" id="9031"> <!-- Video Sports Panel -->
+                <control type="panel" id="9031"> <!-- Sports Panel -->
                     <description>Sports Panel</description>
-                    <posx>45</posx>
-                    <posy>15</posy>
+                    <left>20</left>
+                    <top>20</top>
                     <width>980</width>
                     <height>610</height>
                     <visible>true</visible>
                     <pagecontrol>25</pagecontrol>
                     <scrolltime>200</scrolltime>
                     <autoscroll>false</autoscroll>
-                    <itemlayout width="200" height="200">
+                    <itemlayout width="196" height="200">
                         <control type="image"> <!-- Sport Image -->
-                            <description>Sport Label</description> 
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <height>128</height>
-                            <width>128</width>
-                            <!--<aspectratio scalediffuse="false">scale</aspectratio>-->
-                            <texture background="true">$INFO[Listitem.Icon]</texture>
-                            <animation effect="zoom" end="0,0,135,135" time="100">focus</animation>
+                            <description>Sport Image</description> 
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,200,200" time="150">focus</animation>
                         </control>
                         <control type="label"> <!-- Sport Label -->
                             <description>Sport Label</description> 
-                            <posx>0</posx>
-                            <posy>140</posy>
+                            <left>100</left>
+                            <top>180</top>
                             <height>20</height>
-                            <width>180</width>
-                            <textwidth>160</textwidth>
-                            <alignx>center</aligny>
+                            <width>196</width>
+                            <align>center</align>
                             <font>font12_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>red</selectedcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
                             <label>$INFO[Listitem.Label]</label>
-                        </control>                        
+                        </control>                          
                     </itemlayout>
-                    <focusedlayout width="200" height="200">
+                    <focusedlayout width="196" height="200">
                         <control type="image"> <!-- Sport Image Focused -->
                             <description>Sport Image Focused</description> 
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <height>128</height>
-                            <width>128</width>
-                            <!--<aspectratio scalediffuse="false">scale</aspectratio>-->
-                            <texture background="true">$INFO[Listitem.Icon]</texture>
-                            <animation effect="zoom" end="0,0,135,135" time="100">focus</animation>
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,200,200" time="150">focus</animation>
                         </control>
                         <control type="label"> <!-- Sport Label Focused -->
                             <description>Sport Label Focused</description> 
-                            <posx>0</posx>
-                            <posy>140</posy>
+                            <left>100</left>
+                            <top>180</top>
                             <height>20</height>
-                            <width>180</width>
-                            <textwidth>160</textwidth>
-                            <alignx>center</aligny>
-                            <font>font12_title</font>
+                            <width>196</width>
+                            <align>center</align>
+                            <font>font13_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>red</selectedcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
                             <label>$INFO[Listitem.Label]</label>
-                        </control>                         
+                        </control>                           
                     </focusedlayout>
                 </control>
             </control>
             
-            <!-- 9040 - Photos Menu -->
-            <!-- 140 - Main Menu - Photos Menu Button -->
-            <control type="group" id="9040">
-                <posx>255</posx>
-                <posy>35</posy>
+            <!-- 9040 - Photo Sports Panel -->
+            <!-- 9041 - Photo Sports List -->
+            <control type="group" id="9030">
+                <left>255</left>
+                <top>35</top>
                 <onleft>9000</onleft>
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
-                <visible>false</visible>
-                <control type="image"> <!-- Video Sports Background -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                <visible>!ControlGroup(9030).HasFocus + !ControlGroup(9032).HasFocus</visible>
+                <control type="image"> <!-- Photo Sports Background -->
                     <width>1025</width>
                     <height>650</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-                <control type="panel" id="9041"> <!-- Sports Panel -->
+                <control type="panel" id="9031"> <!-- Sports Panel -->
                     <description>Sports Panel</description>
-                    <posx>45</posx>
-                    <posy>15</posy>
+                    <left>20</left>
+                    <top>20</top>
                     <width>980</width>
                     <height>610</height>
                     <visible>true</visible>
                     <pagecontrol>25</pagecontrol>
                     <scrolltime>200</scrolltime>
                     <autoscroll>false</autoscroll>
-                    <itemlayout width="128" height="150">
+                    <itemlayout width="196" height="200">
                         <control type="image"> <!-- Sport Image -->
-                            <description>Sport Label</description> 
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <height>128</height>
-                            <width>128</width>
-                            <texture>Listitem.Icon</texture>
-                            <bordersize>3</bordersize>
-                            <animation effect="zoom" end="0,0,138,138" time="100">focus</animation>
+                            <description>Sport Image</description> 
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
                         </control>
                         <control type="label"> <!-- Sport Label -->
                             <description>Sport Label</description> 
-                            <posx>0</posx>
-                            <posy>130</posy>
+                            <left>100</left>
+                            <top>180</top>
                             <height>20</height>
-                            <width>150</width>
-                            <textoffsetx>9</textoffsetx>
-                            <textwidth>110</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
+                            <width>196</width>
+                            <align>center</align>
+                            <font>font12_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>red</selectedcolor>
-                            <label>Listitem.Label</label>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
                         </control>                          
                     </itemlayout>
-                    <focusedlayout width="128" height="150">
+                    <focusedlayout width="196" height="200">
                         <control type="image"> <!-- Sport Image Focused -->
                             <description>Sport Image Focused</description> 
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <height>128</height>
-                            <width>128</width>
-                            <texture>Listitem.Icon</texture>
-                            <bordersize>3</bordersize>
-                            <animation effect="zoom" end="0,0,138,138" time="100">focus</animation>
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
                         </control>
                         <control type="label"> <!-- Sport Label Focused -->
                             <description>Sport Label Focused</description> 
-                            <posx>0</posx>
-                            <posy>130</posy>
+                            <left>100</left>
+                            <top>180</top>
                             <height>20</height>
-                            <width>150</width>
-                            <textoffsetx>9</textoffsetx>
-                            <textwidth>110</textwidth>
-                            <aligny>center</aligny>
-                            <font>font13_title</font>
+                            <width>196</width>
+                            <align>center</align>
+                            <font>font12_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>red</selectedcolor>
-                            <label>Listitem.Label</label>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
                         </control>                           
                     </focusedlayout>
                 </control>
             </control>
 
-            <control type="group" id="9032"> <!-- Video Sports Albums Panel -->
-                <posx>255</posx>
-                <posy>35</posy>
+            <!-- 9032 - Video Sports Albums Panel -->
+            <!-- 9033 - Video Sports Albums List -->
+            <control type="group" id="9032">
+                <left>255</left>
+                <top>35</top>
                 <onleft>9000</onleft>
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
-                <visible>false</visible>
-                <control type="image">
-                    <description>Video Sports Albums Content Panel</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
+                <visible>!ControlGroup(9030).HasFocus + !ControlGroup(9040).HasFocus</visible>
+                <control type="image"> <!-- Video Sport Albums Background -->
                     <width>1025</width>
                     <height>650</height>
                     <texture border="20">content_panel.png</texture>
                 </control>
-                <control type="panel" id="9033">
-                    <description>Video Sports Albums List</description>
-                    <posx>45</posx>
-                    <posy>15</posy>
+                <control type="panel" id="9033"> <!-- Sport Albums Panel -->
+                    <description>Video Sport Albums Panel</description>
+                    <left>20</left>
+                    <top>20</top>
                     <width>980</width>
                     <height>610</height>
-                    <onleft>9000</onleft>
-                    <onright>233</onright>
-                    <onup>233</onup>
-                    <ondown>233</ondown>
-                    <viewtype label="Sport Albums List">list</viewtype>
+                    <visible>true</visible>
+                    <pagecontrol>25</pagecontrol>
                     <scrolltime>200</scrolltime>
-                    <itemlayout width="200" height="150">
-                        <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>200</width>
-                            <height>100</height>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <info>Listitem.Thumb</info>
+                    <autoscroll>false</autoscroll>
+                    <itemlayout width="245" height="180">
+                        <control type="image"> <!-- Sport Album Image -->
+                            <description>Video Sport Album Image</description> 
+                            <left>20</left>
+                            <top>20</top>
+                            <height>110</height>
+                            <width>196</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,220,220" time="150">focus</animation>
                         </control>
-                        <control type="label">
-                            <posx>10</posx>
-                            <posy>105</posy>
-                            <width>180</width>
-                            <height>45</height>
-                            <font>font10</font>
-                            <aligny>center</aligny>
+                        <control type="label"> <!-- Sport Album Label -->
+                            <description>Sport Album Label</description> 
+                            <left>110</left>
+                            <top>150</top>
+                            <height>40</height>
+                            <width>240</width>
+                            <align>center</align>
+                            <font>font12_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <selectedcolor>green</selectedcolor>
-                            <info>ListItem.Label</info>
-                        </control>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                          
                     </itemlayout>
-                    <focusedlayout width="200" height="150">
-                        <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>200</width>
-                            <height>100</height>
-                            <info>Listitem.Thumb</info>
-                            <aspectratio scalediffuse="false">keep</aspectratio>
-                            <animation effect="zoom" end="0,0,300,300" time="100">focus</animation>
-                            <visible>Control.HasFocus(233)</visible>
+                    <focusedlayout width="245" height="180">
+                        <control type="image"> <!-- Sport Album Image Focused -->
+                            <description>Sport Album Image Focused</description> 
+                            <left>20</left>
+                            <top>20</top>
+                            <height>110</height>
+                            <width>196</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,220,220" time="150">focus</animation>
                         </control>
-                        <control type="label">
-                            <posx>10</posx>
-                            <posy>105</posy>
-                            <width>180</width>
-                            <height>45</height>
-                            <font>font10</font>
-                            <aligny>center</aligny>
+                        <control type="label"> <!-- Sport Album Label Focused -->
+                            <description>Sport Label Focused</description> 
+                            <left>110</left>
+                            <top>150</top>
+                            <height>40</height>
+                            <width>240</width>
+                            <align>center</align>
+                            <font>font13_title</font>
                             <textcolor>FFFFFFFF</textcolor>
-                            <focusedcolor>FFFFFFFF</focusedcolor>
-                            <selectedcolor>green</selectedcolor>
-                            <info>ListItem.Label</info>
-                        </control>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                           
                     </focusedlayout>
                 </control>
             </control>
@@ -607,12 +598,12 @@
                  200 - Main Menu - Exit Button 
             -->
             <control type="group" id="9000">
-                <posx>0</posx>
-                <posy>260</posy>
+                <left>0</left>
+                <top>260</top>
                 <control type="image">
                     <description>Menu Panel</description> <!-- Menu Panel Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>425</height>
                     <texture border="20">content_panel.png</texture>
@@ -620,8 +611,8 @@
                 <!-- 9000 - Main Menu Buttons-->
                 <control type="radiobutton" id="110"> <!-- Club -->
                     <description>Club</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -633,8 +624,8 @@
                     <label>$ADDON[script.slbenfica 32110]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>215</radioposx>
-                    <radioposy>10</radioposy>
+                    <radioleft>215</radioleft>
+                    <radiotop>10</radiotop>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
                     <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
@@ -649,8 +640,8 @@
                 </control>                
                 <control type="radiobutton" id="120"> <!-- News -->
                     <description>News</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -662,8 +653,8 @@
                     <label>$ADDON[script.slbenfica 32120]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>215</radioposx>
-                    <radioposy>10</radioposy>
+                    <radioleft>215</radioleft>
+                    <radiotop>10</radiotop>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
                     <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
@@ -678,8 +669,8 @@
                 </control>
                 <control type="button" id="130">  <!-- Videos -->
                     <description>Videos</description>
-                    <posx>10</posx>
-                    <posy>90</posy>
+                    <left>10</left>
+                    <top>90</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -698,8 +689,8 @@
                 </control>                
                 <control type="button" id="140">  <!-- Photos -->
                     <description>Photos</description>
-                    <posx>10</posx>
-                    <posy>130</posy>
+                    <left>10</left>
+                    <top>130</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -718,8 +709,8 @@
                 </control>
                 <control type="radiobutton" id="150">  <!-- Stadium -->
                     <description>Stadium</description>
-                    <posx>10</posx>
-                    <posy>170</posy>
+                    <left>10</left>
+                    <top>170</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -731,8 +722,8 @@
                     <label>$ADDON[script.slbenfica 32150]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>215</radioposx>
-                    <radioposy>10</radioposy>
+                    <radioleft>215</radioleft>
+                    <radiotop>10</radiotop>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
                     <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
@@ -747,8 +738,8 @@
                 </control>
                 <control type="radiobutton" id="160"> <!-- Tickets -->
                     <description>Tickets</description>
-                    <posx>10</posx>
-                    <posy>210</posy>
+                    <left>10</left>
+                    <top>210</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -760,8 +751,8 @@
                     <label>$ADDON[script.slbenfica 32160]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>215</radioposx>
-                    <radioposy>10</radioposy>
+                    <radioleft>215</radioleft>
+                    <radiotop>10</radiotop>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
                     <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
@@ -776,8 +767,8 @@
                 </control>
                 <control type="radiobutton" id="170"> <!-- Calendar -->
                     <description>Calendar</description>
-                    <posx>10</posx>
-                    <posy>250</posy>
+                    <left>10</left>
+                    <top>250</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -789,8 +780,8 @@
                     <label>$ADDON[script.slbenfica 32170]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
                     <pulseonselect>false</pulseonselect>
-                    <radioposx>215</radioposx>
-                    <radioposy>10</radioposy>
+                    <radioleft>215</radioleft>
+                    <radiotop>10</radiotop>
                     <radiowidth>18</radiowidth>
                     <radioheight>18</radioheight>
                     <textureradioonfocus>sub-menu-arrow.png</textureradioonfocus>
@@ -805,8 +796,8 @@
                 </control>          
                 <control type="button" id="180"> <!-- Sports -->
                     <description>Sports</description>
-                    <posx>10</posx>
-                    <posy>290</posy>
+                    <left>10</left>
+                    <top>290</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -826,8 +817,8 @@
                 </control>
                 <control type="button" id="190"> <!-- Live Matches -->
                     <description>Live Matches</description>
-                    <posx>10</posx>
-                    <posy>330</posy>
+                    <left>10</left>
+                    <top>330</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -847,8 +838,8 @@
                 </control>
                 <control type="button" id="200"> <!-- Exit -->
                     <description>Exit</description>
-                    <posx>10</posx>
-                    <posy>370</posy>
+                    <left>10</left>
+                    <top>370</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -875,24 +866,24 @@
                  114 - Club Menu - Museum button 
             -->
             <control type="group" id="9001">
-                <posx>0</posx>
-                <posy>260</posy>
+                <left>0</left>
+                <top>260</top>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(110)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(110) | ControlGroup(9001).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>180</height>
                     <texture>default-menu.png</texture>
                 </control>
                 <control type="button" id="111"> <!-- Info -->
                     <description>Info</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -911,8 +902,8 @@
                 </control>
                 <control type="button" id="112"> <!-- Structure -->
                     <description>Structure</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -931,8 +922,8 @@
                 </control>
                 <control type="button" id="113"> <!-- History -->
                     <description>History</description>
-                    <posx>10</posx>
-                    <posy>90</posy>
+                    <left>10</left>
+                    <top>90</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -951,8 +942,8 @@
                 </control>
                 <control type="button" id="114"> <!-- Museum -->
                     <description>Museum</description>
-                    <posx>10</posx>
-                    <posy>130</posy>
+                    <left>10</left>
+                    <top>130</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -977,24 +968,24 @@
                  122 - News Menu - Sports News button 
             -->
             <control type="group" id="9002">
-                <posx>0</posx>
-                <posy>300</posy>
+                <left>0</left>
+                <top>300</top>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9002).HasFocus + !Control.HasFocus(120)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(120) | ControlGroup(9002).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>100</height>
                     <texture>default-menu.png</texture>
                 </control>
                 <control type="button" id="121"> <!-- Headlines -->
                     <description>Headlines</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1013,8 +1004,8 @@
                 </control>
                 <control type="button" id="122"> <!-- Sports News -->
                     <description>Sports News</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1041,24 +1032,24 @@
                  154 - Stadium Menu - Virtual Stadium Button 
             -->
             <control type="group" id="9005">
-                <posx>0</posx>
-                <posy>420</posy>
+                <left>0</left>
+                <top>420</top>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9005).HasFocus + !Control.HasFocus(150)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(150) | ControlGroup(9005).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>180</height>
                     <texture>default-menu.png</texture>
                 </control>
                 <control type="button" id="151"> <!-- Estádio da Luz -->
                     <description>Estádio da Luz</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1077,8 +1068,8 @@
                 </control>
                 <control type="button" id="152"> <!-- Info -->
                     <description>Info</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1097,8 +1088,8 @@
                 </control>
                 <control type="button" id="153"> <!-- Tours -->
                     <description>Tours</description>
-                    <posx>10</posx>
-                    <posy>90</posy>
+                    <left>10</left>
+                    <top>90</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1117,8 +1108,8 @@
                 </control>
                 <control type="button" id="154"> <!-- Virtual Stadium -->
                     <description>Virtual Stadium</description>
-                    <posx>10</posx>
-                    <posy>130</posy>
+                    <left>10</left>
+                    <top>130</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1142,24 +1133,24 @@
             <!-- 161 - Tickets Menu - Matches Button
                  162 - Tickets Menu - Museum Button -->                 
             <control type="group" id="9006">
-                <posx>0</posx>
-                <posy>460</posy>
+                <left>0</left>
+                <top>460</top>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9006).HasFocus + !Control.HasFocus(160)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(160) | ControlGroup(9006).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>100</height>
                     <texture>default-menu.png</texture>
                 </control>
                 <control type="button" id="161"> <!-- Matches -->
                     <description>Matches</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1178,8 +1169,8 @@
                 </control>
                 <control type="button" id="162"> <!-- Museum -->
                     <description>Museum</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1204,24 +1195,24 @@
                  172 - Calendar Menu - Weekly Calendar Button
                  173 - Calendar Menu - Monthly Calendar Button-->
             <control type="group" id="9007">
-                <posx>0</posx>
-                <posy>500</posy>
+                <left>0</left>
+                <top>500</top>
                 <animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9007).HasFocus + !Control.HasFocus(170)">conditional</animation>
                 <animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">conditional</animation>
                 <animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">WindowClose</animation>
                 <animation effect="slide" end="270,0" time="600" tween="quadratic" easing="out" condition="Control.HasFocus(170) | ControlGroup(9007).HasFocus">conditional</animation>
                 <visible>true</visible>
                 <control type="image"> <!-- Sub-Menu Container -->
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>260</width>
                     <height>140</height>
                     <texture>default-menu.png</texture>
                 </control>
                 <control type="button" id="171"> <!-- Today Calendar -->
                     <description>Today Calendar</description>
-                    <posx>10</posx>
-                    <posy>10</posy>
+                    <left>10</left>
+                    <top>10</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1240,8 +1231,8 @@
                 </control>
                 <control type="button" id="172"> <!-- Weekly Calendar -->
                     <description>Weekly Calendar</description>
-                    <posx>10</posx>
-                    <posy>50</posy>
+                    <left>10</left>
+                    <top>50</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1260,8 +1251,8 @@
                 </control>
                 <control type="button" id="173"> <!-- Monthly Calendar -->
                     <description>Monthly Calendar</description>
-                    <posx>10</posx>
-                    <posy>90</posy>
+                    <left>10</left>
+                    <top>90</top>
                     <height>40</height>
                     <width>240</width>
                     <textoffsetx>10</textoffsetx>
@@ -1287,24 +1278,24 @@
             <!-- Weather Info -->
             <control type="group">
                 <description>Weather group</description>
-                <posx>400r</posx>
-                <posy>0</posy>
+                <left>400r</left>
+                <top>0</top>
                 <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
                 <animation effect="slide" start="0,0" end="510,0" delay="0" time="300">WindowClose</animation>
                 <animation effect="slide" start="510,0" end="0,0" delay="0" time="300">WindowOpen</animation>
                 <visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
                 <control type="image">
                     <description>Weather background</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>180</width>
                     <height>35</height>
                     <texture flipx="true" border="32,0,0,0">header.png</texture>
                 </control>
                 <control type="image">
                     <description>Weather image</description>
-                    <posx>30</posx>
-                    <posy>1</posy>
+                    <left>30</left>
+                    <top>1</top>
                     <width>25</width>
                     <height>25</height>
                     <aspectratio>keep</aspectratio>
@@ -1312,8 +1303,8 @@
                 </control>
                 <control type="label">
                     <description>Weather label</description>
-                    <posx>60</posx>
-                    <posy>0</posy>
+                    <left>60</left>
+                    <top>0</top>
                     <width>100</width>
                     <height>28</height>
                     <align>left</align>
@@ -1327,23 +1318,23 @@
 
             <!-- Date and Time -->
             <control type="group">
-                <posx>270r</posx>
-                <posy>0</posy>
+                <left>270r</left>
+                <top>0</top>
                 <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
                 <animation effect="slide" start="0,0" end="380,0" delay="0" time="300">WindowClose</animation>
                 <animation effect="slide" start="380,0" end="0,0" delay="0" time="300">WindowOpen</animation>
                 <control type="image">
                     <description>time background</description>
-                    <posx>0</posx>
-                    <posy>0</posy>
+                    <left>0</left>
+                    <top>0</top>
                     <width>300</width>
                     <height>35</height>
                     <texture flipx="true" border="32,0,0,0">header.png</texture>
                 </control>
                 <control type="label">
                     <description>time label</description>
-                    <posx>30</posx>
-                    <posy>0</posy>
+                    <left>30</left>
+                    <top>0</top>
                     <width>300</width>
                     <height>28</height>
                     <align>left</align>
@@ -1357,13 +1348,13 @@
 
             <!-- RSS Feed -->
             <control type="group">
-                <posx>0</posx>
-                <posy>35r</posy>
+                <left>0</left>
+                <top>35r</top>
                 <visible>system.getbool(lookandfeel.enablerssfeeds)</visible>
                 <!-- FLOOR -->
                 <control type="image">
-                    <posx>0</posx>
-                    <posy>35r</posy>
+                    <left>0</left>
+                    <top>35r</top>
                     <width>1280</width>
                     <height>35</height>
                     <!-- <texture>floor.png</texture> -->
@@ -1373,8 +1364,8 @@
                 </control>
                 <control type="rss" id="2">
                     <description>SL Benfica RSS feed</description>
-                    <posx>15</posx>
-                    <posy>5</posy>
+                    <left>15</left>
+                    <top>5</top>
                     <height>33</height>
                     <width>1230</width>
                     <font>font12</font>
@@ -1384,8 +1375,8 @@
                 </control>
                 <control type="image">
                     <description>SL Benfica RSS Icon</description>
-                    <posx>1250</posx>
-                    <posy>5</posy>
+                    <left>1250</left>
+                    <top>5</top>
                     <width>24</width>
                     <height>24</height>
                     <texture>icon-rss.png</texture>

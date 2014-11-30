@@ -35,7 +35,7 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from cookielib import CookieJar
 
 # Common
-from resources.lib.base import BS, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp
+from resources.lib.base import BS, _full_url, lw, Addon, Controls, Mode, kodi_text, stringify_text, kodi_titles, set_coloring, set_color, set_bold, set_italic, clean_color, kodi_color, replace_br, replace_nbsp, convert_date
 
 #-----------------------
 #  Scrapping class
@@ -59,8 +59,8 @@ class SLB(object):
         self.VIDEOS_URL          = 'http://www.slbenfica.pt/{lang}/videos.aspx'.format(lang=lang)
         self.PHOTOS_URL          = 'http://www.slbenfica.pt/{lang}/fotos.aspx'.format(lang=lang)
         self.NEWS_SPORT_URL      = 'http://www.slbenfica.pt/noticias/listagemdenoticia/tabid/2790/cat/{album_id}/language/{lang}/Default.aspx'
-        self.VIDEOS_SPORT_URL    = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
-        self.PHOTOS_SPORT_URL    = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{cat_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.VIDEOS_SPORT_URL    = 'http://www.slbenfica.pt/videos/albuns/tabid/2805/LCmid/9435/filter-Page/{page}/cat/{sport_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
+        self.PHOTOS_SPORT_URL    = 'http://www.slbenfica.pt/fotos/albuns/tabid/2802/LCmid/9751/filter-Page/{page}/cat/{sport_id}/filter-eType/all/filter-Tags/all/sort-Asc/default/sort-Desc/default/language/{lang}/Default.aspx'
         self.VIDEOS_ALBUM_URL    = 'http://www.slbenfica.pt/video/detalhealbum/tabid/2806/cat/{album_id}/language/{lang}/Default.aspx'
         self.PHOTOS_ALBUM_URL    = 'http://www.slbenfica.pt/fotos/detalhealbum/tabid/2803/cat/{album_id}/language/{lang}/Default.aspx'
         self.YOUTUBE_URL         = 'plugin://plugin.video.youtube?path=/root/video&action=play_video&videoid={id}'
