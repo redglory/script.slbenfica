@@ -221,10 +221,8 @@ def runPlugin(url):
 #  Web related methods
 #------------------------
 def BS(url, proxies={}):
-
-    #proxies = {'http': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080', 
-    #           'https': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'}
-
+    proxies = {'http': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080', 
+               'https': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'}
     r = requests.get(url, proxies=proxies)
     return BeautifulSoup(r.text, 'html5lib')
 

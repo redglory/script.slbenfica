@@ -181,20 +181,20 @@
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
                             <left>50</left>
-                            <top>25</top>
-                            <width>60</width>
-                            <height>60</height>
+                            <top>30</top>
+                            <width>55</width>
+                            <height>55</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Club.png</texture>
+                            <texture>$INFO[ListItem.Property(competition_home_team_logo)]</texture>
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
-                            <left>150</left>
-                            <top>25</top>
-                            <width>60</width>
-                            <height>60</height>
+                            <left>155</left>
+                            <top>30</top>
+                            <width>55</width>
+                            <height>55</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Wrestling.png</texture>
+                            <texture>$INFO[ListItem.Property(competition_away_team_logo)]</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
                             <left>130</left>
@@ -204,7 +204,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_name)</info>
+                            <label>$INFO[ListItem.Property(competition_name)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
                             <left>75</left>
@@ -214,7 +214,7 @@
                             <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_home_team)</info>
+                            <label>$INFO[ListItem.Property(competition_home_team)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
                             <left>180</left>
@@ -224,7 +224,7 @@
                             <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_away_team)</info>
+                            <label>$INFO[ListItem.Property(competition_away_team)]</label>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
                             <left>130</left>
@@ -234,7 +234,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_date)</info>
+                            <label>$INFO[ListItem.Property(competition_date)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
                             <left>130</left>
@@ -244,7 +244,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_local)</info>
+                            <label>$INFO[ListItem.Property(competition_local)]</label>
                         </control>
                     </itemlayout>
                     <focusedlayout width="260" height="135">
@@ -260,20 +260,20 @@
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
                             <left>50</left>
-                            <top>25</top>
-                            <width>60</width>
-                            <height>60</height>
+                            <top>30</top>
+                            <width>55</width>
+                            <height>55</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Club.png</texture>
+                            <texture>$INFO[ListItem.Property(competition_home_team_logo)]</texture>
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
-                            <left>150</left>
-                            <top>25</top>
-                            <width>60</width>
-                            <height>60</height>
+                            <left>155</left>
+                            <top>30</top>
+                            <width>55</width>
+                            <height>55</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
-                            <texture>Wrestling.png</texture>
+                            <texture>$INFO[ListItem.Property(competition_away_team_logo)]</texture>
                         </control>
                         <control type="label"> <!-- Next Match Competition name -->
                             <left>130</left>
@@ -283,7 +283,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_name)</info>
+                            <label>$INFO[ListItem.Property(competition_name)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Home Team name -->
                             <left>75</left>
@@ -293,7 +293,7 @@
                             <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_home_team)</info>
+                            <label>$INFO[ListItem.Property(competition_home_team)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Away Team name -->
                             <left>180</left>
@@ -303,7 +303,7 @@
                             <font>font12_title</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_away_team)</info>
+                            <label>$INFO[ListItem.Property(competition_away_team)]</label>
                         </control>            
                         <control type="label"> <!-- Next Match Date -->
                             <left>130</left>
@@ -313,7 +313,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_date)</info>
+                            <label>$INFO[ListItem.Property(competition_date)]</label>
                         </control>
                         <control type="label"> <!-- Next Match Local -->
                             <left>130</left>
@@ -323,7 +323,7 @@
                             <font>font10</font>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <info>ListItem.Property(competition_local)</info>
+                            <label>$INFO[ListItem.Property(competition_local)]</label>
                         </control>
                     </focusedlayout>
                 </control>

@@ -21,6 +21,7 @@ from itertools import chain
 import time
 from urllib import quote, unquote
 import urllib2
+import requests
 import cookielib
 import codecs
 from datetime import date, timedelta, datetime
@@ -250,6 +251,29 @@ class SLB(object):
     
         return prev_page_url, next_page_url
 
+    def get_team_logo(self, sport_id, team):
+        # get cookies
+        #proxies = {'http': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080', 
+        #           'https': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'}
+        #r = requests.get('http://www.zerozero.pt/home.php', proxies=proxies)
+        #print r.cookies
+        
+        #headers = {"Host": "www.zerozero.pt", 
+        #           "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
+        #           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        #           "Accept-Language": "pt-pt,pt;q=0.8,en;q=0.5,en-us;q=0.3",
+        #           "Accept-Encoding": "gzip, deflate",
+        #           "Cache-Control": "max-age=0",
+        #           "Connection": "keep-alive"}
+
+        # Football team
+        soup = BS('http://www.zerozero.pt/search.php?search_string={team}&go=Pesquisar+%3E'.format(team=team), headers=headers)
+        logo_td = soup.find('td', style='border:0px;padding-bottom:8px;')
+        if logo_td:
+            return _full_url('http://www.zerozero.pt/', logo_td.div.img['src'])
+        else:
+            return os.path.join(Addon.__imagespath__, self.get_sport_data(sport_id)[1])
+
     def get_next_matches(self):
         #---------------------------------------------------------------------------------------
         #     Next Matches (json format)
@@ -307,12 +331,16 @@ class SLB(object):
             _id = int(sport_li.find('a')['id'])
             if _id != 1707: # remove funzone events
                 _sport, _thumb = self.get_sport_data(_id)
+                home_team_logo = self.get_team_logo(_id, matches[index]['home_team'].encode('utf-8'))
+                away_team_logo = self.get_team_logo(_id, matches[index]['away_team'].encode('utf-8'))
                 next_matches.append({'id': _id,
                                      'sport': _sport,
                                      'thumbnail': _thumb,
                                      'match_info': {'competition_name' : matches[index]['competition'],
                                                     'competition_home_team': matches[index]['home_team'],
+                                                    'competition_home_team_logo': home_team_logo,
                                                     'competition_away_team': matches[index]['away_team'],
+                                                    'competition_away_team_logo': away_team_logo,
                                                     'competition_date' : matches[index]['match_date'],
                                                     'competition_local': matches[index]['match_local']}
                                 })

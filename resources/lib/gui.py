@@ -167,8 +167,12 @@ class GUI(xbmcgui.WindowXML):
             match_item.setProperty('competition_name', next_match['match_info']['competition_name'])
             # sport match home team
             match_item.setProperty('competition_home_team', next_match['match_info']['competition_home_team'])
+            # sport match home team logo
+            match_item.setProperty('competition_home_team_logo', next_match['match_info']['competition_home_team_logo'])
             # sport match away team
             match_item.setProperty('competition_away_team', next_match['match_info']['competition_away_team'])
+            # sport match away team logo
+            match_item.setProperty('competition_away_team_logo', next_match['match_info']['competition_away_team_logo'])            
             # sport date
             match_item.setProperty('competition_date', next_match['match_info']['competition_date'])
             # sport local
@@ -176,6 +180,12 @@ class GUI(xbmcgui.WindowXML):
             # sport image as thumbnail
             match_item.setIconImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
             match_item.setThumbnailImage(os.path.join(Addon.__imagespath__, next_match['thumbnail']))
+            lw.log(['sport: %s' % next_match['sport'],
+                    'home team: %s' % next_match['match_info']['competition_home_team'], 
+                    'home team logo: %s' % next_match['match_info']['competition_home_team_logo'],
+                    'away team: %s' % next_match['match_info']['competition_away_team'], 
+                    'away_team_logo: %s' % next_match['match_info']['competition_away_team_logo'],
+                    '\n'])
             #lw.log([next_match['sport'], os.path.join(Addon.__imagespath__, next_match['thumbnail']), next_match['match_info']['competition_name'], next_match['match_info']['competition_home_team'],  next_match['match_info']['competition_away_team'], next_match['match_info']['competition_date'], next_match['match_info']['competition_local']])
             self.next_matches_list.addItem(match_item)
 
