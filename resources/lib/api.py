@@ -252,25 +252,23 @@ class SLB(object):
         return prev_page_url, next_page_url
 
     def get_team_logo(self, sport_id, team):
-        # get cookies
-        #proxies = {'http': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080', 
-        #           'https': 'http://peu141:Glorioso1904@ep-proxy.bportugal.pt:8080'}
-        #r = requests.get('http://www.zerozero.pt/home.php', proxies=proxies)
-        #print r.cookies
-        
-        #headers = {"Host": "www.zerozero.pt", 
-        #           "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
-        #           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        #           "Accept-Language": "pt-pt,pt;q=0.8,en;q=0.5,en-us;q=0.3",
-        #           "Accept-Encoding": "gzip, deflate",
-        #           "Cache-Control": "max-age=0",
-        #           "Connection": "keep-alive"}
+
+        headers = {"Host": "www.zerozero.pt", 
+                   "User-Agent": "User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36",
+                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                   "Accept-Language": "en-US,en;q=0.8,pt-PT;q=0.6,pt;q=0.4,es;q=0.2",
+                   "Accept-Encoding": "gzip, deflate, sdch",
+                   "Connection": "keep-alive",                   
+                   "Cache-Control": "no-cache",
+                   "Referer": "http://www.zerozero.pt/equipas.php",
+                   "Pragma": "no-cache"}
 
         # Football team
-        soup = BS('http://www.zerozero.pt/search.php?search_string={team}&go=Pesquisar+%3E'.format(team=team), headers=headers)
-        logo_td = soup.find('td', style='border:0px;padding-bottom:8px;')
-        if logo_td:
-            return _full_url('http://www.zerozero.pt/', logo_td.div.img['src'])
+        soup = BS('http://www.zerozero.pt/jqc_search_search.php?queryString={team}'.format(team=team))
+        logo_img = soup.find('div', id='searchresults')
+        print logo_img
+        if logo_img:
+            return _full_url('http://www.zerozero.pt/', logo_img)
         else:
             return os.path.join(Addon.__imagespath__, self.get_sport_data(sport_id)[1])
 
