@@ -253,24 +253,16 @@ class SLB(object):
 
     def get_team_logo(self, sport_id, team):
 
-        headers = {"Host": "www.zerozero.pt", 
-                   "User-Agent": "User-Agent:Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36",
-                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                   "Accept-Language": "en-US,en;q=0.8,pt-PT;q=0.6,pt;q=0.4,es;q=0.2",
-                   "Accept-Encoding": "gzip, deflate, sdch",
-                   "Connection": "keep-alive",                   
-                   "Cache-Control": "no-cache",
-                   "Referer": "http://www.zerozero.pt/equipas.php",
-                   "Pragma": "no-cache"}
-
         # Football team
         soup = BS('http://www.zerozero.pt/jqc_search_search.php?queryString={team}'.format(team=team))
-        logo_img = soup.find('div', id='searchresults')
-        print logo_img
-        if logo_img:
+        div = soup.find('div', id='searchresults')
+        table = div.table
+        table.extract()
+        try:
+            logo_img = div.find('img', src=re.compile('/img/logos/equipas/')).get('src').encode('utf-8')
             return _full_url('http://www.zerozero.pt/', logo_img)
-        else:
-            return os.path.join(Addon.__imagespath__, self.get_sport_data(sport_id)[1])
+        except:
+            return os.path.join(Addon.__imagespath__, self.get_sport_data(sport_id)[1])            
 
     def get_next_matches(self):
         #---------------------------------------------------------------------------------------
@@ -721,7 +713,7 @@ class SLB(object):
             sport_page_url = self.VIDEOS_SPORT_URL.format(sport_id = sport_id, page = '{page}', lang = self.LANG)
         # first get sport albums number of pages
         soup = BS(sport_url)
-        num_pages = max([int(li.a.string) for li in soup.find('div', class_='pos_num_pag clearfix').find('ul').find_all('li')])
+        num_pages = max([int(re.sub('...', '0', li.a.string)) for li in soup.find('div', class_='pos_num_pag clearfix').find('ul').find_all('li')])
         # get all sport video albums
         for i in range(1, num_pages + 1):
             soup = BS(sport_page_url.format(page = i))

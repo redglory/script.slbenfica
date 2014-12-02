@@ -173,26 +173,26 @@
                             <description>Sport Image</description> 
                             <left>110</left>
                             <top>18</top>
-                            <width>40</width>
-                            <height>40</height>
+                            <width>35</width>
+                            <height>35</height>
                             <aspectratio aligny="center" align="center">keep</aspectratio>
                             <texture>$INFO[Listitem.Icon]</texture>
                         </control>
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
                             <left>50</left>
-                            <top>30</top>
-                            <width>55</width>
-                            <height>55</height>
+                            <top>25</top>
+                            <width>50</width>
+                            <height>50</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>$INFO[ListItem.Property(competition_home_team_logo)]</texture>
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
                             <left>155</left>
-                            <top>30</top>
-                            <width>55</width>
-                            <height>55</height>
+                            <top>25</top>
+                            <width>50</width>
+                            <height>50</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>$INFO[ListItem.Property(competition_away_team_logo)]</texture>
                         </control>
@@ -252,26 +252,26 @@
                             <description>Sport Image</description> 
                             <left>110</left>
                             <top>18</top>
-                            <width>40</width>
-                            <height>40</height>
+                            <width>35</width>
+                            <height>35</height>
                             <aspectratio aligny="center" align="center">keep</aspectratio>
                             <texture>$INFO[Listitem.Icon]</texture>
                         </control>
                         <control type="image" id="102"> <!-- Next Match Home Team Image -->
                             <description>Home Team</description>
                             <left>50</left>
-                            <top>30</top>
-                            <width>55</width>
-                            <height>55</height>
+                            <top>25</top>
+                            <width>50</width>
+                            <height>50</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>$INFO[ListItem.Property(competition_home_team_logo)]</texture>
                         </control>
                         <control type="image" id="103"> <!-- Next Match Away Team Image -->
                             <description>Away Team</description>
                             <left>155</left>
-                            <top>30</top>
-                            <width>55</width>
-                            <height>55</height>
+                            <top>25</top>
+                            <width>50</width>
+                            <height>50</height>
                             <aspectratio aligny="top" align="center">keep</aspectratio>
                             <texture>$INFO[ListItem.Property(competition_away_team_logo)]</texture>
                         </control>
@@ -352,6 +352,10 @@
                 </control>
             </control>
 
+<!-- ######################################################################################### -->
+<!--                                       VIDEOS PANELS                                       -->
+<!-- ######################################################################################### -->   
+
             <!-- 9030 - Video Sports Panel -->
             <!-- 9031 - Video Sports List -->
             <control type="group" id="9030">
@@ -361,7 +365,7 @@
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
-                <visible>!ControlGroup(9032).HasFocus + !ControlGroup(9040).HasFocus</visible>
+                <visible>Control.HasFocus(9031)</visible>
                 <control type="image"> <!-- Video Sports Background -->
                     <width>1025</width>
                     <height>650</height>
@@ -427,82 +431,6 @@
                     </focusedlayout>
                 </control>
             </control>
-            
-            <!-- 9040 - Photo Sports Panel -->
-            <!-- 9041 - Photo Sports List -->
-            <control type="group" id="9030">
-                <left>255</left>
-                <top>35</top>
-                <onleft>9000</onleft>
-                <onright>9000</onright>
-                <onup>9000</onup>
-                <ondown>9000</ondown>
-                <visible>!ControlGroup(9030).HasFocus + !ControlGroup(9032).HasFocus</visible>
-                <control type="image"> <!-- Photo Sports Background -->
-                    <width>1025</width>
-                    <height>650</height>
-                    <texture border="20">content_panel.png</texture>
-                </control>
-                <control type="panel" id="9031"> <!-- Sports Panel -->
-                    <description>Sports Panel</description>
-                    <left>20</left>
-                    <top>20</top>
-                    <width>980</width>
-                    <height>610</height>
-                    <visible>true</visible>
-                    <pagecontrol>25</pagecontrol>
-                    <scrolltime>200</scrolltime>
-                    <autoscroll>false</autoscroll>
-                    <itemlayout width="196" height="200">
-                        <control type="image"> <!-- Sport Image -->
-                            <description>Sport Image</description> 
-                            <left>13</left>
-                            <top>13</top>
-                            <height>170</height>
-                            <width>170</width>
-                            <texture>$INFO[Listitem.Icon]</texture>
-                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
-                        </control>
-                        <control type="label"> <!-- Sport Label -->
-                            <description>Sport Label</description> 
-                            <left>100</left>
-                            <top>180</top>
-                            <height>20</height>
-                            <width>196</width>
-                            <align>center</align>
-                            <font>font12_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>FFFF0000</selectedcolor>
-                            <shadowcolor>FF000000</shadowcolor>
-                            <label>$INFO[Listitem.Label]</label>
-                        </control>                          
-                    </itemlayout>
-                    <focusedlayout width="196" height="200">
-                        <control type="image"> <!-- Sport Image Focused -->
-                            <description>Sport Image Focused</description> 
-                            <left>13</left>
-                            <top>13</top>
-                            <height>170</height>
-                            <width>170</width>
-                            <texture>$INFO[Listitem.Icon]</texture>
-                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
-                        </control>
-                        <control type="label"> <!-- Sport Label Focused -->
-                            <description>Sport Label Focused</description> 
-                            <left>100</left>
-                            <top>180</top>
-                            <height>20</height>
-                            <width>196</width>
-                            <align>center</align>
-                            <font>font12_title</font>
-                            <textcolor>FFFFFFFF</textcolor>
-                            <selectedcolor>FFFF0000</selectedcolor>
-                            <shadowcolor>FF000000</shadowcolor>
-                            <label>$INFO[Listitem.Label]</label>
-                        </control>                           
-                    </focusedlayout>
-                </control>
-            </control>
 
             <!-- 9032 - Video Sports Albums Panel -->
             <!-- 9033 - Video Sports Albums List -->
@@ -513,7 +441,7 @@
                 <onright>9000</onright>
                 <onup>9000</onup>
                 <ondown>9000</ondown>
-                <visible>!ControlGroup(9030).HasFocus + !ControlGroup(9040).HasFocus</visible>
+                <visible>Control.HasFocus(9033)</visible>
                 <control type="image"> <!-- Video Sport Albums Background -->
                     <width>1025</width>
                     <height>650</height>
@@ -580,6 +508,162 @@
                 </control>
             </control>
 
+<!-- ######################################################################################### -->
+<!--                                       PHOTOS PANELS                                       -->
+<!-- ######################################################################################### -->   
+            
+            <!-- 9040 - Photo Sports Panel -->
+            <!-- 9041 - Photo Sports List -->
+            <control type="group" id="9040">
+                <left>255</left>
+                <top>35</top>
+                <onleft>9000</onleft>
+                <onright>9000</onright>
+                <onup>9000</onup>
+                <ondown>9000</ondown>
+                <visible>Control.HasFocus(9041)</visible>
+                <control type="image"> <!-- Photo Sports Background -->
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+                <control type="panel" id="9041"> <!-- Sports Panel -->
+                    <description>Sports Panel</description>
+                    <left>20</left>
+                    <top>20</top>
+                    <width>980</width>
+                    <height>610</height>
+                    <visible>true</visible>
+                    <pagecontrol>25</pagecontrol>
+                    <scrolltime>200</scrolltime>
+                    <autoscroll>false</autoscroll>
+                    <itemlayout width="196" height="200">
+                        <control type="image"> <!-- Sport Image -->
+                            <description>Sport Image</description> 
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
+                        </control>
+                        <control type="label"> <!-- Sport Label -->
+                            <description>Sport Label</description> 
+                            <left>100</left>
+                            <top>180</top>
+                            <height>20</height>
+                            <width>196</width>
+                            <align>center</align>
+                            <font>font12_title</font>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                          
+                    </itemlayout>
+                    <focusedlayout width="196" height="200">
+                        <control type="image"> <!-- Sport Image Focused -->
+                            <description>Sport Image Focused</description> 
+                            <left>13</left>
+                            <top>13</top>
+                            <height>170</height>
+                            <width>170</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,190,190" time="150">focus</animation>
+                        </control>
+                        <control type="label"> <!-- Sport Label Focused -->
+                            <description>Sport Label Focused</description> 
+                            <left>100</left>
+                            <top>180</top>
+                            <height>20</height>
+                            <width>196</width>
+                            <align>center</align>
+                            <font>font12_title</font>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                           
+                    </focusedlayout>
+                </control>
+            </control>
+
+            <!-- 9042 - Photo Sports Albums Panel -->
+            <!-- 9043 - Photo Sports Albums List -->
+            <control type="group" id="9042">
+                <left>255</left>
+                <top>35</top>
+                <onleft>9000</onleft>
+                <onright>9000</onright>
+                <onup>9000</onup>
+                <ondown>9000</ondown>
+                <visible>Control.HasFocus(9043)</visible>
+                <control type="image"> <!-- Video Sport Albums Background -->
+                    <width>1025</width>
+                    <height>650</height>
+                    <texture border="20">content_panel.png</texture>
+                </control>
+                <control type="panel" id="9043"> <!-- Sport Albums Panel -->
+                    <description>Video Sport Albums Panel</description>
+                    <left>20</left>
+                    <top>20</top>
+                    <width>980</width>
+                    <height>610</height>
+                    <visible>true</visible>
+                    <pagecontrol>25</pagecontrol>
+                    <scrolltime>200</scrolltime>
+                    <autoscroll>false</autoscroll>
+                    <itemlayout width="245" height="180">
+                        <control type="image"> <!-- Sport Album Image -->
+                            <description>Video Sport Album Image</description> 
+                            <left>20</left>
+                            <top>20</top>
+                            <height>110</height>
+                            <width>196</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,220,220" time="150">focus</animation>
+                        </control>
+                        <control type="label"> <!-- Sport Album Label -->
+                            <description>Sport Album Label</description> 
+                            <left>110</left>
+                            <top>150</top>
+                            <height>40</height>
+                            <width>240</width>
+                            <align>center</align>
+                            <font>font12_title</font>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                          
+                    </itemlayout>
+                    <focusedlayout width="245" height="180">
+                        <control type="image"> <!-- Sport Album Image Focused -->
+                            <description>Sport Album Image Focused</description> 
+                            <left>20</left>
+                            <top>20</top>
+                            <height>110</height>
+                            <width>196</width>
+                            <texture>$INFO[Listitem.Icon]</texture>
+                            <animation effect="zoom" end="0,0,220,220" time="150">focus</animation>
+                        </control>
+                        <control type="label"> <!-- Sport Album Label Focused -->
+                            <description>Sport Label Focused</description> 
+                            <left>110</left>
+                            <top>150</top>
+                            <height>40</height>
+                            <width>240</width>
+                            <align>center</align>
+                            <font>font13_title</font>
+                            <textcolor>FFFFFFFF</textcolor>
+                            <selectedcolor>FFFF0000</selectedcolor>
+                            <shadowcolor>FF000000</shadowcolor>
+                            <label>$INFO[Listitem.Label]</label>
+                        </control>                           
+                    </focusedlayout>
+                </control>
+            </control>            
+
 
 <!-- ######################################################################################### -->
 <!--                                        MENU PANELS                                        -->
@@ -623,6 +707,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32110]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioleft>215</radioleft>
                     <radiotop>10</radiotop>
@@ -652,6 +737,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32120]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioleft>215</radioleft>
                     <radiotop>10</radiotop>
@@ -681,6 +767,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32130]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9030</onclick>
                     <onleft>9000</onleft>
@@ -701,6 +788,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32140]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9004</onclick>
                     <onleft>9000</onleft>
@@ -721,6 +809,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32150]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioleft>215</radioleft>
                     <radiotop>10</radiotop>
@@ -750,6 +839,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32160]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioleft>215</radioleft>
                     <radiotop>10</radiotop>
@@ -779,6 +869,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32170]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <radioleft>215</radioleft>
                     <radiotop>10</radiotop>
@@ -808,6 +899,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32180]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9080</onclick>
                     <onleft>9000</onleft>
@@ -829,6 +921,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32190]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onclick>9090</onclick>
                     <onleft>9000</onleft>
@@ -850,6 +943,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32200]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>200</onright>
@@ -894,6 +988,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32111]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -914,6 +1009,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32112]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -934,6 +1030,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32113]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -954,6 +1051,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32114]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9001</onright>
@@ -996,6 +1094,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32121]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9002</onright>
@@ -1016,6 +1115,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32122]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9002</onright>
@@ -1060,6 +1160,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32151]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1080,6 +1181,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32152]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1100,6 +1202,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32153]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1120,6 +1223,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32154]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9005</onright>
@@ -1161,6 +1265,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32161]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9006</onright>
@@ -1181,6 +1286,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32162]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9006</onright>
@@ -1223,6 +1329,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32171]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
@@ -1243,6 +1350,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32172]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
@@ -1263,6 +1371,7 @@
                     <focusedcolor>FFFFFFFF</focusedcolor>
                     <label>$ADDON[script.slbenfica 32173]</label>
                     <texturefocus border="5">slb-button-focus.png</texturefocus>
+                    <texturenofocus></texturenofocus>
                     <pulseonselect>false</pulseonselect>
                     <onleft>9000</onleft>
                     <onright>9007</onright>
