@@ -256,9 +256,9 @@ class SLB(object):
         # Football team
         soup = BS('http://www.zerozero.pt/jqc_search_search.php?queryString={team}'.format(team=team))
         div = soup.find('div', id='searchresults')
-        table = div.table
-        table.extract()
         try:
+            table = div.table
+            table.extract()
             logo_img = div.find('img', src=re.compile('/img/logos/equipas/')).get('src').encode('utf-8')
             return _full_url('http://www.zerozero.pt/', logo_img)
         except:
@@ -341,25 +341,19 @@ class SLB(object):
     #---------------------    
     def get_club_structure(self):
 
-        soup = BS('http://www.slbenfica.pt/{lang}/clube/org%C3%A3ossociais.aspx'.format(lang=self.LANG))
-    
+        soup = BS('http://www.slbenfica.pt/{lang}/clubeesad/clube/org%C3%A3ossociais.aspx'.format(lang=self.LANG))
         club_structure = {}
-        
         table = soup.find('table', class_='pos_tab_generic') 
         # table headers
         header = table.find('tr', class_='tab_top_red')
         titles = ['board', 'assembly', 'fiscal']
-    
         header.extract() # remove header row from table
-    
         members = [tr.find_all('td') for tr in table.find_all('tr')]
-    
         for idx, title in enumerate(titles): # for each table column
             club_structure[title] = [{'position': member[idx].find('p', class_='txt_11_red').string if member[idx].find('p', class_='txt_11_red') else '',
                                       'name': member[idx].find('p', class_='txt_11_dark').string if member[idx].find('p', class_='txt_11_dark') else '',
                                       'affiliate': member[idx].find('p', class_='txt_10').string if member[idx].find('p', class_='txt_10') else ''}
                                       for member in members]
-
         return club_structure
 
     def get_club_foundation_history(self):
@@ -752,6 +746,13 @@ class SLB(object):
         images = [
             {'path': _full_url(self.ROOT_URL, li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
+
+    def get_youtube_playlists(self):
+        soup = BS('https://www.youtube.com/user/slbenfica/playlists')
+        return [{'name': 
+
+                }
+               for category in soup.find('ul', id='channels-browse-content-grid').find_all('li', class_='channels-content-item yt-shelf-grid-item')]
 
     
     #-----------------------
