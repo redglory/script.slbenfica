@@ -747,12 +747,12 @@ class SLB(object):
             {'path': _full_url(self.ROOT_URL, li.a['href']).encode('utf-8'),
             } for li in chain(*lis)]
 
-    def get_youtube_playlists(self):
-        soup = BS('https://www.youtube.com/user/slbenfica/playlists')
-        return [{'name': 
-
-                }
-               for category in soup.find('ul', id='channels-browse-content-grid').find_all('li', class_='channels-content-item yt-shelf-grid-item')]
+    #def get_youtube_playlists(self):
+    #    soup = BS('https://www.youtube.com/user/slbenfica/playlists')
+    #    return [{'name': 
+#
+    #            }
+    #           for category in soup.find('ul', id='channels-browse-content-grid').find_all('li', class_='channels-content-item yt-shelf-grid-item')]
 
     
     #-----------------------

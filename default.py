@@ -33,9 +33,6 @@ try:
 except:
     import simplejson as json  # @UnresolvedImport
 
-# Beautiful Soup
-from BeautifulSoup import BeautifulSoup as BS
-
 # XBMC includes
 import xbmcgui
 import xbmc
