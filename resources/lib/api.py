@@ -744,17 +744,28 @@ class SLB(object):
         lis  = [ul.find_all('li') for ul in uls]
         
         images = [
-            {'path': _full_url(self.ROOT_URL, li.a['href']).encode('utf-8'),
+            {'path': _full_url(self.ROOT_URL, li.a['href']).encode('utf-8')
             } for li in chain(*lis)]
 
-    #def get_youtube_playlists(self):
-    #    soup = BS('https://www.youtube.com/user/slbenfica/playlists')
-    #    return [{'name': 
-#
-    #            }
-    #           for category in soup.find('ul', id='channels-browse-content-grid').find_all('li', class_='channels-content-item yt-shelf-grid-item')]
+    def get_youtube_playlists(self):
+        soup = BS('https://www.youtube.com/user/slbenfica/playlists')
+        uls  = soup.find_all('ul', id='channels-browse-content-grid')
+        lis  = [ul.find_all('li', class_='channels-content-item yt-shelf-grid-item') for ul in uls]
+        return [{'title': li.find('div', class_='yt-lockup-content').a['title'],
+                 'thumbnail': li.img['src'], 
+                 'link': _full_url('http://www.youtube.com', li.find('div', class_='yt-lockup-content').a['href']).encode('utf-8'),
+                 'videos': li.find('span', class_='formatted-video-count-label').b.string}
+               for li in chain(*lis)]
 
-    
+    def get_playlist_videos(self, playlist_link):
+        soup  = BS(playlist_link)
+        table = soup.find('table', id='pl-video-table')
+        trs   = table.find_all('tr')
+        return [{'title': video['data-title'],
+                 'video_id': video['data-set-video-id'],
+                 'runtime': video.find('div', class_='timestamp').string}
+               for video in chain(*trs)]
+
     #-----------------------
     #   STADIUM METHODS
     #-----------------------

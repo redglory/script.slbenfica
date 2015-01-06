@@ -136,10 +136,15 @@ class GUI(xbmcgui.WindowXML):
             self.videos_sports_list = self.getControl(Controls.CONTENT_VIDEOS_SPORTS_LIST)
             self.videos_sports_list.reset()
             self.videos_sports = self.SLB.get_sports('videos')
-            lw.log(['video sports: %s' % self.videos_sports])
+            #lw.log(['video sports: %s' % self.videos_sports])
             self.set_videos_sports_list(self.videos_sports)
             self.setFocus(self.videos_sports_list)
             self.videos_sports_list.selectItem(0)
+            #test
+            self.youtube_playlists = self.SLB.get_youtube_playlists()
+            lw.log(['youtube playlists: %s' % self.youtube_playlists])
+            self.playlist_videos = self.SLB.get_playlist_videos(self.youtube_playlists[3]['link'])
+            lw.log(['playlist videos: %s' % self.playlist_videos])
         # Videos Sport Albums Navigation
         elif controlID == Controls.CONTENT_VIDEOS_SPORTS_LIST:
             sport_id = self.getControl(controlID).getSelectedItem().getProperty('sport_id')
